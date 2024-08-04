@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
-//link for mongodb
-//mongodb+srv://kiko:kiko@mern.6o5tl1w.mongodb.net/mern-auth?retryWrites=true&w=majority&appName=mern
+
 const Nav = () => {
   return (
     <header>
