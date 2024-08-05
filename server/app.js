@@ -6,10 +6,12 @@ import cors from "cors";
 
 // Files
 import connectDB from "./config.js";
+import authRoute from "./router/authRoute.js";
 
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 
 const PORT = 5000;
 
@@ -17,3 +19,5 @@ app.listen(PORT, () => {
   console.log(`Listening to port ${PORT}`);
   connectDB();
 });
+
+app.use("/auth", authRoute);
