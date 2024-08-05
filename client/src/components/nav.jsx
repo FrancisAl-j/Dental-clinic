@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-
+//link for mongodb
+//
 const Nav = () => {
   return (
     <header>
@@ -10,11 +11,14 @@ const Nav = () => {
           <Link to="/">
             <li>Home</li>
           </Link>
-          <Link to={Math.random().toString(29) + "/about"}>
+          <Link to="/about">
             <li>About</li>
           </Link>
           <Link to="/signin">
             <li>Sign in</li>
+          </Link>
+          <Link to="/adminSignup">
+            <li>Admin Registration</li>
           </Link>
         </ul>
       </nav>
