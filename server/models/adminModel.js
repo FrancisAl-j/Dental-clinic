@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const adminSchema = new mongoose.Schema(
   {
@@ -15,6 +15,10 @@ const adminSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
+    },
+    clinicId: {
+      type: mongoose.Schema.ObjectId,
+      ref: "Clinic",
     },
   },
 
