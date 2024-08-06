@@ -17,7 +17,7 @@ const adminRegister = async (req, res, next) => {
 
   try {
     await newAdmin.save();
-    res.status(200).json("Admin created successfully");
+    res.status(201).json("Admin created successfully");
   } catch (error) {
     next(error);
   }
