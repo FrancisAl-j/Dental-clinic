@@ -23,6 +23,26 @@ const adminRegister = async (req, res, next) => {
   }
 };
 
+// Admin sign in
+const adminSignin = async (req, res, next) => {
+  const { email, password, clinicId } = req.body;
+
+  try {
+    const user = await Admin.findOne({ username, clinicId });
+    if (!user) {
+      return res.status(400).json({ message: "Invalid Credentials" });
+    }
+
+    const isMatch = bcryptjs.compareSync(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid Credentials" });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   adminRegister,
+  adminSignin,
 };
