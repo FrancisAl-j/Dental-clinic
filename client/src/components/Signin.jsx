@@ -1,8 +1,9 @@
 import { useState } from "react";
+import axios from "axios";
 
 const Signin = () => {
   const [formData, setFormData] = useState({
-    username: "",
+    email: "",
     password: "",
   });
 
@@ -18,6 +19,18 @@ const Signin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/auth/admin/signin",
+        formData
+      );
+      const data = res.data;
+
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -25,13 +38,13 @@ const Signin = () => {
       <h1>Sign in</h1>
 
       <div className="form-wrapper">
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="form-element">
-            <span>Username</span>
+            <span>Email</span>
             <input
-              type="text"
-              name="username"
-              value={formData.username}
+              type="email"
+              name="email"
+              value={formData.email}
               onChange={handleChange}
             />
           </div>
