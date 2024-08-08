@@ -7,6 +7,7 @@ import cors from "cors";
 // Files
 import connectDB from "./config.js";
 import authRoute from "./router/authRoute.js";
+import clinicRoute from "./router/clinicRoute.js";
 
 const app = express();
 
@@ -20,4 +21,8 @@ app.listen(PORT, () => {
   connectDB();
 });
 
+// for Authentication
 app.use("/auth", authRoute);
+
+// For clinic
+app.use("/clinic", clinicRoute);
