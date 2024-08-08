@@ -4,6 +4,7 @@ import About from "./components/About";
 import Nav from "./components/nav";
 import Signin from "./components/Signin";
 import AdminSignUp from "./components/registers/AdminSignup";
+import CreateClinic from "./components/CreateClinic";
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
           <Route path="/about" element={<About />} />
           <Route path="/signin" element={<Signin />} />
           <Route path="/adminSignup" element={<AdminSignUp />} />
+          <Route path="/create-clinic" element={<CreateClinic />} />
         </Routes>
       </BrowserRouter>
     </main>
