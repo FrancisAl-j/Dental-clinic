@@ -32,7 +32,10 @@ const Signin = () => {
       dispatch(signInStart());
       const res = await axios.post(
         "http://localhost:5000/auth/admin/signin",
-        formData
+        formData,
+        {
+          withCredentials: true,
+        }
       );
       const data = res.data;
 
