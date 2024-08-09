@@ -50,7 +50,6 @@ const adminSignin = async (req, res, next) => {
 
     const { password: hashedPassword, ...rest } = user._doc;
     const expiryDate = new Date(Date.now() + 3600000); // Expiration of cookie is 1 hour
-    console.log(token);
 
     res
       .cookie("token", token, { httpOnly: true, expires: expiryDate })
