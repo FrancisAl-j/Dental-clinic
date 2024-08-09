@@ -19,6 +19,7 @@ const adminSchema = new mongoose.Schema(
     clinicId: {
       type: mongoose.Schema.ObjectId,
       ref: "Clinic",
+      unique: true,
     },
   },
 
