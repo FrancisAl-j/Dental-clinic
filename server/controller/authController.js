@@ -29,8 +29,12 @@ const adminSignin = async (req, res, next) => {
   const { email, password, clinicId } = req.body;
 
   try {
-    const user = await Admin.findOne({ email, clinicId });
+    const user = await Admin.findOne({ email });
     if (!user) {
+      return res.status(400).json({ message: "Invalid Credentials" });
+    }
+
+    if (user.clinicId && clinicId && user.clinicId.toString() !== clinicId) {
       return res.status(400).json({ message: "Invalid Credentials" });
     }
 

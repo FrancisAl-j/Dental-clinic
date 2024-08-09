@@ -5,6 +5,8 @@ import {
   signInSuccess,
   signInFailure,
 } from "../redux/user/userSlice.js";
+
+//import { setClinic } from "../redux/clinic/clinicReducer.js";
 import { useDispatch, useSelector } from "react-redux";
 
 const Signin = () => {
@@ -39,8 +41,11 @@ const Signin = () => {
       );
       const data = res.data;
 
+      console.log(data);
+
       if (res.status === 200) {
         dispatch(signInSuccess(data));
+        //const clinic = await axios.get(`http://localhost:5000/clinic/`)
       } else {
         dispatch(
           signInFailure({
@@ -109,6 +114,9 @@ const Signin = () => {
             {loading ? "Loading..." : "Sign in"}
           </button>
         </form>
+        {error && (
+          <p className="error">{error.message || "Something went wrong!"}</p>
+        )}
       </div>
     </div>
   );

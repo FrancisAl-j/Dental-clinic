@@ -4,7 +4,6 @@ import Clinic from "../models/clinicModel.js";
 const createClinic = async (req, res, next) => {
   const { clinicName, location, email, phone } = req.body;
   try {
-    console.log("Request User:", req.user); // Check if this is set
     const admin = await Admin.findById(req.user.id);
     if (!admin) {
       return res.status(400).json("Unathenticated user!");
@@ -24,6 +23,22 @@ const createClinic = async (req, res, next) => {
   }
 };
 
+const getClinic = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const admin = await Admin.findById(req.user.id);
+    if (!admin) {
+      return res.status(400).json({ message: "Unauthenticated User!" });
+    }
+    const clinic = await Clinic.findById(id);
+    res.status(200).json(clinic);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   createClinic,
+  getClinic,
 };

@@ -22,6 +22,9 @@ export const clinicSlice = createSlice({
         status: action.payload.response ? action.payload.response.status : null,
       };
     },
+    clearClinic: (state) => {
+      state.currentClinic = null;
+    },
   },
 });
 
