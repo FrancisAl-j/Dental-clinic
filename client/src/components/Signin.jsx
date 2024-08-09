@@ -6,7 +6,7 @@ import {
   signInFailure,
 } from "../redux/user/userSlice.js";
 
-//import { setClinic } from "../redux/clinic/clinicReducer.js";
+import { setClinic } from "../redux/clinic/clinicReducer.js";
 import { useDispatch, useSelector } from "react-redux";
 
 const Signin = () => {
@@ -41,11 +41,18 @@ const Signin = () => {
       );
       const data = res.data;
 
-      console.log(data);
+      const clinicId = res.data.clinicId;
 
       if (res.status === 200) {
         dispatch(signInSuccess(data));
-        //const clinic = await axios.get(`http://localhost:5000/clinic/`)
+        const clinic = await axios.get(
+          `http://localhost:5000/clinic/${clinicId}`,
+          {
+            withCredentials: true,
+          }
+        );
+
+        dispatch(setClinic(clinic.data));
       } else {
         dispatch(
           signInFailure({
