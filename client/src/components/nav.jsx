@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 //link for mongodb
 //
 const Nav = () => {
+  const { currentUser } = useSelector((state) => state.user);
+
   return (
     <header>
       <nav>
@@ -15,7 +18,7 @@ const Nav = () => {
             <li>About</li>
           </Link>
           <Link to="/signin">
-            <li>Sign in</li>
+            {currentUser ? <p>{currentUser.username}</p> : <li>Sign in</li>}
           </Link>
           <Link to="/adminSignup">
             <li>Admin Registration</li>
