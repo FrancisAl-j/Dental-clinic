@@ -23,6 +23,12 @@ const Nav = () => {
           <Link to="/adminSignup">
             <li>Admin Registration</li>
           </Link>
+
+          {currentUser && (
+            <Link to="/create-clinic">
+              <li>Clinic</li>
+            </Link>
+          )}
         </ul>
       </nav>
     </header>

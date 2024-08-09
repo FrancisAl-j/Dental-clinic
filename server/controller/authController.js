@@ -40,10 +40,8 @@ const adminSignin = async (req, res, next) => {
     }
 
     const payload = {
-      user: {
-        id: user._id,
-        clinicId: user.clinicId,
-      },
+      id: user._id, // Ensure this field is included
+      clinicId: user.clinicId,
     };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET_KEY);
