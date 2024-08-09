@@ -9,7 +9,7 @@ const createClinic = async (req, res, next) => {
       return res.status(400).json("Unathenticated user!");
     }
 
-    const clinic = new Clinic({ clinicName, location, email, phoe });
+    const clinic = new Clinic({ clinicName, location, email, phone });
     await clinic.save();
 
     admin.clinicId = clinic._id;
