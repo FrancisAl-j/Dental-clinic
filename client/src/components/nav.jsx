@@ -24,11 +24,17 @@ const Nav = () => {
             <li>Admin Registration</li>
           </Link>
 
-          {currentUser && (
-            <Link to="/create-clinic">
-              <li>Clinic</li>
-            </Link>
-          )}
+          {currentUser &&
+            ((
+              <Link to="/create-clinic">
+                <li>Create Clinic</li>
+              </Link>
+            ),
+            (
+              <Link to="Clinic">
+                <li>Clinic</li>
+              </Link>
+            ))}
         </ul>
       </nav>
     </header>

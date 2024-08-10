@@ -8,9 +8,11 @@ import {
 
 import { setClinic } from "../redux/clinic/clinicReducer.js";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Signin = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -53,6 +55,12 @@ const Signin = () => {
         );
 
         dispatch(setClinic(clinic.data));
+
+        if (!clinicId) {
+          navigate("/create-clinic");
+        } else {
+          navigate("/clinic");
+        }
       } else {
         dispatch(
           signInFailure({
