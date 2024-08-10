@@ -1,9 +1,24 @@
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
-//link for mongodb
-//
+import { useSelector, useDispatch } from "react-redux";
+import axios from "axios";
+import { clearClinic } from "../redux/clinic/clinicReducer.js";
+import { signout } from "../redux/user/userSlice.js";
+
 const Nav = () => {
+  const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
+
+  const handleSignout = async () => {
+    try {
+      const res = await axios.get("http://localhost:5000/auth/admin/signout", {
+        withCredentials: true,
+      });
+      dispatch(signout());
+      dispatch(clearClinic());
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <header>
@@ -34,7 +49,8 @@ const Nav = () => {
               <Link to="Clinic">
                 <li>Clinic</li>
               </Link>
-            ))}
+            ),
+            (<span onClick={handleSignout}>Sign out</span>))}
         </ul>
       </nav>
     </header>

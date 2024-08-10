@@ -24,10 +24,11 @@ export const clinicSlice = createSlice({
     },
     clearClinic: (state) => {
       state.currentClinic = null;
+      state.error = null;
     },
   },
 });
 
 export default clinicSlice.reducer;
 
-export const { setClinic, failClinic } = clinicSlice.actions;
+export const { setClinic, failClinic, clearClinic } = clinicSlice.actions;
