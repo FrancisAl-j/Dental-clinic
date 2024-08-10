@@ -62,7 +62,12 @@ const adminSignin = async (req, res, next) => {
   }
 };
 
+const signout = (req, res) => {
+  res.clearCookie("token").status(200).json("Sign out success!");
+};
+
 export default {
   adminRegister,
   adminSignin,
+  signout,
 };
