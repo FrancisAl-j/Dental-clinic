@@ -25,3 +25,6 @@ const cashierSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+const Cashier = mongoose.model("Cashier", cashierSchema);
+export default Cashier;

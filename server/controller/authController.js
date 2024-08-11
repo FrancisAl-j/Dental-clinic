@@ -1,6 +1,8 @@
 import bcryptjs from "bcryptjs";
 import Admin from "../models/adminModel.js";
+import Cashier from "../models/assistantModel.js";
 import jwt from "jsonwebtoken";
+import Assistant from "../models/assistantModel.js";
 
 // Admin registration
 const adminRegister = async (req, res, next) => {
@@ -62,6 +64,28 @@ const adminSignin = async (req, res, next) => {
   }
 };
 
+// Assistant sign up
+const assistantSignup = async (req, res, next) => {
+  const { username, email, password, Cpassword } = req.body;
+  if (password !== Cpassword) {
+    res.status(400).json({ message: "Password do not match!" });
+  }
+
+  const hashedPassword = bcryptjs.hashSync(password, 10);
+  const assistant = new Assistant({
+    username,
+    email,
+    password: hashedPassword,
+  });
+  try {
+    await assistant.save();
+    res.status(200).json({ message: "Assitant succesfully created." });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Sign out for all user
 const signout = (req, res) => {
   res.clearCookie("token").status(200).json("Sign out success!");
 };
