@@ -93,5 +93,6 @@ const signout = (req, res) => {
 export default {
   adminRegister,
   adminSignin,
+  assistantSignup,
   signout,
 };
