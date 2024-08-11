@@ -78,6 +78,13 @@ const assistantSignup = async (req, res, next) => {
     password: hashedPassword,
   });
   try {
+    const admin = await Admin.findById(req.user.id);
+    if (!admin) {
+      return res.status(400).json({ message: "Unauthenticated User!" });
+    }
+
+    assistant.clinicId = admin.clinicId;
+
     await assistant.save();
     res.status(200).json({ message: "Assitant succesfully created." });
   } catch (error) {
