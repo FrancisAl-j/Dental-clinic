@@ -1,4 +1,5 @@
 import Admin from "../models/adminModel.js";
+import Assistant from "../models/assistantModel.js";
 import Clinic from "../models/clinicModel.js";
 
 const createClinic = async (req, res, next) => {
@@ -27,9 +28,12 @@ const getClinic = async (req, res, next) => {
   const { id } = req.params;
 
   try {
-    const admin = await Admin.findById(req.user.id);
-    if (!admin) {
-      return res.status(400).json({ message: "Unauthenticated User!" });
+    let user = await Admin.findById(req.user.id);
+    if (!user) {
+      user = await Assistant.findById(req.user.id);
+      if (!user) {
+        res.status(400).json({ message: "Unexpected error" });
+      }
     }
     const clinic = await Clinic.findById(id);
     res.status(200).json(clinic);

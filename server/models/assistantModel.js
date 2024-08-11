@@ -17,9 +17,12 @@ const assistantSchema = new mongoose.Schema(
       required: true,
     },
     clinicId: {
-      type: mongoose.Schema.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Clinic",
-      required: true,
+    },
+    role: {
+      type: String,
+      default: "Assistant",
     },
   },
 

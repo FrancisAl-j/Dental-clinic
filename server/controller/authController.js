@@ -31,13 +31,23 @@ const adminSignin = async (req, res, next) => {
   const { email, password, clinicId } = req.body;
 
   try {
-    const user = await Admin.findOne({ email });
+    let user = await Admin.findOne({ email });
+    let userType = "Admin";
     if (!user) {
-      return res.status(400).json({ message: "Invalid Credentials" });
+      user = await Assistant.findOne({ email });
+      userType = "Assistant";
+      if (!user) {
+        return res.status(400).json({ message: "Invalid Credentials" });
+      }
     }
 
-    if (user.clinicId && clinicId && user.clinicId.toString() !== clinicId) {
-      return res.status(400).json({ message: "Invalid Credentials" });
+    if (
+      user.role === "Assistant" &&
+      user.clinicId &&
+      clinicId &&
+      user.clinicId.toString() !== clinicId
+    ) {
+      return res.status(400).json({ message: "Invalid Clinic for Assistant" });
     }
 
     const isMatch = bcryptjs.compareSync(password, user.password);
@@ -48,6 +58,7 @@ const adminSignin = async (req, res, next) => {
     const payload = {
       id: user._id, // Ensure this field is included
       clinicId: user.clinicId,
+      userType: user.role,
     };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET_KEY);

@@ -20,6 +20,10 @@ const adminSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Clinic",
     },
+    role: {
+      type: String,
+      default: "Admin",
+    },
   },
 
   {
