@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const assistantSchema = new mongoose.Schema(
+const cashierSchema = new mongoose.Schema(
   {
     username: {
       type: String,
@@ -13,21 +13,15 @@ const assistantSchema = new mongoose.Schema(
       unique: true,
     },
     password: {
-      type: String,
+      type: true,
       required: true,
     },
     clinicId: {
-      type: mongoose.Schema.ObjectId,
+      tpye: mongoose.Schema.Types.ObjectId,
       ref: "Clinic",
-      required: true,
     },
   },
-
   {
     timestamps: true,
   }
 );
-
-const Assistant = mongoose.model("Assistant", assistantSchema);
-
-export default Assistant;
