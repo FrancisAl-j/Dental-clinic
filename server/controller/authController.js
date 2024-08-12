@@ -1,6 +1,6 @@
 import bcryptjs from "bcryptjs";
 import Admin from "../models/adminModel.js";
-import Cashier from "../models/assistantModel.js";
+import Cashier from "../models/cashierModel.js";
 import jwt from "jsonwebtoken";
 import Assistant from "../models/assistantModel.js";
 
@@ -26,7 +26,7 @@ const adminRegister = async (req, res, next) => {
   }
 };
 
-// Admin sign in
+// User sign in
 const adminSignin = async (req, res, next) => {
   const { email, password, clinicId } = req.body;
 
@@ -37,11 +37,16 @@ const adminSignin = async (req, res, next) => {
       user = await Assistant.findOne({ email });
       userType = "Assistant";
       if (!user) {
-        return res.status(400).json({ message: "Invalid Credentials" });
+        user = await Cashier.findOne({ email });
+        userType = "Cashier";
+        if (!user) {
+          res.status(400).json({ message: "Invalid Credentials!" });
+        }
       }
     }
 
     if (
+      user.role === "Cashier" &&
       user.role === "Assistant" &&
       user.clinicId &&
       clinicId &&

@@ -1,5 +1,6 @@
 import Admin from "../models/adminModel.js";
 import Assistant from "../models/assistantModel.js";
+import Cashier from "../models/cashierModel.js";
 import Clinic from "../models/clinicModel.js";
 
 const createClinic = async (req, res, next) => {
@@ -32,7 +33,10 @@ const getClinic = async (req, res, next) => {
     if (!user) {
       user = await Assistant.findById(req.user.id);
       if (!user) {
-        res.status(400).json({ message: "Unexpected error" });
+        user = await Cashier.findById(req.user.id);
+        if (!user) {
+          res.status(400).json({ message: "Unexpected error" });
+        }
       }
     }
     const clinic = await Clinic.findById(id);

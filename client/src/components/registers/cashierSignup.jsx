@@ -1,4 +1,6 @@
+import axios from "axios";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const CashierSignup = () => {
   const [formData, setFormData] = useState({
@@ -7,6 +9,7 @@ const CashierSignup = () => {
     password: "",
     Cpassword: "",
   });
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -17,12 +20,41 @@ const CashierSignup = () => {
     });
   };
 
-  reeturn(
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { username, email, password, Cpassword } = formData;
+    if (password !== password) {
+      setError("Password do not match!");
+      return;
+    }
+
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/auth/cashier/signup",
+        {
+          username,
+          email,
+          password,
+          Cpassword,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      if (res.status === 400) {
+        setError("Not authenticated!");
+      }
+    } catch (error) {
+      setError("Something went wrong!");
+    }
+  };
+
+  return (
     <div className="form-container">
       <h1>Create a Cashier</h1>
 
       <div className="form-wrapper">
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="form-element">
             <span>Username</span>
             <input
@@ -66,6 +98,9 @@ const CashierSignup = () => {
           <button>Create</button>
         </form>
       </div>
+      <Link to="/create-assistant">
+        <span>Create Assistant</span>
+      </Link>
     </div>
   );
 };

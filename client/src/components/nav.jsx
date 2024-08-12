@@ -36,13 +36,17 @@ const Nav = () => {
           <Link to="/about">
             <li>About</li>
           </Link>
-          {currentUser &&
-            ((
-              <Link to="Clinic">
-                <li>Clinic</li>
-              </Link>
-            ),
-            (<span onClick={handleSignout}>Sign out</span>))}
+          {currentUser && (
+            <Link to="Clinic">
+              <li>Clinic</li>
+            </Link>
+          )}
+          {currentUser && (
+            <Link to="/create-assistant">
+              <li>Create Employees</li>
+            </Link>
+          )}
+          {currentUser && <span onClick={handleSignout}>Sign out</span>}
         </ul>
 
         <div className="sign-container">

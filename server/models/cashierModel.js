@@ -13,11 +13,11 @@ const cashierSchema = new mongoose.Schema(
       unique: true,
     },
     password: {
-      type: true,
+      type: String,
       required: true,
     },
     clinicId: {
-      tpye: mongoose.Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Clinic",
     },
     role: {
