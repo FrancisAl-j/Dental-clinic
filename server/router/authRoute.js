@@ -8,8 +8,11 @@ const router = express.Router();
 router.post("/admin/signup", controller.adminRegister);
 router.post("/admin/signin", controller.adminSignin);
 
-// For assistant sign up and sign in
+// For assistant sign up
 router.post("/assistant/signup", verifyUser, controller.assistantSignup);
+
+// For cashier sign up
+router.post("/cashier/signup", verifyUser, controller.cashierSignup);
 
 // Sign out
 router.get("/admin/signout", verifyUser, controller.signout);

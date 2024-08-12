@@ -20,6 +20,10 @@ const cashierSchema = new mongoose.Schema(
       tpye: mongoose.Schema.Types.ObjectId,
       ref: "Clinic",
     },
+    role: {
+      type: String,
+      default: "Cashier",
+    },
   },
   {
     timestamps: true,

@@ -103,6 +103,33 @@ const assistantSignup = async (req, res, next) => {
   }
 };
 
+// Sign up for cashier
+const cashierSignup = async (req, res, next) => {
+  const { username, email, password, Cpassword } = req.body;
+  if (password !== Cpassword) {
+    return res.status(400).json({ message: "Password do not match!" });
+  }
+  const hashedPassword = bcryptjs.hashSync(password, 10);
+  const cashier = new Cashier({
+    username,
+    email,
+    password: hashedPassword,
+  });
+  try {
+    const admin = await Admin.findById(req.user.id);
+    if (!admin) {
+      return res.status(400).json({ message: "Unauthenticated User!" });
+    }
+
+    cashier.clinicId = admin.clinicId;
+
+    await cashier.save();
+    res.status(200).json({ message: "Cashier created successfully" });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // Sign out for all user
 const signout = (req, res) => {
   res.clearCookie("token").status(200).json("Sign out success!");
@@ -112,5 +139,6 @@ export default {
   adminRegister,
   adminSignin,
   assistantSignup,
+  cashierSignup,
   signout,
 };
