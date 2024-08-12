@@ -3,6 +3,7 @@ import Admin from "../models/adminModel.js";
 import Cashier from "../models/cashierModel.js";
 import jwt from "jsonwebtoken";
 import Assistant from "../models/assistantModel.js";
+import Patient from "../models/patientModel.js";
 
 // Admin registration
 const adminRegister = async (req, res, next) => {
@@ -135,6 +136,26 @@ const cashierSignup = async (req, res, next) => {
   }
 };
 
+// Sign up for patient
+const patientSignup = async (req, res, next) => {
+  const { username, email, password, Cpassword } = req.body;
+  if (password !== Cpassword) {
+    return res.status(400).json({ message: "Password do not match!" });
+  }
+  const hashedPassword = bcryptjs.hashSync(password, 10);
+  const patient = new Patient({
+    username,
+    email,
+    password: hashedPassword,
+  });
+  try {
+    await patient.save();
+    res.status(200).json({ message: "Account created successfully" });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // Sign out for all user
 const signout = (req, res) => {
   res.clearCookie("token").status(200).json("Sign out success!");
@@ -145,5 +166,6 @@ export default {
   adminSignin,
   assistantSignup,
   cashierSignup,
+  patientSignup,
   signout,
 };

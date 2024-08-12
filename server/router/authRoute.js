@@ -14,6 +14,9 @@ router.post("/assistant/signup", verifyUser, controller.assistantSignup);
 // For cashier sign up
 router.post("/cashier/signup", verifyUser, controller.cashierSignup);
 
+// Patient sign up
+router.post("/patient/signup", controller.patientSignup);
+
 // Sign out
 router.get("/admin/signout", verifyUser, controller.signout);
 
