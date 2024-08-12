@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const PatientSignup = () => {
   const [formData, setFormData] = useState({
@@ -8,6 +9,8 @@ const PatientSignup = () => {
     password: "",
     Cpassword: "",
   });
+  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,12 +21,39 @@ const PatientSignup = () => {
     });
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { username, email, password, Cpassword } = formData;
+    if (password !== Cpassword) {
+      setError("Password do not match!");
+    }
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/auth/patient/signup",
+        {
+          username,
+          email,
+          password,
+          Cpassword,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      if (res.status === 200) {
+        setMessage("Account created successfully");
+      }
+    } catch (error) {
+      setError("Something went wrong!");
+    }
+  };
+
   return (
     <div className="form-container">
       <h1>Create an account</h1>
 
       <div className="form-wrapper">
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="form-element">
             <span>Username</span>
             <input
