@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const AdminSignUp = () => {
   const [formData, setFormData] = useState({
@@ -89,6 +90,9 @@ const AdminSignUp = () => {
           <button type="submit">Sign up</button>
         </form>
         <p>{error && "Something went wrong"}</p>
+        <Link to="/patient-signup">
+          <span>Sign up as Patient</span>
+        </Link>
       </div>
     </div>
   );

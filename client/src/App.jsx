@@ -8,6 +8,7 @@ import CreateClinic from "./components/CreateClinic";
 import Clinic from "./components/Cinic";
 import AssistantSignup from "./components/AssistantSignup";
 import CashierSignup from "./components/registers/cashierSignup";
+import PatientSignup from "./components/registers/PatientSignup";
 import "./app.css";
 
 const App = () => {
@@ -24,6 +25,7 @@ const App = () => {
           <Route path="/clinic" element={<Clinic />} />
           <Route path="/create-assistant" element={<AssistantSignup />} />
           <Route path="/create-cashier" element={<CashierSignup />} />
+          <Route path="/patient-signup" element={<PatientSignup />} />
         </Routes>
       </BrowserRouter>
     </main>

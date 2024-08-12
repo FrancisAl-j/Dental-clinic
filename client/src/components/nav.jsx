@@ -58,7 +58,7 @@ const Nav = () => {
                 <img src={Login} alt="" />
               </Link>
 
-              <Link to="/adminSignup">
+              <Link to="/patient-signup">
                 <img src={Signup} alt="" />
               </Link>
             </div>

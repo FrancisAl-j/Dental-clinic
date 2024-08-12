@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const PatientSignup = () => {
   const [formData, setFormData] = useState({
@@ -64,7 +65,12 @@ const PatientSignup = () => {
           </div>
           <button>Create</button>
         </form>
+        <Link to="/adminSignup">
+          <span>Register as Admin</span>
+        </Link>
       </div>
     </div>
   );
 };
+
+export default PatientSignup;
