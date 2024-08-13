@@ -16,6 +16,10 @@ const patientSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    rols: {
+      type: String,
+      default: "Patient",
+    },
   },
   {
     timestamps: true,
