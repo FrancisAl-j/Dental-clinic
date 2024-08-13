@@ -54,7 +54,7 @@ const Nav = () => {
             <h1>{currentUser.username}</h1>
           ) : (
             <div className="icon-container">
-              <Link to="/signin">
+              <Link to="/patient-signin">
                 <img src={Login} alt="" />
               </Link>
 

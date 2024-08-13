@@ -8,7 +8,7 @@ import {
 
 import { setClinic } from "../redux/clinic/clinicReducer.js";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Signin = () => {
   const dispatch = useDispatch();
@@ -133,6 +133,9 @@ const Signin = () => {
           <p className="error">{error.message || "Something went wrong!"}</p>
         )}
       </div>
+      <Link to="/patient-signin">
+        <span>For patients</span>
+      </Link>
     </div>
   );
 };

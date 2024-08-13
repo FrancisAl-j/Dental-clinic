@@ -9,6 +9,7 @@ import Clinic from "./components/Cinic";
 import AssistantSignup from "./components/AssistantSignup";
 import CashierSignup from "./components/registers/cashierSignup";
 import PatientSignup from "./components/registers/PatientSignup";
+import PatientSignin from "./components/PatientSignin";
 import "./app.css";
 
 const App = () => {
@@ -26,6 +27,7 @@ const App = () => {
           <Route path="/create-assistant" element={<AssistantSignup />} />
           <Route path="/create-cashier" element={<CashierSignup />} />
           <Route path="/patient-signup" element={<PatientSignup />} />
+          <Route path="/patient-signin" element={<PatientSignin />} />
         </Routes>
       </BrowserRouter>
     </main>
