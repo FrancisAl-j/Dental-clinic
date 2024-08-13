@@ -10,4 +10,7 @@ router.post("/create", verifyUser, controller.createClinic);
 // Output the information inside clinic
 router.get("/:id", verifyUser, controller.getClinic);
 
+// Get all the clinics
+router.get("/clinics", controller.getClinics);
+
 export default router;

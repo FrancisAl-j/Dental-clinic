@@ -25,6 +25,7 @@ const createClinic = async (req, res, next) => {
   }
 };
 
+// Specific clinic
 const getClinic = async (req, res, next) => {
   const { id } = req.params;
 
@@ -46,7 +47,18 @@ const getClinic = async (req, res, next) => {
   }
 };
 
+// All clinics
+const getClinics = async (req, res, next) => {
+  try {
+    const clinics = await Clinic.find();
+    res.status(200).json(clinics);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   createClinic,
   getClinic,
+  getClinics,
 };
