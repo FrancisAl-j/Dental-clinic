@@ -172,14 +172,14 @@ const patientSignin = async (req, res, next) => {
     }
 
     const payload = {
-      user: {
+      patient: {
         id: patient._id,
       },
     };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET_KEY);
 
-    const { password: hashedPassword, ...rest } = user._doc;
+    const { password: hashedPassword, ...rest } = patient._doc;
     const expiryDate = new Date(Date.now() + 3600000); // Expiration of cookie is 1 hour
 
     res
