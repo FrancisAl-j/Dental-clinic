@@ -156,6 +156,41 @@ const patientSignup = async (req, res, next) => {
   }
 };
 
+// Sign in for patient
+const patientSignin = async (req, res, next) => {
+  const { email, password } = req.body;
+
+  try {
+    const patient = await Patient.findOne({ email });
+    if (!patient) {
+      res.status(400).json({ message: "Invalid Credentials!" });
+    }
+
+    const isMatch = bcryptjs.compare(password, patient.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid Credentials" });
+    }
+
+    const payload = {
+      user: {
+        id: patient._id,
+      },
+    };
+
+    const token = jwt.sign(payload, process.env.JWT_SECRET_KEY);
+
+    const { password: hashedPassword, ...rest } = user._doc;
+    const expiryDate = new Date(Date.now() + 3600000); // Expiration of cookie is 1 hour
+
+    res
+      .cookie("token", token, { httpOnly: true, expires: expiryDate })
+      .status(200)
+      .json(rest);
+  } catch (error) {
+    next(error);
+  }
+};
+
 // Sign out for all user
 const signout = (req, res) => {
   res.clearCookie("token").status(200).json("Sign out success!");
@@ -167,5 +202,6 @@ export default {
   assistantSignup,
   cashierSignup,
   patientSignup,
+  patientSignin,
   signout,
 };

@@ -17,6 +17,9 @@ router.post("/cashier/signup", verifyUser, controller.cashierSignup);
 // Patient sign up
 router.post("/patient/signup", controller.patientSignup);
 
+// Patient sign in
+router.post("/patient/signin", controller.patientSignin);
+
 // Sign out
 router.get("/admin/signout", verifyUser, controller.signout);
 
