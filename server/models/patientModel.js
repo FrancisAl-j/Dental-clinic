@@ -16,7 +16,7 @@ const patientSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    rols: {
+    role: {
       type: String,
       default: "Patient",
     },
