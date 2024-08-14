@@ -161,25 +161,26 @@ const patientSignin = async (req, res, next) => {
   const { email, password } = req.body;
 
   try {
-    const patient = await Patient.findOne({ email });
-    if (!patient) {
+    const user = await Patient.findOne({ email });
+    if (!user) {
       res.status(400).json({ message: "Invalid Credentials!" });
     }
 
-    const isMatch = bcryptjs.compare(password, patient.password);
+    const isMatch = bcryptjs.compareSync(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid Credentials" });
     }
 
     const payload = {
-      patient: {
-        id: patient._id,
+      user: {
+        id: user._id,
+        userType: user.role,
       },
     };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET_KEY);
 
-    const { password: hashedPassword, ...rest } = patient._doc;
+    const { password: hashedPassword, ...rest } = user._doc;
     const expiryDate = new Date(Date.now() + 3600000); // Expiration of cookie is 1 hour
 
     res

@@ -11,6 +11,6 @@ router.post("/create", verifyUser, controller.createClinic);
 router.get("/:id", verifyUser, controller.getClinic);
 
 // Get all the clinics
-router.get("/clinics", controller.getClinics);
+router.get("/", verifyUser, controller.getClinics);
 
 export default router;

@@ -4,6 +4,7 @@ dotenv.config();
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import crypto from "crypto";
 
 // Files
 import connectDB from "./config.js";
@@ -15,7 +16,6 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(
-  "*",
   cors({
     origin: "http://localhost:5173",
     credentials: true,
@@ -29,6 +29,9 @@ app.listen(PORT, () => {
   connectDB();
 });
 
+//const secretKey = crypto.randomBytes(64).toString("hex");
+//console.log("Generated Secret Key:", secretKey);
+
 // for Authentication
 app.use("/auth", authRoute);
 
@@ -36,6 +39,7 @@ app.use("/auth", authRoute);
 app.use("/clinic", clinicRoute);
 
 app.use((err, req, res, next) => {
+  console.error(err); // Log the full error details to the server console
   const statusCode = err.statusCode || 500;
   const message = err.message || "Internal Server Error";
 
