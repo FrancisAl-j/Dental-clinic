@@ -11,6 +11,7 @@ import { current } from "@reduxjs/toolkit";
 const Nav = () => {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
+  const { currentClinic } = useSelector((state) => state.clinic);
 
   const handleSignout = async () => {
     try {
@@ -41,7 +42,7 @@ const Nav = () => {
               <li>Clinic</li>
             </Link>
           )}
-          {currentUser && (
+          {currentClinic && (
             <Link to="/create-assistant">
               <li>Create Employees</li>
             </Link>
@@ -51,7 +52,7 @@ const Nav = () => {
 
         <div className="sign-container">
           {currentUser ? (
-            <h1>{currentUser.username}</h1>
+            <h1>{currentUser.name}</h1>
           ) : (
             <div className="icon-container">
               <Link to="/patient-signin">

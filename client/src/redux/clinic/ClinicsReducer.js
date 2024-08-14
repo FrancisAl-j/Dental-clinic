@@ -9,7 +9,15 @@ export const clinicsSlice = createSlice({
   initialState,
   reducers: {
     getClinics: (state, action) => {
-      state.clinics = action.payload;
+      state.clinics = action.payload.map((clinic) => {
+        return {
+          id: clinic._id,
+          clinicName: clinic.clinicName,
+          location: clinic.location,
+          email: clinic.email,
+          contact: clinic.phone,
+        };
+      });
     },
   },
 });
