@@ -1,10 +1,13 @@
 import { useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const AdminSignUp = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    username: "",
+    fName: "",
+    mInitial: "",
+    lName: "",
     email: "",
     password: "",
     Cpassword: "",
@@ -22,18 +25,21 @@ const AdminSignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { username, email, password, Cpassword } = formData;
+    const { fName, lName, mInitial, email, password, Cpassword } = formData;
+
+    const fullname = `${fName} ${mInitial}. ${lName}`;
     if (password !== Cpassword) {
       setError("Passwords do not match");
       return;
     }
     try {
       const res = await axios.post("http://localhost:5000/auth/admin/signup", {
-        username,
+        fullname,
         email,
         password,
         Cpassword,
       });
+      navigate("/signin");
       if (res.status === 400) {
         setError(true);
       }
@@ -49,11 +55,31 @@ const AdminSignUp = () => {
       <div className="form-wrapper">
         <form onSubmit={handleSubmit}>
           <div className="form-element">
-            <span>Username</span>
+            <span>First name</span>
             <input
               type="text"
-              name="username"
-              value={formData.username}
+              name="fName"
+              value={formData.fName}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="form-element">
+            <span>Last name</span>
+            <input
+              type="text"
+              name="lName"
+              value={formData.lName}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="form-element">
+            <span>Middle Initial</span>
+            <input
+              type="text"
+              name="mInitial"
+              value={formData.mInitial}
               onChange={handleChange}
             />
           </div>

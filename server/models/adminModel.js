@@ -2,10 +2,9 @@ import mongoose, { Schema } from "mongoose";
 
 const adminSchema = new mongoose.Schema(
   {
-    username: {
+    name: {
       type: String,
       required: true,
-      unique: true,
     },
     email: {
       type: String,

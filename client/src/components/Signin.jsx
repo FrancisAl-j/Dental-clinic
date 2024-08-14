@@ -44,9 +44,10 @@ const Signin = () => {
       const data = res.data;
 
       const clinicId = res.data.clinicId;
-
-      if (res.status === 200) {
-        dispatch(signInSuccess(data));
+      dispatch(signInSuccess(data));
+      if (!clinicId) {
+        navigate("/create-clinic");
+      } else {
         const clinic = await axios.get(
           `http://localhost:5000/clinic/${clinicId}`,
           {
@@ -56,17 +57,7 @@ const Signin = () => {
 
         dispatch(setClinic(clinic.data));
 
-        if (!clinicId) {
-          navigate("/create-clinic");
-        } else {
-          navigate("/clinic");
-        }
-      } else {
-        dispatch(
-          signInFailure({
-            message: "Invalid Credentials!",
-          })
-        );
+        navigate("/clinic");
       }
     } catch (error) {
       if (error.response) {

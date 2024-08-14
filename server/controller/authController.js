@@ -7,14 +7,14 @@ import Patient from "../models/patientModel.js";
 
 // Admin registration
 const adminRegister = async (req, res, next) => {
-  const { username, email, password, Cpassword } = req.body;
+  const { fullname, email, password, Cpassword } = req.body;
   if (Cpassword !== password) {
     return res.status(400).json("Password do not match");
   }
 
   const hashedPassword = bcryptjs.hashSync(password, 10);
   const newAdmin = new Admin({
-    username,
+    name: fullname,
     email,
     password: hashedPassword,
   });
@@ -63,7 +63,7 @@ const adminSignin = async (req, res, next) => {
 
     const payload = {
       id: user._id, // Ensure this field is included
-      clinicId: user.clinicId,
+      clinicId: user.clinicId || null,
       userType: user.role,
     };
 
