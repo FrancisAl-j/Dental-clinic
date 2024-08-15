@@ -15,24 +15,26 @@ import "./app.css";
 
 const App = () => {
   return (
-    <main>
+    <>
       <BrowserRouter>
         <Nav />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/signin" element={<Signin />} />
-          <Route path="/adminSignup" element={<AdminSignUp />} />
-          <Route path="/create-clinic" element={<CreateClinic />} />
-          <Route path="/clinic" element={<Clinic />} />
-          <Route path="/create-assistant" element={<AssistantSignup />} />
-          <Route path="/create-cashier" element={<CashierSignup />} />
-          <Route path="/patient-signup" element={<PatientSignup />} />
-          <Route path="/patient-signin" element={<PatientSignin />} />
-          <Route path="/clinics" element={<ViewClinics />} />
-        </Routes>
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/signin" element={<Signin />} />
+            <Route path="/adminSignup" element={<AdminSignUp />} />
+            <Route path="/create-clinic" element={<CreateClinic />} />
+            <Route path="/clinic" element={<Clinic />} />
+            <Route path="/create-assistant" element={<AssistantSignup />} />
+            <Route path="/create-cashier" element={<CashierSignup />} />
+            <Route path="/patient-signup" element={<PatientSignup />} />
+            <Route path="/patient-signin" element={<PatientSignin />} />
+            <Route path="/clinics" element={<ViewClinics />} />
+          </Routes>
+        </main>
       </BrowserRouter>
-    </main>
+    </>
   );
 };
 

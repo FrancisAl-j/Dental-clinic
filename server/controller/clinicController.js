@@ -20,8 +20,6 @@ const createClinic = async (req, res, next) => {
 
     res.status(200).json(clinic);
   } catch (error) {
-    console.log(error);
-
     next(error);
   }
 };
@@ -57,7 +55,6 @@ const getClinics = async (req, res, next) => {
     }
 
     const clinics = await Clinic.find();
-    console.log(clinics);
 
     return res.status(200).json(clinics);
   } catch (error) {

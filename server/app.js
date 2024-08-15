@@ -22,13 +22,6 @@ app.use(
   })
 );
 
-const PORT = 5000;
-
-app.listen(PORT, () => {
-  console.log(`Listening to port ${PORT}`);
-  connectDB();
-});
-
 //const secretKey = crypto.randomBytes(64).toString("hex");
 //console.log("Generated Secret Key:", secretKey);
 
@@ -39,7 +32,6 @@ app.use("/auth", authRoute);
 app.use("/clinic", clinicRoute);
 
 app.use((err, req, res, next) => {
-  console.error(err); // Log the full error details to the server console
   const statusCode = err.statusCode || 500;
   const message = err.message || "Internal Server Error";
 
@@ -48,4 +40,11 @@ app.use((err, req, res, next) => {
     message,
     statusCode,
   });
+});
+
+const PORT = 5000;
+
+app.listen(PORT, () => {
+  console.log(`Listening to port ${PORT}`);
+  connectDB();
 });

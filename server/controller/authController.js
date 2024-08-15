@@ -41,7 +41,7 @@ const adminSignin = async (req, res, next) => {
         user = await Cashier.findOne({ email });
         userType = "Cashier";
         if (!user) {
-          res.status(400).json({ message: "Invalid Credentials!" });
+          return res.status(400).json({ message: "Invalid Credentials!" });
         }
       }
     }

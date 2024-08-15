@@ -68,7 +68,7 @@ const Signin = () => {
               message: "User not found. Please check your email and password.",
             })
           );
-        } else if (status === 401) {
+        } else if (status === 400) {
           dispatch(
             signInFailure({
               message:

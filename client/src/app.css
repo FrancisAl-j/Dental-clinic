@@ -11,6 +11,10 @@
   box-sizing: border-box;
   text-decoration: none;
 }
+main {
+  width: min(100% - 30px, 1400px);
+  margin: auto;
+}
 body {
   background: var(--dirty-white);
   font-family: Arial, Helvetica, sans-serif;
@@ -54,4 +58,47 @@ nav ul li {
   aspect-ratio: 1/1;
   height: 50px;
   display: block;
+}
+
+/* Form CSS */
+.form-container {
+  background: var(--dark-blue);
+  width: min(100% - 30px, 800px);
+  margin: 20px auto;
+  border-radius: 20px;
+  padding: 20px 30px;
+}
+.form-container h1 {
+  text-align: center;
+  color: var(--dirty-white);
+}
+.form-container .form-wrapper {
+  width: 100%;
+  margin: 20px auto;
+}
+.form-wrapper form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.form-container form .form-element {
+  display: flex;
+  flex-direction: column;
+}
+form span {
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  color: var(--dirty-white);
+}
+form input {
+  padding: 8px 20px;
+  font-size: clamp(0.8rem, 1.6vw, 1.2rem);
+  border-radius: 40px;
+}
+
+form button {
+  padding: 8px 10px;
+  font-size: clamp(1rem, 1.6vw, 1.2rem);
+  border-radius: 40px;
+  font-weight: bold;
+  cursor: pointer;
 }
