@@ -3,6 +3,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { getClinics } from "../../redux/clinic/ClinicsReducer.js";
+import "./viewClinics.css";
 
 const ViewClinics = () => {
   const dispatch = useDispatch();

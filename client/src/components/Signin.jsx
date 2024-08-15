@@ -125,7 +125,7 @@ const Signin = () => {
         )}
       </div>
       <Link to="/patient-signin">
-        <span>For patients</span>
+        <p>For patients</p>
       </Link>
     </div>
   );

@@ -114,10 +114,10 @@ const PatientSignin = () => {
 
           <button>Sign in</button>
         </form>
-        <Link to="/signin">
-          <span>For admin</span>
-        </Link>
       </div>
+      <Link to="/signin">
+        <p>For admin</p>
+      </Link>
     </div>
   );
 };

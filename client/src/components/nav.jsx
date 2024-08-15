@@ -42,7 +42,7 @@ const Nav = () => {
               <li>Clinics</li>
             </Link>
           )}
-          {currentUser && (
+          {currentClinic && (
             <Link to="Clinic">
               <li>Clinic</li>
             </Link>
