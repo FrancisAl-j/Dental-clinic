@@ -11,6 +11,7 @@ import CashierSignup from "./components/registers/cashierSignup";
 import PatientSignup from "./components/registers/PatientSignup";
 import PatientSignin from "./components/PatientSignin";
 import ViewClinics from "./components/patientComponents/ViewClinics";
+import ViewClinic from "./components/patientComponents/ViewClinic";
 import "./app.css";
 
 const App = () => {
@@ -31,6 +32,7 @@ const App = () => {
             <Route path="/patient-signup" element={<PatientSignup />} />
             <Route path="/patient-signin" element={<PatientSignin />} />
             <Route path="/clinics" element={<ViewClinics />} />
+            <Route path="/clinic/:id/:name" element={<ViewClinic />} />
           </Routes>
         </main>
       </BrowserRouter>

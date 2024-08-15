@@ -62,8 +62,24 @@ const getClinics = async (req, res, next) => {
   }
 };
 
+// Get Clinic by ID patient side
+const viewClinic = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const user = await Patient.findById(req.user.user.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const clinic = await Clinic.findById(id);
+    res.status(200).json(clinic);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   createClinic,
   getClinic,
   getClinics,
+  viewClinic,
 };
