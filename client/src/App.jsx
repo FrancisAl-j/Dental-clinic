@@ -11,6 +11,7 @@ import CashierSignup from "./components/registers/cashierSignup";
 import PatientSignup from "./components/registers/PatientSignup";
 import PatientSignin from "./components/PatientSignin";
 import ViewClinics from "./components/patientComponents/ViewClinics";
+import PrivateRoute from "./components/PrivateRoute";
 import ViewClinic from "./components/patientComponents/ViewClinic";
 import "./app.css";
 
@@ -25,14 +26,17 @@ const App = () => {
             <Route path="/about" element={<About />} />
             <Route path="/signin" element={<Signin />} />
             <Route path="/adminSignup" element={<AdminSignUp />} />
-            <Route path="/create-clinic" element={<CreateClinic />} />
-            <Route path="/clinic" element={<Clinic />} />
-            <Route path="/create-assistant" element={<AssistantSignup />} />
-            <Route path="/create-cashier" element={<CashierSignup />} />
-            <Route path="/patient-signup" element={<PatientSignup />} />
             <Route path="/patient-signin" element={<PatientSignin />} />
-            <Route path="/clinics" element={<ViewClinics />} />
-            <Route path="/clinic/:id/:name" element={<ViewClinic />} />
+            <Route path="/patient-signup" element={<PatientSignup />} />
+
+            <Route element={<PrivateRoute />}>
+              <Route path="/create-clinic" element={<CreateClinic />} />
+              <Route path="/clinic" element={<Clinic />} />
+              <Route path="/create-assistant" element={<AssistantSignup />} />
+              <Route path="/create-cashier" element={<CashierSignup />} />
+              <Route path="/clinics" element={<ViewClinics />} />
+              <Route path="/clinic/:id/:name" element={<ViewClinic />} />
+            </Route>
           </Routes>
         </main>
       </BrowserRouter>

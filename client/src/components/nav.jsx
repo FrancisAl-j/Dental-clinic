@@ -63,7 +63,11 @@ const Nav = () => {
 
         <div className="sign-container">
           {currentUser ? (
-            <h1>{currentUser.username}</h1>
+            <h1>
+              {currentUser.role === "Admin"
+                ? currentUser.name
+                : currentUser.username}
+            </h1>
           ) : (
             <div className="icon-container">
               <Link to="/patient-signin">
