@@ -17,7 +17,7 @@ const Signin = () => {
     email: "",
     password: "",
   });
-  const { loading, error } = useSelector((state) => state.user);
+  const { currentUser, loading, error } = useSelector((state) => state.user);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -45,15 +45,32 @@ const Signin = () => {
 
       const clinicId = res.data.clinicId;
       dispatch(signInSuccess(data));
-      if (!clinicId) {
-        navigate("/create-clinic");
-      } else {
+      console.log(data);
+
+      if (res.data.role === "Admin") {
+        if (!clinicId) {
+          navigate("/create-clinic");
+        } else {
+          const clinic = await axios.get(
+            `http://localhost:5000/clinic/${clinicId}`,
+            {
+              withCredentials: true,
+            }
+          );
+
+          dispatch(setClinic(clinic.data));
+
+          navigate("/clinic");
+        }
+      } else if (res.data.role === "Assistant" || res.data.role === "Cashier") {
         const clinic = await axios.get(
           `http://localhost:5000/clinic/${clinicId}`,
           {
             withCredentials: true,
           }
         );
+
+        console.log(clinic.data);
 
         dispatch(setClinic(clinic.data));
 

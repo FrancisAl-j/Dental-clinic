@@ -47,13 +47,14 @@ const adminSignin = async (req, res, next) => {
     }
 
     if (
-      user.role === "Cashier" &&
-      user.role === "Assistant" &&
+      (user.role === "Assistant" || user.role === "Cashier") &&
       user.clinicId &&
       clinicId &&
       user.clinicId.toString() !== clinicId
     ) {
-      return res.status(400).json({ message: "Invalid Clinic for Assistant" });
+      return res
+        .status(400)
+        .json({ message: "Invalid Clinic for " + user.role });
     }
 
     const isMatch = bcryptjs.compareSync(password, user.password);
@@ -66,6 +67,8 @@ const adminSignin = async (req, res, next) => {
       clinicId: user.clinicId || null,
       userType: user.role,
     };
+
+    console.log(user.clinicId);
 
     const token = jwt.sign(payload, process.env.JWT_SECRET_KEY);
 
