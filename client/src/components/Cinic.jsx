@@ -1,10 +1,14 @@
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const Clinic = () => {
   const { currentClinic } = useSelector((state) => state.clinic);
 
   return (
     <div>
+      <Link to="/clinic-delete">
+        <button>Update your clinic</button>
+      </Link>
       <h1>Clinic</h1>
       {currentClinic ? (
         <h1>{currentClinic.clinicName}</h1>

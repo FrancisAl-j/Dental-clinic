@@ -13,6 +13,7 @@ import PatientSignin from "./components/PatientSignin";
 import ViewClinics from "./components/patientComponents/ViewClinics";
 import PrivateRoute from "./components/PrivateRoute";
 import ViewClinic from "./components/patientComponents/ViewClinic";
+import UpdateClinic from "./components/update/UpdateClinic";
 import "./app.css";
 
 const App = () => {
@@ -36,6 +37,7 @@ const App = () => {
               <Route path="/create-cashier" element={<CashierSignup />} />
               <Route path="/clinics" element={<ViewClinics />} />
               <Route path="/clinic/:id/:name" element={<ViewClinic />} />
+              <Route path="/clinic-delete" element={<UpdateClinic />} />
             </Route>
           </Routes>
         </main>
