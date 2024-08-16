@@ -68,8 +68,6 @@ const adminSignin = async (req, res, next) => {
       userType: user.role,
     };
 
-    console.log(user.clinicId);
-
     const token = jwt.sign(payload, process.env.JWT_SECRET_KEY);
 
     const { password: hashedPassword, ...rest } = user._doc;

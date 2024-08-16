@@ -1,3 +1,4 @@
+import { trusted } from "mongoose";
 import Admin from "../models/adminModel.js";
 import Assistant from "../models/assistantModel.js";
 import Cashier from "../models/cashierModel.js";
@@ -77,9 +78,39 @@ const viewClinic = async (req, res, next) => {
   }
 };
 
+// Updating clinic
+const updateClinic = async (req, res, next) => {
+  const { id } = req.params;
+  const { clinicName, location, email, phone } = req.body;
+  try {
+    const updatedData = {
+      clinicName,
+      location,
+      email,
+      phone,
+    };
+    const user = await Admin.findById(req.user.id);
+    if (!user) {
+      return res.status(400).json({ message: "You are not authenticated!" });
+    }
+    const updatedClinic = await Clinic.findByIdAndUpdate(id, updatedData, {
+      new: true,
+    });
+
+    if (!updatedClinic) {
+      return res.status(404).json({ message: "Clinic not found!" });
+    }
+
+    res.status(200).json(updatedClinic);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   createClinic,
   getClinic,
   getClinics,
   viewClinic,
+  updateClinic,
 };

@@ -9,7 +9,8 @@ const CashierSignup = () => {
     password: "",
     Cpassword: "",
   });
-  const [error, setError] = useState(null);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;

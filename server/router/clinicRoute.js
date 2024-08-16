@@ -16,4 +16,7 @@ router.get("/", verifyUser, controller.getClinics);
 // Patient side getting one clinic
 router.get("/view/:id", verifyUser, controller.viewClinic);
 
+// Updating clinic
+router.put("/put/:id", verifyUser, controller.updateClinic);
+
 export default router;

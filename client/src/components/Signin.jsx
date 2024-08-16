@@ -45,7 +45,6 @@ const Signin = () => {
 
       const clinicId = res.data.clinicId;
       dispatch(signInSuccess(data));
-      console.log(data);
 
       if (res.data.role === "Admin") {
         if (!clinicId) {
@@ -69,8 +68,6 @@ const Signin = () => {
             withCredentials: true,
           }
         );
-
-        console.log(clinic.data);
 
         dispatch(setClinic(clinic.data));
 
