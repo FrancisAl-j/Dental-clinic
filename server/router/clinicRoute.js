@@ -17,6 +17,6 @@ router.get("/", verifyUser, controller.getClinics);
 router.get("/view/:id", verifyUser, controller.viewClinic);
 
 // Updating clinic
-router.put("/put/:id", verifyUser, controller.updateClinic);
+router.put("/update/:id", verifyUser, controller.updateClinic);
 
 export default router;

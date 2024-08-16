@@ -26,9 +26,28 @@ export const clinicSlice = createSlice({
       state.currentClinic = {};
       state.error = null;
     },
+    updateClinic: (state, action) => {
+      console.log("Clinic updated:", action.payload);
+      state.currentClinic = action.payload;
+      state.error = null;
+    },
+    updateFailClinic: (state, action) => {
+      state.currentClinic = {};
+      state.error = {
+        message: action.payload.message,
+        code: action.payload.code,
+        status: action.payload.response ? action.payload.response.status : null,
+      };
+    },
   },
 });
 
 export default clinicSlice.reducer;
 
-export const { setClinic, failClinic, clearClinic } = clinicSlice.actions;
+export const {
+  setClinic,
+  failClinic,
+  clearClinic,
+  updateClinic,
+  updateFailClinic,
+} = clinicSlice.actions;
