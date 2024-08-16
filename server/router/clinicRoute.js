@@ -19,4 +19,7 @@ router.get("/view/:id", verifyUser, controller.viewClinic);
 // Updating clinic
 router.put("/update/:id", verifyUser, controller.updateClinic);
 
+// Deleting clinic along with employees
+router.delete("/delete/:id", verifyUser);
+
 export default router;
