@@ -95,6 +95,8 @@ const PatientSignup = () => {
           </div>
           <button>Create</button>
         </form>
+        {message && <p className="success">{message}</p>}
+        {error && <p className="error">{error}</p>}
         <Link to="/adminSignup">
           <span>Register as Admin</span>
         </Link>

@@ -64,7 +64,7 @@ const PatientSignin = () => {
               message: "User not found. Please check your email and password.",
             })
           );
-        } else if (status === 401) {
+        } else if (status === 400) {
           dispatch(
             signInFailure({
               message:
@@ -114,6 +114,9 @@ const PatientSignin = () => {
 
           <button>Sign in</button>
         </form>
+        {error && (
+          <p className="error">{error.message || "Something went wrong!"}</p>
+        )}
       </div>
       <Link to="/signin">
         <p>For admin</p>

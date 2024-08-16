@@ -97,6 +97,8 @@ const CashierSignup = () => {
 
           <button>Create</button>
         </form>
+        {message && <p className="success">{message}</p>}
+        {error && <p className="error">{error}</p>}
       </div>
       <Link to="/create-assistant">
         <span>Create Assistant</span>

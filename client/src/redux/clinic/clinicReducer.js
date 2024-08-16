@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  currentClinic: null,
+  currentClinic: {},
   error: null,
 };
 
@@ -15,7 +15,7 @@ export const clinicSlice = createSlice({
       state.error = null;
     },
     failClinic: (state, action) => {
-      state.currentClinic = null;
+      state.currentClinic = {};
       state.error = {
         message: action.payload.message,
         code: action.payload.code,
@@ -23,7 +23,7 @@ export const clinicSlice = createSlice({
       };
     },
     clearClinic: (state) => {
-      state.currentClinic = null;
+      state.currentClinic = {};
       state.error = null;
     },
   },
