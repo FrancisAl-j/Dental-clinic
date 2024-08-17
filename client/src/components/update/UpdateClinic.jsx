@@ -94,7 +94,7 @@ const UpdateClinic = () => {
           }
         );
         if (res.status === 200) {
-          dispatch(deleteSuccessClinic());
+          //dispatch(deleteSuccessClinic());
         }
       }
     } catch (error) {

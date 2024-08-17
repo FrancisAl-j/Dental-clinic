@@ -109,18 +109,22 @@ const updateClinic = async (req, res, next) => {
 
 // Deleting clinic along with employees
 const deleteClinic = async (req, res, next) => {
-  const { clinicId } = req.params;
+  const { id } = req.params;
   try {
     const user = await Admin.findById(req.user.id);
     if (!user) {
       return res.status(401).json({ message: "You are not authenticated!" });
     }
-    const clinic = await Clinic.findByIdAndDelete(clinicId);
+
+    const clinic = await Clinic.findByIdAndDelete(id);
 
     await Admin.findByIdAndUpdate(user._id, { clinicId: null });
 
-    await Assistant.deleteMany({ clinicId });
-    await Cashier.deleteMany({ clinicId });
+    await Assistant.deleteMany({
+      clinicId: id,
+    });
+    await Cashier.deleteMany({ clinicId: id });
+
     res
       .status(200)
       .json({ message: "Clinic and Employees deleted successfully!" });
