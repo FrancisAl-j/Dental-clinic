@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   updateClinic,
   updateFailClinic,
+  deleteSuccessClinic,
 } from "../../redux/clinic/clinicReducer.js";
 import axios from "axios";
 
@@ -16,6 +17,7 @@ const UpdateClinic = () => {
     phone: currentClinic.phone,
   });
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -77,6 +79,29 @@ const UpdateClinic = () => {
     }
   };
 
+  // Handling delete
+  const handleDelete = async () => {
+    try {
+      if (
+        window.confirm(
+          `Are you sure you want to ${currentClinic.clinicName} along with the employees?`
+        )
+      ) {
+        const res = await axios.delete(
+          `http://localhost:5000/clinic/delete/${currentClinic._id}`,
+          {
+            withCredentials: true,
+          }
+        );
+        if (res.status === 200) {
+          dispatch(deleteSuccessClinic());
+        }
+      }
+    } catch (error) {
+      setError("Something went wrong!");
+    }
+  };
+
   return (
     <div className="form-container">
       <h1>Update clinic</h1>
@@ -125,6 +150,7 @@ const UpdateClinic = () => {
 
           <button>Update</button>
         </form>
+        <span onClick={handleDelete}>Delete Clinic</span>
       </div>
       <p className="success">{success && "Clinic updated successfully"}</p>
     </div>

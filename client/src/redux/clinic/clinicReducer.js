@@ -39,6 +39,10 @@ export const clinicSlice = createSlice({
         status: action.payload.response ? action.payload.response.status : null,
       };
     },
+    deleteSuccessClinic: (state) => {
+      state.currentClinic = {};
+      state.error = null;
+    },
   },
 });
 
@@ -50,4 +54,5 @@ export const {
   clearClinic,
   updateClinic,
   updateFailClinic,
+  deleteSuccessClinic,
 } = clinicSlice.actions;

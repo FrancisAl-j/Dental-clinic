@@ -117,10 +117,10 @@ const deleteClinic = async (req, res, next) => {
     }
     const clinic = await Clinic.findByIdAndDelete(clinicId);
 
-    await Admin.findByIdAndUpdate({ clinicId }, { clinicId: null });
+    await Admin.findByIdAndUpdate(user._id, { clinicId: null });
 
-    await Assistant.deleteMany(clinicId);
-    await Cashier.deleteMany(clinicId);
+    await Assistant.deleteMany({ clinicId });
+    await Cashier.deleteMany({ clinicId });
     res
       .status(200)
       .json({ message: "Clinic and Employees deleted successfully!" });
