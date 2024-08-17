@@ -42,12 +42,15 @@ const Nav = () => {
               <li>Clinics</li>
             </Link>
           )}
-          {currentUser && currentUser.role === "Patient" ? (
-            <span></span>
-          ) : (
+          {currentUser &&
+          currentUser.role === "Admin" &&
+          currentUser.role === "Assistant" &&
+          currentUser.role === "Cashier" ? (
             <Link to="/clinic">
               <li>Clinic</li>
             </Link>
+          ) : (
+            <span></span>
           )}
           {currentUser &&
             currentUser.role === "Admin" &&

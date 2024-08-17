@@ -20,6 +20,6 @@ router.get("/view/:id", verifyUser, controller.viewClinic);
 router.put("/update/:id", verifyUser, controller.updateClinic);
 
 // Deleting clinic along with employees
-router.delete("/delete/:id", verifyUser);
+router.delete("/delete/:id", verifyUser, controller.deleteClinic);
 
 export default router;

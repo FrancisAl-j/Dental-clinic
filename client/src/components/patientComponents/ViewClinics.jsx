@@ -26,10 +26,6 @@ const ViewClinics = () => {
     fetchClinics();
   }, [dispatch]);
 
-  const handleClinic = (e) => {
-    e.preventDefault();
-  };
-
   return (
     <div>
       <h1>Available Clinics</h1>
