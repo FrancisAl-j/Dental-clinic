@@ -4,6 +4,9 @@ import {
   updateUserStart,
   updateUserSuccess,
   updateUserFail,
+  deleteUserStart,
+  deleteUserSuccess,
+  deleteUserFail,
 } from "../../redux/user/userSlice";
 import axios from "axios";
 
@@ -26,6 +29,7 @@ const Profile = () => {
     });
   };
 
+  // Handles update user profile
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
@@ -76,6 +80,12 @@ const Profile = () => {
     }
   };
 
+  // Handles Delete account
+  const patientDelete = async () => {
+    try {
+    } catch (error) {}
+  };
+
   return (
     <div className="form-container">
       <h1>Profile</h1>
@@ -115,6 +125,8 @@ const Profile = () => {
             {loading ? "Loading..." : "Update"}
           </button>
         </form>
+        {currentUser.role === "Patient" && <span>Delete Account</span>}
+        {currentUser.role === "Admin" && <span>Delete Account</span>}
       </div>
       <p className="error">{error && "Something went wrong"}</p>
     </div>

@@ -3,6 +3,7 @@ import Cashier from "../models/cashierModel.js";
 import Assistant from "../models/assistantModel.js";
 import Patient from "../models/patientModel.js";
 import bcryptjs from "bcryptjs";
+import Clinic from "../models/clinicModel.js";
 
 const userUpdate = async (req, res, next) => {
   const { id } = req.params;
@@ -82,6 +83,12 @@ const deleteAdmin = async (req, res, next) => {
     if (!user) {
       return res.status(400).json({ message: "You are not authenticated" });
     }
+
+    const clinicId = user.clinicId;
+
+    await Clinic.findByIdAndDelete(clinicId);
+    await Assistant.deleteMany({ clinicId });
+    await Cashier.deleteMany({ clinicId });
 
     const admin = await Admin.findByIdAndDelete(id);
     res.status(200).json({ message: "Admin successfully deleted" });
