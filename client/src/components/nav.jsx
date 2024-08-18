@@ -42,15 +42,10 @@ const Nav = () => {
               <li>Clinics</li>
             </Link>
           )}
-          {currentUser &&
-          currentUser.role === "Admin" &&
-          currentUser.role === "Assistant" &&
-          currentUser.role === "Cashier" ? (
+          {currentUser && currentUser.role === "Admin" && (
             <Link to="/clinic">
               <li>Clinic</li>
             </Link>
-          ) : (
-            <span></span>
           )}
           {currentUser &&
             currentUser.role === "Admin" &&
@@ -64,11 +59,13 @@ const Nav = () => {
 
         <div className="sign-container">
           {currentUser ? (
-            <h1>
-              {currentUser.role === "Admin"
-                ? currentUser.name
-                : currentUser.username}
-            </h1>
+            <Link to="/profile">
+              <h1>
+                {currentUser.role === "Admin"
+                  ? currentUser.name
+                  : currentUser.username}
+              </h1>
+            </Link>
           ) : (
             <div className="icon-container">
               <Link to="/patient-signin">

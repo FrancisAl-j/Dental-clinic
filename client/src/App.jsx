@@ -14,6 +14,7 @@ import ViewClinics from "./components/patientComponents/ViewClinics";
 import PrivateRoute from "./components/PrivateRoute";
 import ViewClinic from "./components/patientComponents/ViewClinic";
 import UpdateClinic from "./components/update/UpdateClinic";
+import Profile from "./components/profile/Profile";
 import "./app.css";
 
 const App = () => {
@@ -38,6 +39,7 @@ const App = () => {
               <Route path="/clinics" element={<ViewClinics />} />
               <Route path="/clinic/:id/:name" element={<ViewClinic />} />
               <Route path="/clinic-delete" element={<UpdateClinic />} />
+              <Route path="/profile" element={<Profile />} />
             </Route>
           </Routes>
         </main>
