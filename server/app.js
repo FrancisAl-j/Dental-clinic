@@ -10,6 +10,7 @@ import crypto from "crypto";
 import connectDB from "./config.js";
 import authRoute from "./router/authRoute.js";
 import clinicRoute from "./router/clinicRoute.js";
+import userRoute from "./router/userRoute.js";
 
 const app = express();
 
@@ -30,6 +31,9 @@ app.use("/auth", authRoute);
 
 // For clinic
 app.use("/clinic", clinicRoute);
+
+// For Users
+app.use("/user", userRoute);
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
