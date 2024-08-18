@@ -60,4 +60,34 @@ const userUpdate = async (req, res, next) => {
   }
 };
 
-export default { userUpdate };
+const deletePatient = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const user = await Patient.findById(req.user.user.id);
+    if (!user) {
+      return res.status(401).json({ message: "You are not authenticated!" });
+    }
+
+    const patient = await Patient.findByIdAndDelete(id);
+    res.status(200).json({ message: "Successfully deleted." });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const deleteAdmin = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const user = await Admin.findById(req.user.id);
+    if (!user) {
+      return res.status(400).json({ message: "You are not authenticated" });
+    }
+
+    const admin = await Admin.findByIdAndDelete(id);
+    res.status(200).json({ message: "Admin successfully deleted" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default { userUpdate, deletePatient, deleteAdmin };

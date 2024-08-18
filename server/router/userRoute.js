@@ -6,4 +6,8 @@ const router = express.Router();
 
 router.put("/update/:id", verifyUser, controller.userUpdate);
 
+router.delete("/patient/:id", verifyUser, controller.deletePatient);
+
+router.delete("/admin/:id", verifyUser, controller.deleteAdmin);
+
 export default router;
