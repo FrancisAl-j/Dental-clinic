@@ -24,8 +24,6 @@ const userUpdate = async (req, res, next) => {
       }
     }
 
-    console.log(req.user.user.id);
-
     const updatedData = {
       username,
       email,

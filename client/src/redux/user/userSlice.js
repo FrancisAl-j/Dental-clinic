@@ -30,7 +30,6 @@ export const userSlice = createSlice({
       };
     },
     updateUserStart: (state) => {
-      state.currentUser = null;
       state.loading = true;
       state.error = null;
     },
