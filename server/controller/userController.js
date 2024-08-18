@@ -14,7 +14,7 @@ const userUpdate = async (req, res, next) => {
       if (!user) {
         user = await Cashier.findById(req.user.id);
         if (!user) {
-          user = await Patient.findById(req.user.id);
+          user = await Patient.findById(req.user.user.id);
           if (!user) {
             return res
               .status(401)
@@ -23,6 +23,8 @@ const userUpdate = async (req, res, next) => {
         }
       }
     }
+
+    console.log(req.user.user.id);
 
     const updatedData = {
       username,
@@ -33,26 +35,24 @@ const userUpdate = async (req, res, next) => {
       updatedData.password = bcryptjs.hashSync(password, 10);
     }
 
-    let updatedUser = await Admin.findByIdAndUpdate(id, updatedData, {
-      new: true,
-    });
-    if (!updatedUser) {
+    let updatedUser;
+
+    if (req.user.userType === "Admin") {
+      updatedUser = await Admin.findByIdAndUpdate(id, updatedData, {
+        new: true,
+      });
+    } else if (req.user.userType === "Assistant") {
       updatedUser = await Assistant.findByIdAndUpdate(id, updatedData, {
         new: true,
       });
-      if (!updatedUser) {
-        updatedUser = await Cashier.findByIdAndUpdate(id, updatedData, {
-          new: true,
-        });
-        if (!updatedUser) {
-          updatedUser = await Patient.findByIdAndUpdate(id, updatedData, {
-            new: true,
-          });
-          if (!updatedUser) {
-            return res.status(404).json({ message: "User not found." });
-          }
-        }
-      }
+    } else if (req.user.userType === "Cashier") {
+      updatedUser = await Cashier.findByIdAndUpdate(id, updatedData, {
+        new: true,
+      });
+    } else if (req.user.user.userType === "Patient") {
+      updatedUser = await Patient.findByIdAndUpdate(id, updatedData, {
+        new: true,
+      });
     }
 
     const { password: _, ...rest } = updatedUser._doc;

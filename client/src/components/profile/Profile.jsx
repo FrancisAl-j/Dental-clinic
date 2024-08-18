@@ -1,8 +1,15 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  updateUserStart,
+  updateUserSuccess,
+  updateUserFail,
+} from "../../redux/user/userSlice";
+import axios from "axios";
 
 const Profile = () => {
-  const { currentUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const { currentUser, loading, error } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({
     username:
       currentUser.role === "Admin" ? currentUser.name : currentUser.username,
@@ -19,12 +26,62 @@ const Profile = () => {
     });
   };
 
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    try {
+      dispatch(updateUserStart());
+      const res = await axios.put(
+        `http://localhost:5000/user/update/${currentUser._id}`,
+        formData,
+        {
+          withCredentials: true,
+        }
+      );
+      if (res.status === 200) {
+        dispatch(updateUserSuccess(res.data));
+      } else {
+        dispatch(
+          updateUserFail({
+            message: "User update failure.",
+          })
+        );
+      }
+    } catch (error) {
+      if (error.response) {
+        const status = error.response.status;
+        if (status === 404) {
+          dispatch(
+            updateUserFail({
+              message: "User not found.",
+            })
+          );
+        } else if (status === 401) {
+          dispatch(
+            updateUserFail({
+              message: "Unautherized user",
+            })
+          );
+        } else {
+          dispatch(
+            updateUserFail({
+              message: "An unexpected error occurred. Please try again.",
+            })
+          );
+        }
+      } else {
+        dispatch(
+          updateUserFail({ message: "Network error. Please try again." })
+        );
+      }
+    }
+  };
+
   return (
     <div className="form-container">
       <h1>Profile</h1>
 
       <div className="form-wrapper">
-        <form>
+        <form onSubmit={handleUpdate}>
           <div className="form-element">
             <span>{currentUser.role === "Admin" ? "Name" : "Username"}</span>
             <input
@@ -54,9 +111,12 @@ const Profile = () => {
               onChange={handleChange}
             />
           </div>
-          <button>Update</button>
+          <button disabled={loading}>
+            {loading ? "Loading..." : "Update"}
+          </button>
         </form>
       </div>
+      <p className="error">{error && "Something went wrong"}</p>
     </div>
   );
 };
