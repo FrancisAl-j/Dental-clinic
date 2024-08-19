@@ -8,6 +8,7 @@ import {
   deleteUserSuccess,
   deleteUserFail,
 } from "../../redux/user/userSlice";
+import { clearClinic } from "../../redux/clinic/clinicReducer.js";
 import axios from "axios";
 
 const Profile = () => {
@@ -84,7 +85,6 @@ const Profile = () => {
   // Delete for patients
   const patientDelete = async () => {
     try {
-      dispatch(deleteUserStart());
       if (window.confirm("Are you sure you want to delete your account?")) {
         const res = await axios.delete(
           `http://localhost:5000/user/patient/${currentUser._id}`,
@@ -95,6 +95,58 @@ const Profile = () => {
 
         if (res.status === 200) {
           dispatch(deleteUserSuccess());
+        } else {
+          dispatch(
+            deleteUserFail({
+              message: "There was a problem deleting your account!",
+            })
+          );
+        }
+      }
+    } catch (error) {
+      if (error.response) {
+        const status = error.response.status;
+        if (status === 404) {
+          dispatch(
+            deleteUserFail({
+              message: "User not found.",
+            })
+          );
+        } else if (status === 401) {
+          dispatch(
+            deleteUserFail({
+              message: "Unautherized user",
+            })
+          );
+        } else {
+          dispatch(
+            deleteUserFail({
+              message: "An unexpected error occurred. Please try again.",
+            })
+          );
+        }
+      } else {
+        dispatch(
+          deleteUserFail({ message: "Network error. Please try again." })
+        );
+      }
+    }
+  };
+
+  // Delete for Admin
+  const adminDelete = async () => {
+    try {
+      if (window.confirm("Are you sure you want to delete your account?")) {
+        const res = await axios.delete(
+          `http://localhost:5000/user/admin/${currentUser._id}`,
+          {
+            withCredentials: true,
+          }
+        );
+
+        if (res.status === 200) {
+          dispatch(deleteUserSuccess());
+          dispatch(clearClinic());
         } else {
           dispatch(
             deleteUserFail({
@@ -175,7 +227,9 @@ const Profile = () => {
         {currentUser.role === "Patient" && (
           <span onClick={patientDelete}>Delete Account</span>
         )}
-        {currentUser.role === "Admin" && <span>Delete Account</span>}
+        {currentUser.role === "Admin" && (
+          <span onClick={adminDelete}>Delete Account</span>
+        )}
       </div>
       <p className="error">{error && "Something went wrong"}</p>
     </div>
