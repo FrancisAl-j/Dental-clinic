@@ -81,9 +81,56 @@ const Profile = () => {
   };
 
   // Handles Delete account
+  // Delete for patients
   const patientDelete = async () => {
     try {
-    } catch (error) {}
+      dispatch(deleteUserStart());
+      if (window.confirm("Are you sure you want to delete your account?")) {
+        const res = await axios.delete(
+          `http://localhost:5000/user/patient/${currentUser._id}`,
+          {
+            withCredentials: true,
+          }
+        );
+
+        if (res.status === 200) {
+          dispatch(deleteUserSuccess());
+        } else {
+          dispatch(
+            deleteUserFail({
+              message: "There was a problem deleting your account!",
+            })
+          );
+        }
+      }
+    } catch (error) {
+      if (error.response) {
+        const status = error.response.status;
+        if (status === 404) {
+          dispatch(
+            deleteUserFail({
+              message: "User not found.",
+            })
+          );
+        } else if (status === 401) {
+          dispatch(
+            deleteUserFail({
+              message: "Unautherized user",
+            })
+          );
+        } else {
+          dispatch(
+            deleteUserFail({
+              message: "An unexpected error occurred. Please try again.",
+            })
+          );
+        }
+      } else {
+        dispatch(
+          deleteUserFail({ message: "Network error. Please try again." })
+        );
+      }
+    }
   };
 
   return (
@@ -125,7 +172,9 @@ const Profile = () => {
             {loading ? "Loading..." : "Update"}
           </button>
         </form>
-        {currentUser.role === "Patient" && <span>Delete Account</span>}
+        {currentUser.role === "Patient" && (
+          <span onClick={patientDelete}>Delete Account</span>
+        )}
         {currentUser.role === "Admin" && <span>Delete Account</span>}
       </div>
       <p className="error">{error && "Something went wrong"}</p>
