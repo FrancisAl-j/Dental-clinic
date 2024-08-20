@@ -8,9 +8,10 @@ const Appointment = () => {
     fName: "",
     lName: "",
     midInitial: "",
-    age: "",
-    gender: "",
+    patientAge: "",
+    patientGender: "",
     clinicId: id,
+    appointmentDate: "",
   });
 
   const handleChange = (e) => {
@@ -39,8 +40,50 @@ const Appointment = () => {
                 value={formData.fName}
                 onChange={handleChange}
               />
+
+              <input
+                type="text"
+                name="lName"
+                placeholder="Last name"
+                value={formData.lName}
+                onChange={handleChange}
+              />
+
+              <input
+                type="text"
+                name="midInitial"
+                placeholder="Middle Initial"
+                value={formData.midInitial}
+                onChange={handleChange}
+              />
+
+              <input
+                type="number"
+                name="age"
+                placeholder="Age"
+                value={formData.patientAge}
+                onChange={handleChange}
+              />
+
+              <select
+                name="patientGender"
+                value={formData.patientGender}
+                onChange={handleChange}
+              >
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+
+              <input
+                type="date"
+                name="appointmentDate"
+                value={formData.appointmentDate}
+                onChange={handleChange}
+              />
             </div>
           </div>
+          <button>Book Appointment</button>
         </form>
       </div>
     </div>

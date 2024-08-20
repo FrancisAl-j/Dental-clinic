@@ -137,6 +137,10 @@ const deleteClinic = async (req, res, next) => {
 // Appointment scheduling
 const appointment = async (req, res, next) => {
   try {
+    const user = await Patient.findById(req.user.user.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found!" });
+    }
     const {
       patientName,
       patientAge,
