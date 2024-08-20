@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -13,6 +14,8 @@ const Appointment = () => {
     clinicId: id,
     appointmentDate: "",
   });
+  const [error, setError] = useState(null);
+  const [message, setMessage] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,6 +24,34 @@ const Appointment = () => {
       ...formData,
       [name]: value,
     });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const {
+        fName,
+        lName,
+        midInitial,
+        patientAge,
+        patientGender,
+        clinicId,
+        appointmentDate,
+      } = formData;
+
+      const patientName = `${lName}, ${fName} ${midInitial}.`;
+
+      const res = await axios.post("http://localhost:5000/clinic/appointment", {
+        patientName,
+        patientAge,
+        patientGender,
+        clinicId,
+        appointmentDate,
+      });
+    } catch (error) {
+      setError("Something went wrong!");
+    }
   };
 
   return (
