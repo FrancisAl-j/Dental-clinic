@@ -4,6 +4,7 @@ import Assistant from "../models/assistantModel.js";
 import Cashier from "../models/cashierModel.js";
 import Clinic from "../models/clinicModel.js";
 import Patient from "../models/patientModel.js";
+import Appointment from "../models/appointmentModel.js";
 
 const createClinic = async (req, res, next) => {
   const { clinicName, location, email, phone } = req.body;
@@ -133,6 +134,35 @@ const deleteClinic = async (req, res, next) => {
   }
 };
 
+// Appointment scheduling
+const appointment = async (req, res, next) => {
+  try {
+    const {
+      patientName,
+      patientAge,
+      patientGender,
+      clinicId,
+      appointmentDate,
+      status,
+    } = req.body;
+
+    const newAppointment = new Appointment({
+      clinicId,
+      patientId: req.user.user.id,
+      patientName,
+      patientAge,
+      patientGender,
+      appointmentDate,
+      status: "Pending",
+    });
+
+    await newAppointment.save();
+    res.status(200).json(newAppointment);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   createClinic,
   getClinic,
@@ -140,4 +170,5 @@ export default {
   viewClinic,
   updateClinic,
   deleteClinic,
+  appointment,
 };

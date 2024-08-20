@@ -22,4 +22,7 @@ router.put("/update/:id", verifyUser, controller.updateClinic);
 // Deleting clinic along with employees
 router.delete("/delete/:id", verifyUser, controller.deleteClinic);
 
+// Appointment schedule
+router.post("/appointment", verifyUser, controller.appointment);
+
 export default router;
