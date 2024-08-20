@@ -6,13 +6,13 @@ import {
   clearClinic,
 } from "../../redux/clinic/patientClinicReducer.js";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const ViewClinic = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams();
   const clinic = useSelector((state) => state.patientClinic.clinic);
-  console.log(clinic);
 
   useEffect(() => {
     const fetchClinic = async () => {
@@ -55,6 +55,9 @@ const ViewClinic = () => {
       <h1>{clinic.clinicName}</h1>
       <h3>{clinic.location}</h3>
       <span>{clinic.email}</span>
+      <Link to="/clinic/:id/:name/appointment">
+        <button>Book an appointment</button>
+      </Link>
     </div>
   );
 };

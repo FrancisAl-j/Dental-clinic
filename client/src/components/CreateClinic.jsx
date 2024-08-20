@@ -32,7 +32,6 @@ const CreateClinic = () => {
           withCredentials: true,
         }
       );
-      console.log(res);
 
       const data = res.data;
       if (res.status === 200) {
