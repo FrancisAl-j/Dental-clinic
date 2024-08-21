@@ -16,7 +16,7 @@ const Appointment = () => {
     lName: "",
     midInitial: "",
     patientAge: "",
-    patientGender: "",
+    patientGender: "Male",
     clinicId: id,
     appointmentDate: "",
   });

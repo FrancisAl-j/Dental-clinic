@@ -218,4 +218,5 @@ export default {
   deleteClinic,
   appointment,
   appointmentLists,
+  updateStatus,
 };

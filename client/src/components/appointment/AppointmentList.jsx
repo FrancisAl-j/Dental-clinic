@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   getAppoinmentStart,
@@ -10,6 +10,12 @@ import axios from "axios";
 const AppointmentList = () => {
   const dispatch = useDispatch();
   const appointments = useSelector((state) => state.appointment.appointment);
+  const [status, setStatus] = useState("Pending");
+
+  const handleChange = (e) => {
+    e.preventDefault();
+    setStatus(e.target.value);
+  };
 
   useEffect(() => {
     const fetchAppointment = async () => {
@@ -36,6 +42,12 @@ const AppointmentList = () => {
 
     fetchAppointment();
   }, [dispatch]);
+
+  const updateStatus = async () => {
+    try {
+    } catch (error) {}
+  };
+
   return (
     <div>
       {appointments.map((appointment) => {
@@ -45,7 +57,13 @@ const AppointmentList = () => {
             <p>{appointment.patientAge}</p>
             <p>{appointment.patientGender}</p>
             <p>{appointment.appointmentDate}</p>
-            <p>{appointment.status}</p>
+            <select value={status} onChange={handleChange}>
+              <option value="Pending">Pending</option>
+              <option value="Confirmed">Confirmed</option>
+              <option value="Completed">Completed</option>
+              <option value="Canceled">Canceled</option>
+            </select>
+            <button>Update status</button>
           </div>
         );
       })}

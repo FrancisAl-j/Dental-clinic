@@ -29,6 +29,6 @@ router.post("/appointment", verifyUser, controller.appointment);
 router.get("/appointment/list", verifyUser, controller.appointmentLists);
 
 // Updating status
-router.put("/status:id", verifyUser);
+router.put("/status/:id", verifyUser, controller.updateStatus);
 
 export default router;
