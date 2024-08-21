@@ -28,4 +28,7 @@ router.post("/appointment", verifyUser, controller.appointment);
 // Fetching Appointment lists
 router.get("/appointment/list", verifyUser, controller.appointmentLists);
 
+// Updating status
+router.put("/status:id", verifyUser);
+
 export default router;

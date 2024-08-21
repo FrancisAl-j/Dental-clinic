@@ -43,6 +43,9 @@ const AppointmentList = () => {
           <div key={appointment._id}>
             <p>{appointment.patientName}</p>
             <p>{appointment.patientAge}</p>
+            <p>{appointment.patientGender}</p>
+            <p>{appointment.appointmentDate}</p>
+            <p>{appointment.status}</p>
           </div>
         );
       })}

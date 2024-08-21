@@ -184,6 +184,31 @@ const appointmentLists = async (req, res, next) => {
   }
 };
 
+// Updating status
+const updateStatus = async (req, res, next) => {
+  const { id } = req.params;
+  const { status } = req.body;
+  try {
+    const user = await Admin.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found!" });
+    }
+    const appointment = await Appointment.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true }
+    );
+
+    if (!appointment) {
+      return res.status(404).json({ message: "Appointment not found!" });
+    }
+
+    res.status(200).json(appointment);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   createClinic,
   getClinic,
