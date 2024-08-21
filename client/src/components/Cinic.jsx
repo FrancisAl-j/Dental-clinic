@@ -9,6 +9,9 @@ const Clinic = () => {
       <Link to="/clinic-delete">
         <button>Update your clinic</button>
       </Link>
+      <Link to="/clinic/appointment-list">
+        <button>Appointment List</button>
+      </Link>
       <h1>Clinic</h1>
       {currentClinic ? (
         <h1>{currentClinic.clinicName}</h1>

@@ -26,6 +26,6 @@ router.delete("/delete/:id", verifyUser, controller.deleteClinic);
 router.post("/appointment", verifyUser, controller.appointment);
 
 // Fetching Appointment lists
-router.get("/appointment", verifyUser, controller.appointmentLists);
+router.get("/appointment/list", verifyUser, controller.appointmentLists);
 
 export default router;

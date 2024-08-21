@@ -35,5 +35,9 @@ const appointmentSlice = createSlice({
 
 export default appointmentSlice.reducer;
 
-export const { addAppointment, getAppoinmentStart, getAppoinmentSuccess } =
-  appointmentSlice.actions;
+export const {
+  addAppointment,
+  getAppoinmentStart,
+  getAppoinmentSuccess,
+  getAppointmentFailure,
+} = appointmentSlice.actions;

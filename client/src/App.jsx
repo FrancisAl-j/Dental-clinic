@@ -16,6 +16,7 @@ import ViewClinic from "./components/patientComponents/ViewClinic";
 import UpdateClinic from "./components/update/UpdateClinic";
 import Profile from "./components/profile/Profile";
 import Appointment from "./components/appointment/Appointment";
+import AppointmentList from "./components/appointment/AppointmentList";
 import "./app.css";
 
 const App = () => {
@@ -42,6 +43,10 @@ const App = () => {
               <Route
                 path="/clinic/:id/:name/appointment"
                 element={<Appointment />}
+              />
+              <Route
+                path="/clinic/appointment-list"
+                element={<AppointmentList />}
               />
               <Route path="/clinic-delete" element={<UpdateClinic />} />
               <Route path="/profile" element={<Profile />} />
