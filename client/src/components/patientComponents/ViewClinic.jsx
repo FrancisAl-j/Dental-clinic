@@ -16,7 +16,6 @@ const ViewClinic = () => {
 
   useEffect(() => {
     const fetchClinic = async () => {
-      console.log("useEffect triggered");
       try {
         const res = await axios.get(`http://localhost:5000/clinic/view/${id}`, {
           withCredentials: true,
@@ -55,7 +54,7 @@ const ViewClinic = () => {
       <h1>{clinic.clinicName}</h1>
       <h3>{clinic.location}</h3>
       <span>{clinic.email}</span>
-      <Link to="/clinic/:id/:name/appointment">
+      <Link to={`/clinic/${clinic.id}/${clinic.clinicName}/appointment`}>
         <button>Book an appointment</button>
       </Link>
     </div>

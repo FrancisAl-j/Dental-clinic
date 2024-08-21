@@ -3,6 +3,7 @@ import userReducer from "./user/userSlice.js";
 import clinicReducer from "./clinic/clinicReducer.js";
 import clinicsReducer from "./clinic/ClinicsReducer.js";
 import patientClinicReducer from "./clinic/patientClinicReducer.js";
+import appointmentReducer from "./clinic/appointmentReducer.js";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   clinic: clinicReducer,
   clinics: clinicsReducer,
   patientClinic: patientClinicReducer,
+  appointment: appointmentReducer,
 });
 
 const persistConfig = {

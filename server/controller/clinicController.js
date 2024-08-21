@@ -141,6 +141,7 @@ const appointment = async (req, res, next) => {
     if (!user) {
       return res.status(404).json({ message: "User not found!" });
     }
+
     const {
       patientName,
       patientAge,

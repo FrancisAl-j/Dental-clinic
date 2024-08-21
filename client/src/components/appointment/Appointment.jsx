@@ -1,9 +1,15 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
+import { addAppointment } from "../../redux/clinic/appointmentReducer";
+import {
+  getClinic,
+  clearClinic,
+} from "../../redux/clinic/patientClinicReducer.js";
 
 const Appointment = () => {
+  const dispatch = useDispatch();
   const { id } = useParams();
   const [formData, setFormData] = useState({
     fName: "",
@@ -16,6 +22,26 @@ const Appointment = () => {
   });
   const [error, setError] = useState(null);
   const [message, setMessage] = useState(false);
+
+  useEffect(() => {
+    const fetchClinic = async () => {
+      try {
+        const res = await axios.get(`http://localhost:5000/clinic/view/${id}`, {
+          withCredentials: true,
+        });
+
+        dispatch(getClinic(res.data));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchClinic();
+
+    return () => {
+      dispatch(clearClinic());
+    };
+  }, [id, dispatch]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -42,13 +68,25 @@ const Appointment = () => {
 
       const patientName = `${lName}, ${fName} ${midInitial}.`;
 
-      const res = await axios.post("http://localhost:5000/clinic/appointment", {
-        patientName,
-        patientAge,
-        patientGender,
-        clinicId,
-        appointmentDate,
-      });
+      const res = await axios.post(
+        "http://localhost:5000/clinic/appointment",
+        {
+          patientName,
+          patientAge,
+          patientGender,
+          clinicId,
+          appointmentDate,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      console.log(res.data);
+
+      if (res.status === 200) {
+        dispatch(addAppointment(res.data));
+        setMessage("Appointment booked succesfully.");
+      }
     } catch (error) {
       setError("Something went wrong!");
     }
@@ -59,7 +97,7 @@ const Appointment = () => {
       <div className="left-container"></div>
 
       <div className="right-container">
-        <form className="appointment-form">
+        <form onSubmit={handleSubmit} className="appointment-form">
           <h2 className="form-title">Book an Appointment</h2>
 
           <div className="form-input-container">
@@ -90,7 +128,7 @@ const Appointment = () => {
 
               <input
                 type="number"
-                name="age"
+                name="patientAge"
                 placeholder="Age"
                 value={formData.patientAge}
                 onChange={handleChange}
