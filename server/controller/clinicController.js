@@ -167,6 +167,23 @@ const appointment = async (req, res, next) => {
   }
 };
 
+// Fetching appointment lists
+const appointmentLists = async (req, res, next) => {
+  try {
+    const user = await Admin.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: "Admin not found!" });
+    }
+
+    const clinicId = req.user.clinicId;
+
+    const appointment = await Appointment.find({ clinicId: clinicId });
+    res.status(200).json(appointment);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   createClinic,
   getClinic,
@@ -175,4 +192,5 @@ export default {
   updateClinic,
   deleteClinic,
   appointment,
+  appointmentLists,
 };

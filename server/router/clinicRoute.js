@@ -25,4 +25,7 @@ router.delete("/delete/:id", verifyUser, controller.deleteClinic);
 // Appointment schedule
 router.post("/appointment", verifyUser, controller.appointment);
 
+// Fetching Appointment lists
+router.get("/appointment", verifyUser, controller.appointmentLists);
+
 export default router;
