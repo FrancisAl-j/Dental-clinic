@@ -11,6 +11,6 @@ router.delete("/patient/:id", verifyUser, controller.deletePatient);
 router.delete("/admin/:id", verifyUser, controller.deleteAdmin);
 
 // History of Appointments for patient
-router.get("/appointment/:id", verifyUser, controller.viewAppointment);
+router.get("/appointments", verifyUser, controller.viewAppointment);
 
 export default router;

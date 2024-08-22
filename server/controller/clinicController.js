@@ -148,10 +148,12 @@ const appointment = async (req, res, next) => {
       patientGender,
       clinicId,
       appointmentDate,
+      clinic,
     } = req.body;
 
     const newAppointment = new Appointment({
       clinicId,
+      clinic,
       patientId: req.user.user.id,
       patientName,
       patientAge,

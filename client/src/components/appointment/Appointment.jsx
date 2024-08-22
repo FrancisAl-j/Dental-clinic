@@ -10,7 +10,7 @@ import {
 
 const Appointment = () => {
   const dispatch = useDispatch();
-  const { id } = useParams();
+  const { id, name } = useParams();
   const [formData, setFormData] = useState({
     fName: "",
     lName: "",
@@ -19,6 +19,7 @@ const Appointment = () => {
     patientGender: "Male",
     clinicId: id,
     appointmentDate: "",
+    clinic: name,
   });
   const [error, setError] = useState(null);
   const [message, setMessage] = useState(false);
@@ -54,7 +55,6 @@ const Appointment = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       const {
         fName,
@@ -64,6 +64,7 @@ const Appointment = () => {
         patientGender,
         clinicId,
         appointmentDate,
+        clinic,
       } = formData;
 
       const patientName = `${lName}, ${fName} ${midInitial}.`;
@@ -76,15 +77,17 @@ const Appointment = () => {
           patientGender,
           clinicId,
           appointmentDate,
+          clinic,
         },
         {
           withCredentials: true,
         }
       );
-      console.log(res.data);
 
       if (res.status === 200) {
         dispatch(addAppointment(res.data));
+        console.log(res.data);
+
         setMessage("Appointment booked succesfully.");
       }
     } catch (error) {

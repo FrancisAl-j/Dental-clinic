@@ -15,6 +15,10 @@ const appointmentSchema = mongoose.Schema(
       enum: ["Male", "Female", "Other"],
       required: true,
     },
+    clinic: {
+      type: String,
+      required: true,
+    },
     clinicId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Clinic",

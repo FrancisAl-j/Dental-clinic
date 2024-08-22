@@ -3,10 +3,11 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { clearClinic } from "../redux/clinic/clinicReducer.js";
 import { signout } from "../redux/user/userSlice.js";
+import { clearAppointment } from "../redux/clinic/appointmentReducer.js";
+import { clearHistoryAppointment } from "../redux/clinic/historyAppointmentReducer.js";
 
 import Login from "../assets/logout.svg";
 import Signup from "../assets/register.svg";
-import { current } from "@reduxjs/toolkit";
 
 const Nav = () => {
   const dispatch = useDispatch();
@@ -20,6 +21,8 @@ const Nav = () => {
       });
       dispatch(signout());
       dispatch(clearClinic());
+      dispatch(clearAppointment());
+      dispatch(clearHistoryAppointment());
     } catch (error) {
       console.log(error);
     }
@@ -55,6 +58,11 @@ const Nav = () => {
               </Link>
             )}
           {currentUser && <span onClick={handleSignout}>Sign out</span>}
+          {currentUser && currentUser.role === "Patient" && (
+            <Link to="/view-appointments">
+              <li>Appointments</li>
+            </Link>
+          )}
         </ul>
 
         <div className="sign-container">

@@ -20,7 +20,6 @@ const ViewClinic = () => {
         const res = await axios.get(`http://localhost:5000/clinic/view/${id}`, {
           withCredentials: true,
         });
-        console.log(res.data);
 
         dispatch(getClinic(res.data));
       } catch (error) {

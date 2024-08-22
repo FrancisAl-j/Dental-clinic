@@ -6,20 +6,17 @@ const initialState = {
   error: null,
 };
 
-export const appointmentSlice = createSlice({
+export const historyAppointmentSlice = createSlice({
   name: "appointment",
   initialState,
-
   reducers: {
-    addAppointment: (state, action) => {
-      state.appointment = action.payload;
-    },
-    getAppoinmentStart: (state) => {
+    getAppointmentStart: (state) => {
       state.loading = true;
       state.error = null;
     },
     getAppoinmentSuccess: (state, action) => {
       state.appointment = action.payload;
+      state.loading = false;
       state.error = null;
     },
     getAppointmentFailure: (state, action) => {
@@ -30,27 +27,18 @@ export const appointmentSlice = createSlice({
         status: action.payload.response ? action.payload.response.status : null,
       };
     },
-    updateAppointment: (state, action) => {
-      const index = state.appointment.findIndex(
-        (appt) => appt._id === action.payload._id
-      );
-      if (index !== -1) {
-        state.appointment[index] = action.payload; // Update the specific appointment
-      }
-    },
-    clearAppointment: (state) => {
-      (state.appointment = []), (state.error = null);
+    clearHistoryAppointment: (state) => {
+      state.appointment = [];
+      state.error = null;
     },
   },
 });
 
-export default appointmentSlice.reducer;
+export default historyAppointmentSlice.reducer;
 
 export const {
-  addAppointment,
-  getAppoinmentStart,
+  getAppointmentStart,
   getAppoinmentSuccess,
   getAppointmentFailure,
-  updateAppointment,
-  clearAppointment,
-} = appointmentSlice.actions;
+  clearHistoryAppointment,
+} = historyAppointmentSlice.actions;
