@@ -118,7 +118,6 @@ const viewAppointment = async (req, res, next) => {
 // Cancelling Appointments
 const cancelAppointment = async (req, res, next) => {
   const { id } = req.params;
-  const { status } = req.body;
   try {
     const user = await Patient.findById(req.user.user.id);
     if (!user) {
@@ -127,7 +126,7 @@ const cancelAppointment = async (req, res, next) => {
 
     const appointment = await Appointment.findByIdAndUpdate(
       id,
-      { status },
+      { status: "Canceled" },
       { new: true }
     );
     if (!appointment) {
@@ -140,4 +139,10 @@ const cancelAppointment = async (req, res, next) => {
   }
 };
 
-export default { userUpdate, deletePatient, deleteAdmin, viewAppointment };
+export default {
+  userUpdate,
+  deletePatient,
+  deleteAdmin,
+  viewAppointment,
+  cancelAppointment,
+};

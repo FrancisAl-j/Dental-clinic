@@ -27,6 +27,14 @@ export const historyAppointmentSlice = createSlice({
         status: action.payload.response ? action.payload.response.status : null,
       };
     },
+    cancelStatus: (state, action) => {
+      const index = state.appointment.findIndex(
+        (appointment) => appointment._id === action.payload._id
+      );
+      if (index !== -1) {
+        state.appointment[index] = action.payload; // Update the specific appointment
+      }
+    },
     clearHistoryAppointment: (state) => {
       state.appointment = [];
       state.error = null;
@@ -41,4 +49,5 @@ export const {
   getAppoinmentSuccess,
   getAppointmentFailure,
   clearHistoryAppointment,
+  cancelStatus,
 } = historyAppointmentSlice.actions;

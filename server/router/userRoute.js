@@ -14,6 +14,6 @@ router.delete("/admin/:id", verifyUser, controller.deleteAdmin);
 router.get("/appointments", verifyUser, controller.viewAppointment);
 
 // Patient cancelling Appointments
-router.put("/cancel/:id", verifyUser);
+router.put("/cancel/:id", verifyUser, controller.cancelAppointment);
 
 export default router;
