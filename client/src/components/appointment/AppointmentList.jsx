@@ -4,17 +4,20 @@ import {
   getAppoinmentStart,
   getAppoinmentSuccess,
   getAppointmentFailure,
+  updateAppointment,
 } from "../../redux/clinic/appointmentReducer";
 import axios from "axios";
 
 const AppointmentList = () => {
   const dispatch = useDispatch();
   const appointments = useSelector((state) => state.appointment.appointment);
-  const [status, setStatus] = useState("Pending");
+  const { currentUser } = useSelector((state) => state.user) || [];
 
-  const handleChange = (e) => {
-    e.preventDefault();
-    setStatus(e.target.value);
+  const [error, setError] = useState(null);
+
+  const handleChange = (e, id) => {
+    const updatedStatus = e.target.value;
+    updateStatus(id, updatedStatus);
   };
 
   useEffect(() => {
@@ -43,9 +46,23 @@ const AppointmentList = () => {
     fetchAppointment();
   }, [dispatch]);
 
-  const updateStatus = async () => {
+  const updateStatus = async (id, status) => {
     try {
-    } catch (error) {}
+      const res = await axios.put(
+        `http://localhost:5000/clinic/status/${id}`,
+        { status },
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (res.status === 200) {
+        dispatch(updateAppointment(res.data));
+        fetchAppointment();
+      }
+    } catch (error) {
+      setError("There was a problem updating the status");
+    }
   };
 
   return (
@@ -57,13 +74,20 @@ const AppointmentList = () => {
             <p>{appointment.patientAge}</p>
             <p>{appointment.patientGender}</p>
             <p>{appointment.appointmentDate}</p>
-            <select value={status} onChange={handleChange}>
+            <select
+              value={appointment.status} // Set the select's value to the current status of the appointment
+              onChange={(e) => handleChange(e, appointment._id)} // Pass the id and new status to the update function
+            >
               <option value="Pending">Pending</option>
               <option value="Confirmed">Confirmed</option>
               <option value="Completed">Completed</option>
               <option value="Canceled">Canceled</option>
             </select>
-            <button>Update status</button>
+            <button
+              onClick={() => updateStatus(appointment._id, appointment.status)}
+            >
+              Update status
+            </button>
           </div>
         );
       })}

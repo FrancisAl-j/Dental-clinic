@@ -30,6 +30,14 @@ const appointmentSlice = createSlice({
         status: action.payload.response ? action.payload.response.status : null,
       };
     },
+    updateAppointment: (state, action) => {
+      const index = state.appointment.findIndex(
+        (appt) => appt._id === action.payload._id
+      );
+      if (index !== -1) {
+        state.appointment[index] = action.payload; // Update the specific appointment
+      }
+    },
   },
 });
 
@@ -40,4 +48,5 @@ export const {
   getAppoinmentStart,
   getAppoinmentSuccess,
   getAppointmentFailure,
+  updateAppointment,
 } = appointmentSlice.actions;
