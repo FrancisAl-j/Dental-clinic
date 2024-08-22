@@ -4,6 +4,7 @@ import Assistant from "../models/assistantModel.js";
 import Patient from "../models/patientModel.js";
 import bcryptjs from "bcryptjs";
 import Clinic from "../models/clinicModel.js";
+import Appointment from "../models/appointmentModel.js";
 
 const userUpdate = async (req, res, next) => {
   const { id } = req.params;
@@ -97,4 +98,21 @@ const deleteAdmin = async (req, res, next) => {
   }
 };
 
-export default { userUpdate, deletePatient, deleteAdmin };
+// History of appointments of Patient
+const viewAppointment = async (req, res, next) => {
+  try {
+    const user = await Patient.findById(req.user.user.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    const patientId = req.user.user.id;
+
+    const appointment = await Appointment.find({ patientId: patientId });
+    res.status(200).json(appointment);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default { userUpdate, deletePatient, deleteAdmin, viewAppointment };
