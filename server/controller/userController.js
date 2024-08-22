@@ -115,4 +115,29 @@ const viewAppointment = async (req, res, next) => {
   }
 };
 
+// Cancelling Appointments
+const cancelAppointment = async (req, res, next) => {
+  const { id } = req.params;
+  const { status } = req.body;
+  try {
+    const user = await Patient.findById(req.user.user.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found!" });
+    }
+
+    const appointment = await Appointment.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true }
+    );
+    if (!appointment) {
+      return res.status(404).json({ message: "Appointment not found." });
+    }
+
+    res.status(200).json(appointment);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default { userUpdate, deletePatient, deleteAdmin, viewAppointment };

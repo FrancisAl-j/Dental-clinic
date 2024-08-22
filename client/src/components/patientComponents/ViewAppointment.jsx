@@ -39,6 +39,9 @@ const ViewAppointment = () => {
           <div key={appointment._id}>
             <p>{appointment.patientName}</p>
             <p>{appointment.patientAge}</p>
+            <p>{appointment.clinic}</p>
+            <p>{appointment.appointentDate}</p>
+            <button>Cancel</button>
           </div>
         );
       })}
