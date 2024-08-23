@@ -31,4 +31,7 @@ router.get("/appointment/list", verifyUser, controller.appointmentLists);
 // Updating status
 router.put("/status/:id", verifyUser, controller.updateStatus);
 
+// Patients list
+router.get("/patients", verifyUser, controller.getPatients);
+
 export default router;
