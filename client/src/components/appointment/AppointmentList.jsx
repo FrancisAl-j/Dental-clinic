@@ -74,7 +74,10 @@ const AppointmentList = () => {
             <p>{appointment.patientAge}</p>
             <p>{appointment.patientGender}</p>
             <p>{appointment.appointmentDate}</p>
-            <select
+            {appointment.status === "Canceled" ? (
+              <p>Canceled</p>
+            ) : (
+              <select
               value={appointment.status} // Set the select's value to the current status of the appointment
               onChange={(e) => handleChange(e, appointment._id)} // Pass the id and new status to the update function
             >
@@ -83,7 +86,10 @@ const AppointmentList = () => {
               <option value="Completed">Completed</option>
               <option value="Canceled">Canceled</option>
             </select>
+            )}
+            
             <button
+              disabled={appointment.status === "Canceled"}
               onClick={() => updateStatus(appointment._id, appointment.status)}
             >
               Update status

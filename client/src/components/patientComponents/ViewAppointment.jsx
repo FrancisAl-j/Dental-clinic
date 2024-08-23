@@ -66,11 +66,12 @@ const ViewAppointment = () => {
             <p>{appointment.clinic}</p>
             <p>{appointment.appointentDate}</p>
             <button
+              disabled={appointment.status === "Canceled"}
               onClick={() =>
                 cancelAppointment(appointment._id, appointment.status)
               }
             >
-              Cancel
+              {appointment.status === "Canceled" ? "Appointment Canceled" : "Cancel"}
             </button>
           </div>
         );
