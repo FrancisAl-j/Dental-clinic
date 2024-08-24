@@ -4,6 +4,9 @@ import { verifyUser } from "../utils/verifyUser.js";
 
 const router = express.Router();
 
+// Patients list
+router.get("/patient", verifyUser, controller.getPatients);
+
 // Creating clinic
 router.post("/create", verifyUser, controller.createClinic);
 
@@ -30,8 +33,5 @@ router.get("/appointment/list", verifyUser, controller.appointmentLists);
 
 // Updating status
 router.put("/status/:id", verifyUser, controller.updateStatus);
-
-// Patients list
-router.get("/patients", verifyUser, controller.getPatients);
 
 export default router;

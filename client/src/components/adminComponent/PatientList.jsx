@@ -15,7 +15,9 @@ const PatientList = () => {
     const fetchPatients = async () => {
       try {
         dispatch(getPatientStart());
-        const res = await axios.get("http://localhost:5000/clinic/patients");
+        const res = await axios.get("http://localhost:5000/clinic/patient", {
+          withCredentials: true,
+        });
         if (res.status === 200) {
           dispatch(getPatientSuccess(res.data));
         }
@@ -29,7 +31,16 @@ const PatientList = () => {
 
   return (
     <div>
-      <h1>Patient List</h1>
+      <h1>Patients</h1>
+      <div className="patients-container">
+        {patients.map((patient) => {
+          return (
+            <div key={patient._id}>
+              <p>{patient.patientName}</p>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };

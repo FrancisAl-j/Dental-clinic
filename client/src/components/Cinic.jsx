@@ -12,6 +12,9 @@ const Clinic = () => {
       <Link to="/clinic/appointment-list">
         <button>Appointment List</button>
       </Link>
+      <Link to="/patients">
+        <button>Patient list</button>
+      </Link>
       <h1>Clinic</h1>
       {currentClinic ? (
         <h1>{currentClinic.clinicName}</h1>

@@ -218,6 +218,7 @@ const getPatients = async (req, res, next) => {
     if (!user) {
       return res.status(404).json({ message: "Admin not found" });
     }
+    console.log(user);
 
     const clinicId = req.user.clinicId;
 
