@@ -10,6 +10,8 @@ const PatientList = () => {
   const dispatch = useDispatch();
   const patients = useSelector((state) => state.patients.patients);
   const [error, setError] = useState(null);
+  const [appointments, setAppointments] = useState([]);
+  const [uniquePatients, setUniquePatients] = useState([]);
 
   useEffect(() => {
     const fetchPatients = async () => {
@@ -19,7 +21,25 @@ const PatientList = () => {
           withCredentials: true,
         });
         if (res.status === 200) {
-          dispatch(getPatientSuccess(res.data));
+          const appointments = res.data;
+          setAppointments(appointments);
+
+          const patientMap = new Map();
+          appointments.forEach((appointment) => {
+            const { patientId, patientName, patientAge, patientGender } =
+              appointment;
+            if (patientName && !patientMap.has(patientId)) {
+              patientMap.set(patientId, {
+                patientName,
+                patientAge,
+                patientGender,
+              });
+            }
+          });
+
+          const uniquePatientsList = Array.from(patientMap.values());
+          setUniquePatients(uniquePatientsList);
+          dispatch(getPatientSuccess(uniquePatientsList));
         }
       } catch (error) {
         setError("There was a problem fetching patients.");
@@ -33,10 +53,12 @@ const PatientList = () => {
     <div>
       <h1>Patients</h1>
       <div className="patients-container">
-        {patients.map((patient) => {
+        {uniquePatients.map((patient, index) => {
           return (
-            <div key={patient._id}>
+            <div key={index}>
               <p>{patient.patientName}</p>
+              <p>Age: {patient.patientAge}</p>
+              <p>Gender: {patient.patientGender}</p>
             </div>
           );
         })}

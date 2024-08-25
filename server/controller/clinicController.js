@@ -218,12 +218,11 @@ const getPatients = async (req, res, next) => {
     if (!user) {
       return res.status(404).json({ message: "Admin not found" });
     }
-    console.log(user);
-
     const clinicId = req.user.clinicId;
 
-    const appointment = await Appointment.find({ clinicId: clinicId });
-    res.status(200).json(appointment);
+    const appointments = await Appointment.find({ clinicId: clinicId }).exec();
+
+    res.status(200).json(appointments);
   } catch (error) {
     next(error);
   }
