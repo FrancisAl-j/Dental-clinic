@@ -68,4 +68,22 @@ const storePatient = async (req, res, next) => {
   }
 };
 
-export default { storePatient };
+// Displaying all the patients
+const displayPatients = async (req, res, next) => {
+  try {
+    const admin = await Admin.findById(req.user.id);
+    if (!admin) {
+      return res.status(400).json({ message: "Unauthenticated admin" });
+    }
+
+    const clinicId = admin.clinicId;
+
+    const patient_list = await Patient_List.find({ clinicId }).exec();
+
+    res.status(200).json(patient_list);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default { storePatient, displayPatients };

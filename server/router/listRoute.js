@@ -7,4 +7,7 @@ const router = express.Router();
 // Storing patient to patient List
 router.post("/patients", verifyUser, controller.storePatient);
 
+// Display all the patients inside database
+router.get("/patient-list", verifyUser, controller.displayPatients);
+
 export default router;
