@@ -23,6 +23,6 @@ const patientListSchema = mongoose.Schema({
   },
 });
 
-const PatientList = mongoose.model("Patient-list", patientListSchema);
+const Patient_List = mongoose.model("Patient-list", patientListSchema);
 
-export default PatientList;
+export default Patient_List;

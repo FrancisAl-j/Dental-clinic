@@ -10,9 +10,17 @@ const appointmentSchema = mongoose.Schema(
       type: Number,
       required: true,
     },
+    patientEmail: {
+      type: String,
+      required: true,
+    },
     patientGender: {
       type: String,
       enum: ["Male", "Female", "Other"],
+      required: true,
+    },
+    patientContact: {
+      type: String,
       required: true,
     },
     clinic: {
