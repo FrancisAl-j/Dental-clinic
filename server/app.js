@@ -5,15 +5,18 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import crypto from "crypto";
+import bodyParser from "body-parser";
 
 // Files
 import connectDB from "./config.js";
 import authRoute from "./router/authRoute.js";
 import clinicRoute from "./router/clinicRoute.js";
 import userRoute from "./router/userRoute.js";
+import listRoute from "./router/listRoute.js";
 
 const app = express();
 
+app.use(bodyParser.json());
 app.use(express.json());
 app.use(cookieParser());
 app.use(
@@ -36,7 +39,7 @@ app.use("/clinic", clinicRoute);
 app.use("/user", userRoute);
 
 // List of patients
-app.use("/list");
+app.use("/list", listRoute);
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;

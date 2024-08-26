@@ -6,3 +6,5 @@ const router = express.Router();
 
 // Storing patient to patient List
 router.post("/patients", verifyUser, controller.storePatient);
+
+export default router;

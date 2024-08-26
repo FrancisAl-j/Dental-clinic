@@ -146,8 +146,10 @@ const appointment = async (req, res, next) => {
       patientName,
       patientAge,
       patientGender,
+      patientEmail,
       clinicId,
       appointmentDate,
+      patientContact,
       clinic,
     } = req.body;
 
@@ -158,6 +160,8 @@ const appointment = async (req, res, next) => {
       patientName,
       patientAge,
       patientGender,
+      patientEmail,
+      patientContact,
       appointmentDate,
       status: "Pending",
     });

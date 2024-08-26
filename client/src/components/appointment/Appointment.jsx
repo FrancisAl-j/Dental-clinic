@@ -11,12 +11,15 @@ import {
 const Appointment = () => {
   const dispatch = useDispatch();
   const { id, name } = useParams();
+  const { currentUser } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({
     fName: "",
     lName: "",
     midInitial: "",
     patientAge: "",
     patientGender: "Male",
+    patientEmail: currentUser.email,
+    patientContact: "",
     clinicId: id,
     appointmentDate: "",
     clinic: name,
@@ -62,6 +65,8 @@ const Appointment = () => {
         midInitial,
         patientAge,
         patientGender,
+        patientEmail,
+        patientContact,
         clinicId,
         appointmentDate,
         clinic,
@@ -78,6 +83,8 @@ const Appointment = () => {
           clinicId,
           appointmentDate,
           clinic,
+          patientEmail,
+          patientContact,
         },
         {
           withCredentials: true,
@@ -126,6 +133,21 @@ const Appointment = () => {
                 name="midInitial"
                 placeholder="Middle Initial"
                 value={formData.midInitial}
+                onChange={handleChange}
+              />
+
+              <input
+                type="email"
+                name="patientEmail"
+                value={formData.patientEmail}
+                onChange={handleChange}
+              />
+
+              <input
+                type="number"
+                name="patientContact"
+                placeholder="Phone number"
+                value={formData.patientContact}
                 onChange={handleChange}
               />
 

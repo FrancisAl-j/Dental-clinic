@@ -20,26 +20,51 @@ const PatientList = () => {
         const res = await axios.get("http://localhost:5000/clinic/patient", {
           withCredentials: true,
         });
-        if (res.status === 200) {
-          const appointments = res.data;
-          setAppointments(appointments);
 
+        if (res.status === 200) {
+          const appointmentsData = res.data;
+          setAppointments(appointmentsData);
+
+          // Creating a map to store unique patients by patientId
           const patientMap = new Map();
-          appointments.forEach((appointment) => {
-            const { patientId, patientName, patientAge, patientGender } =
-              appointment;
+          appointmentsData.forEach((appointment) => {
+            const {
+              patientId,
+              patientName,
+              patientAge,
+              patientGender,
+              patientEmail,
+              patientContact,
+              clinicId,
+            } = appointment;
+
             if (patientName && !patientMap.has(patientId)) {
               patientMap.set(patientId, {
                 patientName,
                 patientAge,
                 patientGender,
+                patientEmail,
+                patientContact,
+                clinicId,
               });
             }
           });
 
+          // Convert the map values to an array of unique patients
           const uniquePatientsList = Array.from(patientMap.values());
           setUniquePatients(uniquePatientsList);
           dispatch(getPatientSuccess(uniquePatientsList));
+
+          console.log("Unique Patients List: ", uniquePatientsList);
+
+          // Send the unique patients to the backend
+          await axios.post(
+            "http://localhost:5000/list/patients",
+            uniquePatientsList, // This is the array of patients
+            {
+              withCredentials: true,
+            }
+          );
         }
       } catch (error) {
         setError("There was a problem fetching patients.");
@@ -53,16 +78,15 @@ const PatientList = () => {
     <div>
       <h1>Patients</h1>
       <div className="patients-container">
-        {uniquePatients.map((patient, index) => {
-          return (
-            <div key={index}>
-              <p>{patient.patientName}</p>
-              <p>Age: {patient.patientAge}</p>
-              <p>Gender: {patient.patientGender}</p>
-            </div>
-          );
-        })}
+        {uniquePatients.map((patient, index) => (
+          <div key={index}>
+            <p>{patient.patientName}</p>
+            <p>Age: {patient.patientAge}</p>
+            <p>Gender: {patient.patientGender}</p>
+          </div>
+        ))}
       </div>
+      {error && <p>{error}</p>}
     </div>
   );
 };
