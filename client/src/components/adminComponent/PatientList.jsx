@@ -46,6 +46,7 @@ const PatientList = () => {
                 patientEmail,
                 patientContact,
                 clinicId,
+                patientId,
               });
             }
           });
@@ -54,8 +55,6 @@ const PatientList = () => {
           const uniquePatientsList = Array.from(patientMap.values());
           setUniquePatients(uniquePatientsList);
           dispatch(getPatientSuccess(uniquePatientsList));
-
-          console.log("Unique Patients List: ", uniquePatientsList);
 
           // Send the unique patients to the backend
           await axios.post(

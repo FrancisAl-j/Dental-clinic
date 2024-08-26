@@ -21,6 +21,10 @@ const patientListSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Clinic",
   },
+  patientId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Patient",
+  },
 });
 
 const Patient_List = mongoose.model("Patient-list", patientListSchema);

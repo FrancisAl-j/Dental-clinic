@@ -7,7 +7,6 @@ import Patient_List from "../models/patientListModel.js";
 const storePatient = async (req, res, next) => {
   const patients = req.body; // Assuming req.body is an array of patients
 
-  // Check if req.body is an array
   if (!Array.isArray(patients)) {
     return res.status(400).json({ message: "Request body must be an array" });
   }
@@ -18,9 +17,9 @@ const storePatient = async (req, res, next) => {
       return res.status(400).json({ message: "Unauthenticated User!" });
     }
 
-    // Iterate over the patients array and validate each patient object
-    const patientDocs = patients.map((patient) => {
+    for (const patient of patients) {
       const {
+        patientId,
         patientName,
         patientAge,
         patientEmail,
@@ -29,30 +28,42 @@ const storePatient = async (req, res, next) => {
       } = patient;
 
       // Validate required fields
-      if (!patientName || !patientAge || !patientEmail || !patientGender) {
-        throw new Error("Missing required patient fields");
+      if (
+        !patientId ||
+        !patientName ||
+        !patientAge ||
+        !patientEmail ||
+        !patientGender
+      ) {
+        return res
+          .status(400)
+          .json({ message: "Missing required patient fields" });
       }
 
-      // Return a new Patient_List document
-      return new Patient_List({
-        patientName,
-        patientAge,
-        patientEmail,
-        patientContact,
-        patientGender,
-        clinicId: user.clinicId, // Assign the clinicId here
-      });
-    });
+      // Check if the patient already exists in the Patient_List collection
+      const existingPatient = await Patient_List.findOne({ patientId });
 
-    // Save all patient documents to MongoDB using insertMany
-    await Patient_List.insertMany(patientDocs);
+      if (existingPatient) {
+        console.log(`Patient with ID ${patientId} already exists.`);
+        // You could update the existing patient record if needed
+      } else {
+        // Create a new patient document if it doesn't exist
+        const newPatient = new Patient_List({
+          patientId,
+          patientName,
+          patientAge,
+          patientEmail,
+          patientContact,
+          patientGender,
+          clinicId: user.clinicId,
+        });
+
+        await newPatient.save();
+      }
+    }
 
     res.status(200).json({ message: "Patients successfully stored" });
   } catch (error) {
-    // Check if error is from patient validation
-    if (error.message === "Missing required patient fields") {
-      return res.status(400).json({ message: error.message });
-    }
     next(error);
   }
 };

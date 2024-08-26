@@ -93,7 +93,6 @@ const Appointment = () => {
 
       if (res.status === 200) {
         dispatch(addAppointment(res.data));
-        console.log(res.data);
 
         setMessage("Appointment booked succesfully.");
       }
