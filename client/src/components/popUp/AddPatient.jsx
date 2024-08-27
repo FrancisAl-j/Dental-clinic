@@ -4,12 +4,11 @@ import "./popup.css";
 const AddPatient = ({ setPopUp }) => {
   return (
     <div className="popup">
-      <div className="logo-header">
-        <h1>Add a patient</h1>
-        <img onClick={() => setPopUp(false)} src={Close} alt="Close" />
-      </div>
-
       <div className="popup-container">
+        <div className="logo-header">
+          <h1>Add a patient</h1>
+          <img onClick={() => setPopUp(false)} src={Close} alt="Close" />
+        </div>
         <form>
           <div className="popup-element">
             <input type="text" placeholder="Patient Name" />
