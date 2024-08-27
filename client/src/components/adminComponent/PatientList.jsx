@@ -13,10 +13,10 @@ const PatientList = () => {
   const [appointments, setAppointments] = useState([]);
   const [uniquePatients, setUniquePatients] = useState([]);
 
+  // This userEffect is for getting the data from appointment then posting/storing the necessary data to patientList
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-        dispatch(getPatientStart());
         const res = await axios.get("http://localhost:5000/clinic/patient", {
           withCredentials: true,
         });
@@ -54,7 +54,6 @@ const PatientList = () => {
           // Convert the map values to an array of unique patients
           const uniquePatientsList = Array.from(patientMap.values());
           setUniquePatients(uniquePatientsList);
-          dispatch(getPatientSuccess(uniquePatientsList));
 
           // Send the unique patients to the backend
           await axios.post(
@@ -71,6 +70,25 @@ const PatientList = () => {
     };
 
     fetchPatients();
+  }, [dispatch]);
+
+  // This useEffect get all the data from patientList to display in the web
+  useEffect(() => {
+    const displayPatients = async () => {
+      try {
+        dispatch(getPatientStart());
+        const res = await axios.get("http://localhost:5000/list/patient-list", {
+          withCredentials: true,
+        });
+        if (res.status === 200) {
+          dispatch(getPatientSuccess(res.data));
+        }
+      } catch (error) {
+        setError("There was a problem fetching patients.");
+      }
+    };
+
+    displayPatients();
   }, [dispatch]);
 
   return (
