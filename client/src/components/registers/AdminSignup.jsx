@@ -12,7 +12,7 @@ const AdminSignUp = () => {
     password: "",
     Cpassword: "",
   });
-  const [error, setError] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -44,7 +44,18 @@ const AdminSignUp = () => {
         setError(true);
       }
     } catch (error) {
-      setError(error);
+      if (error.response) {
+        const status = error.response.status;
+        if (status === 404) {
+          setError("User not found, please check your Email or password");
+        } else if (status === 400) {
+          setError("Password is required");
+        } else {
+          setError("An unexpected error occur, please try again");
+        }
+      } else {
+        setError("Network error please check your connection");
+      }
     }
   };
 
@@ -115,7 +126,7 @@ const AdminSignUp = () => {
           </div>
           <button type="submit">Sign up</button>
         </form>
-        <p>{error && "Something went wrong"}</p>
+        <p>{error}</p>
         <Link to="/patient-signup">
           <span>Sign up as Patient</span>
         </Link>

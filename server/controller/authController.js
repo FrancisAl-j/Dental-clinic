@@ -12,6 +12,10 @@ const adminRegister = async (req, res, next) => {
     return res.status(400).json("Password do not match");
   }
 
+  if (!password || password.trim().length === 0) {
+    return res.status(400).json({ message: "Password is required" });
+  }
+
   const hashedPassword = bcryptjs.hashSync(password, 10);
   const newAdmin = new Admin({
     name: fullname,
@@ -89,6 +93,10 @@ const assistantSignup = async (req, res, next) => {
     res.status(400).json({ message: "Password do not match!" });
   }
 
+  if (!password || password.trim().length === 0) {
+    return res.status(400).json({ message: "Password is required" });
+  }
+
   const hashedPassword = bcryptjs.hashSync(password, 10);
   const assistant = new Assistant({
     username,
@@ -116,6 +124,11 @@ const cashierSignup = async (req, res, next) => {
   if (password !== Cpassword) {
     return res.status(400).json({ message: "Password do not match!" });
   }
+
+  if (!password || password.trim().length === 0) {
+    return res.status(400).json({ message: "Password is required" });
+  }
+
   const hashedPassword = bcryptjs.hashSync(password, 10);
   const cashier = new Cashier({
     username,
@@ -143,6 +156,11 @@ const patientSignup = async (req, res, next) => {
   if (password !== Cpassword) {
     return res.status(400).json({ message: "Password do not match!" });
   }
+
+  if (!password || password.trim().length === 0) {
+    return res.status(400).json({ message: "Password is required" });
+  }
+
   const hashedPassword = bcryptjs.hashSync(password, 10);
   const patient = new Patient({
     username,

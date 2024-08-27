@@ -44,7 +44,18 @@ const PatientSignup = () => {
         setMessage("Account created successfully");
       }
     } catch (error) {
-      setError("Something went wrong!");
+      if (error.response) {
+        const status = error.response.status;
+        if (status === 404) {
+          setError("User not found, please check your Email or password");
+        } else if (status === 400) {
+          setError("Password is required");
+        } else {
+          setError("An unexpected error occur, please try again");
+        }
+      } else {
+        setError("Network error please check your connection");
+      }
     }
   };
 
