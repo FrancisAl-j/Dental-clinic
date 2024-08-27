@@ -117,4 +117,4 @@ const addPatient = async (req, res, next) => {
   }
 };
 
-export default { storePatient, displayPatients };
+export default { storePatient, displayPatients, addPatient };

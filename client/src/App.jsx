@@ -19,12 +19,16 @@ import Appointment from "./components/appointment/Appointment";
 import AppointmentList from "./components/appointment/AppointmentList";
 import ViewAppointment from "./components/patientComponents/ViewAppointment";
 import PatientList from "./components/adminComponent/PatientList";
+import AddPatient from "./components/popUp/AddPatient";
 import "./app.css";
+import { useState } from "react";
 
 const App = () => {
+  const [popUp, setPopUp] = useState(false);
   return (
     <>
       <BrowserRouter>
+        {popUp && <AddPatient setPopUp={setPopUp} />}
         <Nav />
         <main>
           <Routes>
@@ -37,7 +41,7 @@ const App = () => {
 
             <Route element={<PrivateRoute />}>
               <Route path="/create-clinic" element={<CreateClinic />} />
-              <Route path="/clinic" element={<Clinic />} />
+              <Route path="/clinic" element={<Clinic setPopUp={setPopUp} />} />
               <Route path="/create-assistant" element={<AssistantSignup />} />
               <Route path="/create-cashier" element={<CashierSignup />} />
               <Route path="/clinics" element={<ViewClinics />} />

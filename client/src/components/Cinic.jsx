@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-const Clinic = () => {
+const Clinic = ({ setPopUp }) => {
   const { currentClinic } = useSelector((state) => state.clinic);
 
   return (
@@ -15,6 +15,7 @@ const Clinic = () => {
       <Link to="/patients">
         <button>Patient list</button>
       </Link>
+      <button onClick={() => setPopUp(true)}>Add Patient</button>
       <h1>Clinic</h1>
       {currentClinic ? (
         <h1>{currentClinic.clinicName}</h1>

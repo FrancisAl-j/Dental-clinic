@@ -11,6 +11,6 @@ router.post("/patients", verifyUser, controller.storePatient);
 router.get("/patient-list", verifyUser, controller.displayPatients);
 
 // Manually creating patients
-router.post("/create-patient");
+router.post("/create-patient", verifyUser, controller.addPatient);
 
 export default router;
