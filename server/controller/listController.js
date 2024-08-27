@@ -86,4 +86,35 @@ const displayPatients = async (req, res, next) => {
   }
 };
 
+// Manually adding patients
+const addPatient = async (req, res, next) => {
+  const {
+    patientName,
+    patientAge,
+    patientEmail,
+    patientGender,
+    patientContact,
+  } = req.body;
+  try {
+    const admin = await Admin.findById(req.user.is);
+    if (!admin) {
+      return res.status(400).json({ message: "Admin unauthenticated" });
+    }
+    const newPatient = new Patient_List({
+      patientName,
+      patientAge,
+      patientEmail,
+      patientGender,
+      patientContact,
+      clinicId: admin.clinicId,
+    });
+
+    await newPatient.save();
+
+    res.status(200).json({ message: "Patient successfully created" });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default { storePatient, displayPatients };

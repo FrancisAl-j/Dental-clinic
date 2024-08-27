@@ -10,4 +10,7 @@ router.post("/patients", verifyUser, controller.storePatient);
 // Display all the patients inside database
 router.get("/patient-list", verifyUser, controller.displayPatients);
 
+// Manually creating patients
+router.post("/create-patient");
+
 export default router;
