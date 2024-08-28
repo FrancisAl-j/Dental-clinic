@@ -96,10 +96,11 @@ const addPatient = async (req, res, next) => {
     patientContact,
   } = req.body;
   try {
-    const admin = await Admin.findById(req.user.is);
+    const admin = await Admin.findById(req.user.id);
     if (!admin) {
       return res.status(400).json({ message: "Admin unauthenticated" });
     }
+
     const newPatient = new Patient_List({
       patientName,
       patientAge,

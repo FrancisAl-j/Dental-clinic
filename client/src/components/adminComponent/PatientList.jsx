@@ -95,7 +95,7 @@ const PatientList = () => {
     <div>
       <h1>Patients</h1>
       <div className="patients-container">
-        {uniquePatients.map((patient, index) => (
+        {patients.map((patient, index) => (
           <div key={index}>
             <p>{patient.patientName}</p>
             <p>Age: {patient.patientAge}</p>

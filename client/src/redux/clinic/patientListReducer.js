@@ -17,9 +17,22 @@ export const patientListSlice = createSlice({
       state.loading = false;
       state.patients = action.payload;
     },
+    addPatientStart: (state) => {
+      state.loading = true;
+    },
+    addPatientSuccess: (state, action) => {
+      state.loading = false;
+      state.patients.push(action.payload);
+      console.log(state.patients);
+    },
   },
 });
 
 export default patientListSlice.reducer;
 
-export const { getPatientStart, getPatientSuccess } = patientListSlice.actions;
+export const {
+  getPatientStart,
+  getPatientSuccess,
+  addPatientStart,
+  addPatientSuccess,
+} = patientListSlice.actions;
