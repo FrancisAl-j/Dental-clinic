@@ -6,6 +6,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import crypto from "crypto";
 import bodyParser from "body-parser";
+import nodemailer from "nodemailer";
 
 // Files
 import connectDB from "./config.js";
@@ -28,6 +29,32 @@ app.use(
 
 //const secretKey = crypto.randomBytes(64).toString("hex");
 //console.log("Generated Secret Key:", secretKey);
+
+// Create a transporter
+const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
+  auth: {
+    user: "kikobilas123@gmail.com",
+    pass: process.env.APP_PASSWORD,
+  },
+});
+
+const mailOption = {
+  from: "kikobilas123@gmail.com",
+  to: "bilas.fa.bsinfotech@gmail.com",
+  subject: "Sending Email using Node.js",
+  text: "That was easy!",
+};
+
+transporter.sendMail(mailOption, (error, info) => {
+  if (error) {
+    console.log("Error:", error);
+  } else {
+    console.log("Email sent: ", info.response);
+  }
+});
 
 // for Authentication
 app.use("/auth", authRoute);
