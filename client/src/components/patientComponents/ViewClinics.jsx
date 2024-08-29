@@ -28,20 +28,27 @@ const ViewClinics = () => {
 
   return (
     <div>
-      <h1>Available Clinics</h1>
+      <div className="clinic-nav">
+        <Link to="/clinics">
+          <div>Clinics</div>
+        </Link>
+      </div>
+      <div className="clinic-content">
+        <h1>Available Clinics</h1>
 
-      <div className="clinics-container">
-        {currentClinics.map((clinic) => (
-          <Link
-            key={clinic.id}
-            to={`/clinic/${clinic.id}/${clinic.clinicName}`}
-          >
-            <div className="clinic-wrapper">
-              <h1>{clinic.clinicName}</h1>
-              <p>{clinic.location}</p>
-            </div>
-          </Link>
-        ))}
+        <div className="clinics-container">
+          {currentClinics.map((clinic) => (
+            <Link
+              key={clinic.id}
+              to={`/clinic/${clinic.id}/${clinic.clinicName}`}
+            >
+              <div className="clinic-wrapper">
+                <h1>{clinic.clinicName}</h1>
+                <p>{clinic.location}</p>
+              </div>
+            </Link>
+          ))}
+        </div>
       </div>
     </div>
   );

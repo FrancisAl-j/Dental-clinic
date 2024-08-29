@@ -5,7 +5,7 @@ import Nav from "./components/nav";
 import Signin from "./components/Signin";
 import AdminSignUp from "./components/registers/AdminSignup";
 import CreateClinic from "./components/CreateClinic";
-import Clinic from "./components/Cinic";
+import Clinic from "./components/Clinic";
 import AssistantSignup from "./components/AssistantSignup";
 import CashierSignup from "./components/registers/cashierSignup";
 import PatientSignup from "./components/registers/PatientSignup";
