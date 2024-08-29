@@ -7,6 +7,7 @@ import {
   updateAppointment,
 } from "../../redux/clinic/appointmentReducer";
 import axios from "axios";
+import "./appointmentList.css";
 
 const AppointmentList = () => {
   const dispatch = useDispatch();
@@ -67,9 +68,18 @@ const AppointmentList = () => {
 
   return (
     <div>
+      <div className="list">
+        <p>Name</p>
+        <p>Age</p>
+        <p>Gender</p>
+        <p>Date</p>
+        <p>Status</p>
+        <p>Update</p>
+      </div>
+      <hr />
       {appointments.map((appointment) => {
         return (
-          <div key={appointment._id}>
+          <div className="list" key={appointment._id}>
             <p>{appointment.patientName}</p>
             <p>{appointment.patientAge}</p>
             <p>{appointment.patientGender}</p>
