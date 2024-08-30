@@ -7,14 +7,14 @@ import Patient from "../models/patientModel.js";
 import Appointment from "../models/appointmentModel.js";
 
 const createClinic = async (req, res, next) => {
-  const { clinicName, location, email, phone } = req.body;
+  const { clinicName, location, email, phone, logo } = req.body;
   try {
     const admin = await Admin.findById(req.user.id);
     if (!admin) {
       return res.status(400).json("Unathenticated user!");
     }
 
-    const clinic = new Clinic({ clinicName, location, email, phone });
+    const clinic = new Clinic({ clinicName, location, email, phone, logo });
     await clinic.save();
 
     admin.clinicId = clinic._id;

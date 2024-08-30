@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { setClinic, failClinic } from "../redux/clinic/clinicReducer.js";
 import axios from "axios";
 import { useDispatch } from "react-redux";
@@ -25,20 +25,24 @@ const CreateClinic = () => {
     logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb51ZwKCKqU4ZrB9cfaUNclbeRiC-V-KZsfQ&s",
   });
 
+  const fileRef = useRef(null);
+
   useEffect(() => {
     if (image) {
-      handleFileUpdload();
+      console.log("Image selected, starting upload...");
+      handleFileUpload(image);
     }
-  }, []);
+  }, [image]);
 
-  const handleFileUpdload = async (image) => {
+  const handleFileUpload = async (image) => {
     const storage = getStorage(app);
-    const fileName = new Data().getTime() + image.name;
+    const fileName = new Date().getTime() + image.name;
     const storageRef = ref(storage, fileName);
 
-    const uploadTask = uploadBytesResumable(storageRef, image);
+    const updloadTask = uploadBytesResumable(storageRef, image);
 
-    uploadTask.on(
+    // this coded below show the percentage of loading or upload
+    updloadTask.on(
       "state_changed",
       (snapshot) => {
         const progress =
@@ -47,17 +51,18 @@ const CreateClinic = () => {
       },
       (error) => {
         setImageError(true);
+        console.error("Upload failed:", error);
       },
       () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          setFormData({
-            ...formData,
-            logo: downloadURL,
-          });
-        });
+        getDownloadURL(updloadTask.snapshot.ref).then((downloadURL) =>
+          setFormData({ ...formData, logo: downloadURL })
+        );
+        console.log("File available at", downloadURL);
       }
     );
   };
+
+  console.log(image);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -114,9 +119,26 @@ const CreateClinic = () => {
             <input
               type="file"
               accept="image/*"
-              onChange={(e) => e.target.value[0]}
+              ref={fileRef}
+              hidden
+              onChange={(e) => setImage(e.target.files[0])}
             />
-            <img src={formData.logo} alt="" />
+            <img
+              onClick={() => fileRef.current.click()}
+              src={formData.logo}
+              alt=""
+            />
+            <p className="img-text">
+              {imageError ? (
+                <span className="img-err">Error uploading image</span>
+              ) : imageLoading > 0 && imageLoading < 100 ? (
+                <span className="img-loading">{`Uploading image... ${imageLoading}%`}</span>
+              ) : imageLoading === 100 ? (
+                <span className="img-success">Image uploaded successfully</span>
+              ) : (
+                ""
+              )}
+            </p>
           </div>
           <div className="form-element">
             <span>Clinic name</span>
