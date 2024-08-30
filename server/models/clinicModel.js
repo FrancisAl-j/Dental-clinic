@@ -24,7 +24,7 @@ const clinicSchema = new mongoose.Schema(
     logo: {
       type: String,
       default:
-        "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.shutterstock.com%2Fsearch%2Fdefault-logo&psig=AOvVaw2DHxtP6or-bEb4ZgbwpqNm&ust=1725032062997000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCPjxiqzDmogDFQAAAAAdAAAAABAE",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb51ZwKCKqU4ZrB9cfaUNclbeRiC-V-KZsfQ&s",
     },
   },
 

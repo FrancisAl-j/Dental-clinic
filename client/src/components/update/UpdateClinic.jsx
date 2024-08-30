@@ -6,8 +6,10 @@ import {
   deleteSuccessClinic,
 } from "../../redux/clinic/clinicReducer.js";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const UpdateClinic = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { currentClinic } = useSelector((state) => state.clinic);
   const [formData, setFormData] = useState({
@@ -94,7 +96,8 @@ const UpdateClinic = () => {
           }
         );
         if (res.status === 200) {
-          //dispatch(deleteSuccessClinic());
+          dispatch(deleteSuccessClinic());
+          navigate("/create-clinic");
         }
       }
     } catch (error) {

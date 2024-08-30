@@ -29,6 +29,7 @@ const Clinic = ({ setPopUp }) => {
 
       <div className="clinic-content">
         <header>
+          <img className="logo" src={currentClinic.logo} alt="logo" />
           <h1>{currentClinic.clinicName}</h1>
           <button onClick={() => setPopUp(true)}>Add Patient</button>
         </header>

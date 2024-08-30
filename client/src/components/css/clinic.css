@@ -18,6 +18,8 @@
 .clinic-nav {
   background: var(--light-blue);
   height: 100%;
+  width: 200px;
+  padding: 20px 0;
 }
 .clinic-nav ul {
   list-style: none;
@@ -38,4 +40,18 @@
   justify-content: space-between;
   align-items: center;
   background: transparent;
+}
+.clinic-content header .logo {
+  aspect-ratio: 1/1;
+  width: 60px;
+  border-radius: 50%;
+}
+.clinic-content header button {
+  padding: 8px 10px;
+  cursor: pointer;
+  border-radius: 20px;
+}
+.clinic-content header button:hover {
+  background: var(--dark-blue);
+  color: var(--dirty-white);
 }

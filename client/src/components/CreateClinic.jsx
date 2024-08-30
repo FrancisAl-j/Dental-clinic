@@ -1,16 +1,63 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { setClinic, failClinic } from "../redux/clinic/clinicReducer.js";
 import axios from "axios";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage"; // <- line 6-10 importing the necessary for uploading the images to firebase
+import { app } from "../firebase.js";
 
 const CreateClinic = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [image, setImage] = useState(undefined);
+  const [imageLoading, setImageLoading] = useState(0);
+  const [imageError, setImageError] = useState(false); // handles error
   const [formData, setFormData] = useState({
     clinicName: "",
     location: "",
     email: "",
     phone: "",
+    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb51ZwKCKqU4ZrB9cfaUNclbeRiC-V-KZsfQ&s",
   });
+
+  useEffect(() => {
+    if (image) {
+      handleFileUpdload();
+    }
+  }, []);
+
+  const handleFileUpdload = async (image) => {
+    const storage = getStorage(app);
+    const fileName = new Data().getTime() + image.name;
+    const storageRef = ref(storage, fileName);
+
+    const uploadTask = uploadBytesResumable(storageRef, image);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setImageLoading(Math.round(progress));
+      },
+      (error) => {
+        setImageError(true);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setFormData({
+            ...formData,
+            logo: downloadURL,
+          });
+        });
+      }
+    );
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,7 +82,8 @@ const CreateClinic = () => {
 
       const data = res.data;
       if (res.status === 200) {
-        dispatch(setClinic(res.data));
+        dispatch(setClinic(data));
+        navigate("/clinic");
       } else {
         dispatch(failClinic({ message: "Something went wrong!" }));
       }
@@ -62,6 +110,14 @@ const CreateClinic = () => {
 
       <div className="form-wrapper">
         <form onSubmit={handleSubmit}>
+          <div className="logo-container">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => e.target.value[0]}
+            />
+            <img src={formData.logo} alt="" />
+          </div>
           <div className="form-element">
             <span>Clinic name</span>
             <input
