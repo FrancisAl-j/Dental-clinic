@@ -50,6 +50,7 @@ const ViewClinic = () => {
   return (
     <div>
       <button onClick={handleBack}>Back</button>
+      <img src={clinic.logo} alt="" />
       <h1>{clinic.clinicName}</h1>
       <h3>{clinic.location}</h3>
       <span>{clinic.email}</span>

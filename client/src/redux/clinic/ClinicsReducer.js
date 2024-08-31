@@ -16,6 +16,7 @@ export const clinicsSlice = createSlice({
           location: clinic.location,
           email: clinic.email,
           contact: clinic.phone,
+          logo: clinic.logo,
         };
       });
     },
