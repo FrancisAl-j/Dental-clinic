@@ -1,10 +1,78 @@
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import "../components/css/clinic.css";
+import { useDispatch } from "react-redux";
+import axios from "axios";
 
 const Clinic = ({ setPopUp }) => {
+  const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
   const { currentClinic } = useSelector((state) => state.clinic);
+
+  const [error, setError] = useState(null);
+  const [appointments, setAppointments] = useState([]);
+  const [uniquePatients, setUniquePatients] = useState([]);
+
+  // This userEffect is for getting the data from appointment then posting/storing the necessary data to patientList
+  useEffect(() => {
+    const fetchPatients = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/clinic/patient", {
+          withCredentials: true,
+        });
+
+        if (res.status === 200) {
+          const appointmentsData = res.data;
+          setAppointments(appointmentsData);
+
+          // Creating a map to store unique patients by patientId
+          const patientMap = new Map();
+          appointmentsData.forEach((appointment) => {
+            const {
+              patientId,
+              patientName,
+              patientAge,
+              patientGender,
+              patientEmail,
+              patientContact,
+              clinicId,
+            } = appointment;
+
+            if (patientName && !patientMap.has(patientId)) {
+              patientMap.set(patientId, {
+                patientName,
+                patientAge,
+                patientGender,
+                patientEmail,
+                patientContact,
+                clinicId,
+                patientId,
+              });
+            }
+          });
+
+          // Convert the map values to an array of unique patients
+          const uniquePatientsList = Array.from(patientMap.values());
+          setUniquePatients(uniquePatientsList);
+          console.log(uniquePatientsList);
+
+          // Send the unique patients to the backend
+          await axios.post(
+            "http://localhost:5000/list/patients",
+            uniquePatientsList, // This is the array of patients
+            {
+              withCredentials: true,
+            }
+          );
+        }
+      } catch (error) {
+        setError("There was a problem fetching patients.");
+      }
+    };
+
+    fetchPatients();
+  }, []);
 
   return (
     <div className="clinic-container">

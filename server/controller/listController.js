@@ -66,15 +66,10 @@ const storePatient = async (req, res, next) => {
           clinicId: user.clinicId,
         });
 
-        try {
-          await newPatient.save();
-          console.log(`Patient with ID ${patientId} successfully stored.`);
-        } catch (error) {
-          console.error(`Failed to store patient with ID ${patientId}:`, error);
-        }
+        await newPatient.save();
+        console.log(`Patient with ID ${patientId} successfully stored.`);
       }
     }
-
     res.status(200).json({ message: "Patients successfully stored" });
   } catch (error) {
     next(error);
