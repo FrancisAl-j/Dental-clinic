@@ -5,7 +5,7 @@ import { clearClinic } from "../redux/clinic/clinicReducer.js";
 import { signout } from "../redux/user/userSlice.js";
 import { clearAppointment } from "../redux/clinic/appointmentReducer.js";
 import { clearHistoryAppointment } from "../redux/clinic/historyAppointmentReducer.js";
-
+import { clearPatients } from "../redux/clinic/patientListReducer.js";
 import Login from "../assets/logout.svg";
 import Signup from "../assets/register.svg";
 
@@ -23,6 +23,7 @@ const Nav = () => {
       dispatch(clearClinic());
       dispatch(clearAppointment());
       dispatch(clearHistoryAppointment());
+      dispatch(clearPatients());
     } catch (error) {
       console.log(error);
     }

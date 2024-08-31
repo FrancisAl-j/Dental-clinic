@@ -11,6 +11,8 @@ import {
 } from "firebase/storage"; // <- line 6-10 importing the necessary for uploading the images to firebase
 import { app } from "../firebase.js";
 
+import "./css/createClinic.css";
+
 const CreateClinic = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -29,7 +31,6 @@ const CreateClinic = () => {
 
   useEffect(() => {
     if (image) {
-      console.log("Image selected, starting upload...");
       handleFileUpload(image);
     }
   }, [image]);
@@ -51,18 +52,14 @@ const CreateClinic = () => {
       },
       (error) => {
         setImageError(true);
-        console.error("Upload failed:", error);
       },
       () => {
         getDownloadURL(updloadTask.snapshot.ref).then((downloadURL) =>
           setFormData({ ...formData, logo: downloadURL })
         );
-        console.log("File available at", downloadURL);
       }
     );
   };
-
-  console.log(image);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -124,6 +121,7 @@ const CreateClinic = () => {
               onChange={(e) => setImage(e.target.files[0])}
             />
             <img
+              className="logo"
               onClick={() => fileRef.current.click()}
               src={formData.logo}
               alt=""

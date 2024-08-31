@@ -1,0 +1,12 @@
+:root {
+  --light-blue: #87d3f0;
+  --grayish-blue: #5ca7c3;
+  --dark-blue: #236078;
+  --dirty-white: #efefef;
+  --rough-black: #2e2e2e;
+}
+.logo-container .logo {
+  aspect-ratio: 1/1;
+  width: 200px;
+  border-radius: 50%;
+}

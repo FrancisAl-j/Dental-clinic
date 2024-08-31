@@ -49,6 +49,9 @@ app.use("/user", userRoute);
 app.use("/list", listRoute);
 
 app.use((err, req, res, next) => {
+  if (res.headersSent) {
+    return next(err);
+  }
   const statusCode = err.statusCode || 500;
   const message = err.message || "Internal Server Error";
 

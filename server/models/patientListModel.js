@@ -17,6 +17,10 @@ const patientListSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  patientContact: {
+    type: Number,
+    required: true,
+  },
   clinicId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Clinic",

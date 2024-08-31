@@ -18,6 +18,7 @@ const storePatient = async (req, res, next) => {
     }
 
     for (const patient of patients) {
+      console.log(`Processing patient ID: ${patient.patientId}`);
       const {
         patientId,
         patientName,
@@ -25,6 +26,7 @@ const storePatient = async (req, res, next) => {
         patientEmail,
         patientContact,
         patientGender,
+        clinicId,
       } = patient;
 
       // Validate required fields
@@ -33,7 +35,8 @@ const storePatient = async (req, res, next) => {
         !patientName ||
         !patientAge ||
         !patientEmail ||
-        !patientGender
+        !patientGender ||
+        !patientContact
       ) {
         return res
           .status(400)
@@ -41,10 +44,15 @@ const storePatient = async (req, res, next) => {
       }
 
       // Check if the patient already exists in the Patient_List collection
-      const existingPatient = await Patient_List.findOne({ patientId });
+      const existingPatient = await Patient_List.findOne({
+        patientId,
+        clinicId: user.clinicId,
+      });
 
       if (existingPatient) {
-        console.log(`Patient with ID ${patientId} already exists.`);
+        console.log(
+          `Patient with ID ${patientId} already exists in this clinic ${clinicId}`
+        );
         // You could update the existing patient record if needed
       } else {
         // Create a new patient document if it doesn't exist
@@ -58,7 +66,12 @@ const storePatient = async (req, res, next) => {
           clinicId: user.clinicId,
         });
 
-        await newPatient.save();
+        try {
+          await newPatient.save();
+          console.log(`Patient with ID ${patientId} successfully stored.`);
+        } catch (error) {
+          console.error(`Failed to store patient with ID ${patientId}:`, error);
+        }
       }
     }
 

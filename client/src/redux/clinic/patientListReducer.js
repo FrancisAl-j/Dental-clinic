@@ -23,7 +23,9 @@ export const patientListSlice = createSlice({
     addPatientSuccess: (state, action) => {
       state.loading = false;
       state.patients.push(action.payload);
-      console.log(state.patients);
+    },
+    clearPatients: (state) => {
+      state.patients = [];
     },
   },
 });
@@ -35,4 +37,5 @@ export const {
   getPatientSuccess,
   addPatientStart,
   addPatientSuccess,
+  clearPatients,
 } = patientListSlice.actions;

@@ -6,6 +6,8 @@ import {
 } from "../../redux/clinic/patientListReducer";
 import axios from "axios";
 
+import "./patientList.css";
+
 const PatientList = () => {
   const dispatch = useDispatch();
   const patients = useSelector((state) => state.patients.patients);
@@ -54,6 +56,7 @@ const PatientList = () => {
           // Convert the map values to an array of unique patients
           const uniquePatientsList = Array.from(patientMap.values());
           setUniquePatients(uniquePatientsList);
+          console.log(uniquePatientsList);
 
           // Send the unique patients to the backend
           await axios.post(
@@ -93,13 +96,21 @@ const PatientList = () => {
 
   return (
     <div>
-      <h1>Patients</h1>
       <div className="patients-container">
+        <p>Name</p>
+        <p>Age</p>
+        <p>Gender</p>
+        <p>Email Adress</p>
+        <p>Contact Number</p>
+      </div>
+      <div>
         {patients.map((patient, index) => (
-          <div key={index}>
+          <div className="patients-container" key={index}>
             <p>{patient.patientName}</p>
-            <p>Age: {patient.patientAge}</p>
-            <p>Gender: {patient.patientGender}</p>
+            <p>{patient.patientAge}</p>
+            <p>{patient.patientGender}</p>
+            <p>{patient.patientEmail}</p>
+            <p>{patient.patientContact}</p>
           </div>
         ))}
       </div>
