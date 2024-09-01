@@ -14,6 +14,7 @@ import authRoute from "./router/authRoute.js";
 import clinicRoute from "./router/clinicRoute.js";
 import userRoute from "./router/userRoute.js";
 import listRoute from "./router/listRoute.js";
+import searchRoute from "./router/searchRoute.js";
 import sendAppointmentsReminder from "./sendingEmails/nodeMailer.js";
 
 const app = express();
@@ -47,6 +48,9 @@ app.use("/user", userRoute);
 
 // List of patients
 app.use("/list", listRoute);
+
+// Searchin for specific patients
+app.use("/search", searchRoute);
 
 app.use((err, req, res, next) => {
   if (res.headersSent) {
