@@ -4,6 +4,7 @@ import {
   getPatientStart,
   getPatientSuccess,
 } from "../../redux/clinic/patientListReducer.js";
+import Sidebar from "../sidebar/Sidebar.jsx";
 import axios from "axios";
 
 import "./patientList.css";
@@ -40,34 +41,38 @@ const PatientList = () => {
   }, [dispatch, query]);
 
   return (
-    <div>
-      <input
-        type="text"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search for Patient"
-      />
-      <div className="patients-container">
-        <p className="container-title">Name</p>
-        <p className="container-title">Age</p>
-        <p className="container-title">Gender</p>
-        <p className="container-title">Email Adress</p>
-        <p className="container-title">Contact Number</p>
-      </div>
-      <hr />
-      <div>
-        {patients.map((patient, index) => (
-          <div className="patients-container" key={index}>
-            <p>{patient.patientName}</p>
-            <p>{patient.patientAge}</p>
-            <p>{patient.patientGender}</p>
-            <p>{patient.patientEmail}</p>
-            <p>{patient.patientContact}</p>
-          </div>
-        ))}
-      </div>
+    <div className="list-container">
+      <Sidebar />
 
-      {error && <p>{error}</p>}
+      <div className="list-content">
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search for Patient"
+        />
+        <div className="patients-container">
+          <p className="container-title">Name</p>
+          <p className="container-title">Age</p>
+          <p className="container-title">Gender</p>
+          <p className="container-title">Email Adress</p>
+          <p className="container-title">Contact Number</p>
+        </div>
+        <hr />
+        <div>
+          {patients.map((patient, index) => (
+            <div className="patients-container" key={index}>
+              <p>{patient.patientName}</p>
+              <p>{patient.patientAge}</p>
+              <p>{patient.patientGender}</p>
+              <p>{patient.patientEmail}</p>
+              <p>{patient.patientContact}</p>
+            </div>
+          ))}
+        </div>
+
+        {error && <p>{error}</p>}
+      </div>
     </div>
   );
 };
