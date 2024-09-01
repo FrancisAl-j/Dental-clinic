@@ -20,6 +20,7 @@ import AppointmentList from "./components/appointment/AppointmentList";
 import ViewAppointment from "./components/patientComponents/ViewAppointment";
 import PatientList from "./components/adminComponent/PatientList";
 import AddPatient from "./components/popUp/AddPatient";
+import DentalChart from "./components/Chart/DentalChart";
 import "./app.css";
 import { useState } from "react";
 
@@ -58,6 +59,7 @@ const App = () => {
               <Route path="/view-appointments" element={<ViewAppointment />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/patients" element={<PatientList />} />
+              <Route path="/chart" element={<DentalChart />} />
             </Route>
           </Routes>
         </main>

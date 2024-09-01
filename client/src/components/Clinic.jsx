@@ -92,6 +92,12 @@ const Clinic = ({ setPopUp }) => {
               <li>Create Employees</li>
             </Link>
           )}
+
+          {currentUser && currentUser.role === "Admin" && (
+            <Link to="/chart">
+              <li>Dental Chart</li>
+            </Link>
+          )}
         </ul>
       </div>
 
