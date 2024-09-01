@@ -12,6 +12,7 @@ const PatientList = () => {
   const dispatch = useDispatch();
   const patients = useSelector((state) => state.patients.patients);
   const [error, setError] = useState(null);
+  const [query, setQuery] = useState("");
 
   // This useEffect get all the data from patientList to display in the web
   useEffect(() => {

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { toPng } from "html-to-image";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const DentalChart = () => {
   const elementRef = useRef(null);
@@ -22,7 +22,7 @@ const DentalChart = () => {
   };
 
   // Searching names of patients
-  const handleSearch = async (e) => {
+  /*const handleSearch = async (e) => {
     e.preventDefault();
     try {
       const res = await axios.get("http://localhost:5000/search/names", {
@@ -36,7 +36,24 @@ const DentalChart = () => {
     } catch (error) {
       console.log(error);
     }
-  };
+  };*/
+
+  useEffect(() => {
+    const fetchPatients = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/search/names", {
+          params: { query },
+          withCredentials: true,
+        });
+        if (res.status === 200) {
+          setResults(res.data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchPatients();
+  }, [query]);
 
   return (
     <div>
@@ -47,7 +64,6 @@ const DentalChart = () => {
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search Patients"
         />
-        <button onClick={handleSearch}>Search</button>
         {results.map((patient) => {
           return (
             <div key={patient._id}>
