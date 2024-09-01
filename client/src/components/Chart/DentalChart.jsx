@@ -22,7 +22,7 @@ const DentalChart = () => {
   };
 
   // Searching names of patients
-  /*const handleSearch = async (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault();
     try {
       const res = await axios.get("http://localhost:5000/search/names", {
@@ -36,9 +36,9 @@ const DentalChart = () => {
     } catch (error) {
       console.log(error);
     }
-  };*/
+  };
 
-  useEffect(() => {
+  /*useEffect(() => {
     const fetchPatients = async () => {
       try {
         const res = await axios.get("http://localhost:5000/search/names", {
@@ -53,7 +53,7 @@ const DentalChart = () => {
       }
     };
     fetchPatients();
-  }, [query]);
+  }, [query]);*/
 
   return (
     <div>
@@ -64,6 +64,7 @@ const DentalChart = () => {
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search Patients"
         />
+        <button onClick={handleSearch}>Search</button>
         {results.map((patient) => {
           return (
             <div key={patient._id}>

@@ -78,6 +78,8 @@ const storePatient = async (req, res, next) => {
 
 // Displaying all the patients
 const displayPatients = async (req, res, next) => {
+  const { query } = req.query;
+  const searchQuery = query ? String(query) : "";
   try {
     const admin = await Admin.findById(req.user.id);
     if (!admin) {
@@ -86,7 +88,12 @@ const displayPatients = async (req, res, next) => {
 
     const clinicId = admin.clinicId;
 
-    const patient_list = await Patient_List.find({ clinicId }).exec();
+    const patient_list = await Patient_List.find({
+      clinicId,
+      ...(searchQuery && {
+        patientName: { $regex: query, $options: "i" },
+      }),
+    }).exec();
 
     res.status(200).json(patient_list);
   } catch (error) {

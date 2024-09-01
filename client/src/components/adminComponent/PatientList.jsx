@@ -20,6 +20,7 @@ const PatientList = () => {
       try {
         dispatch(getPatientStart());
         const res = await axios.get("http://localhost:5000/list/patient-list", {
+          params: { query },
           withCredentials: true,
         });
         if (res.status === 200) {
@@ -36,10 +37,16 @@ const PatientList = () => {
     };
 
     displayPatients();
-  }, [dispatch]);
+  }, [dispatch, query]);
 
   return (
     <div>
+      <input
+        type="text"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        placeholder="Search for Patient"
+      />
       <div className="patients-container">
         <p className="container-title">Name</p>
         <p className="container-title">Age</p>
