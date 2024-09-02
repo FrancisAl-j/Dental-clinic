@@ -10,6 +10,7 @@ import axios from "axios";
 import "./appointmentList.css";
 import Sidebar from "../sidebar/Sidebar";
 import CheckDate from "./CheckDate";
+import Button from "./Button";
 
 const AppointmentList = () => {
   const dispatch = useDispatch();
@@ -128,14 +129,7 @@ const AppointmentList = () => {
                 </select>
               )}
 
-              <button
-                disabled={appointment.status === "Canceled"}
-                onClick={() =>
-                  updateStatus(appointment._id, appointment.status)
-                }
-              >
-                Update status
-              </button>
+              <Button appointment={appointment} />
             </div>
           );
         })}
