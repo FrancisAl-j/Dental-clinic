@@ -6,6 +6,10 @@ const dentalRecordSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Patient",
     },
+    clinicId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Clinic",
+    },
     treatments: [String],
     conditions: [String],
     chartDetails: {
