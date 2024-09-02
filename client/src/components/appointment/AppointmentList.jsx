@@ -8,6 +8,8 @@ import {
 } from "../../redux/clinic/appointmentReducer";
 import axios from "axios";
 import "./appointmentList.css";
+import Sidebar from "../sidebar/Sidebar";
+import CheckDate from "./CheckDate";
 
 const AppointmentList = () => {
   const dispatch = useDispatch();
@@ -92,47 +94,52 @@ const AppointmentList = () => {
   };
 
   return (
-    <div>
-      <div className="list">
-        <p>Name</p>
-        <p>Age</p>
-        <p>Gender</p>
-        <p>Date</p>
-        <p>Status</p>
-        <p>Update</p>
-      </div>
-      <hr />
-      {appointments.map((appointment) => {
-        return (
-          <div className="list" key={appointment._id}>
-            <p>{appointment.patientName}</p>
-            <p>{appointment.patientAge}</p>
-            <p>{appointment.patientGender}</p>
-            <p>{formatDate(appointment.appointmentDate)}</p>
+    <div className="appointment-container">
+      <Sidebar />
 
-            {appointment.status === "Canceled" ? (
-              <p>Canceled</p>
-            ) : (
-              <select
-                value={appointment.status} // Set the select's value to the current status of the appointment
-                onChange={(e) => handleChange(e, appointment._id)} // Pass the id and new status to the update function
+      <div className="appointment-content">
+        <div className="list">
+          <p>Name</p>
+          <p>Age</p>
+          <p>Gender</p>
+          <p>Date</p>
+          <p>Status</p>
+          <p>Update</p>
+        </div>
+        <hr />
+        {appointments.map((appointment) => {
+          return (
+            <div className="list" key={appointment._id}>
+              <p>{appointment.patientName}</p>
+              <p>{appointment.patientAge}</p>
+              <p>{appointment.patientGender}</p>
+              <CheckDate appointment={appointment} />
+              {appointment.status === "Canceled" ? (
+                <p>Canceled</p>
+              ) : (
+                <select
+                  value={appointment.status} // Set the select's value to the current status of the appointment
+                  onChange={(e) => handleChange(e, appointment._id)} // Pass the id and new status to the update function
+                >
+                  <option value="Pending">Pending</option>
+                  <option value="Confirmed">Confirmed</option>
+                  <option value="Completed">Completed</option>
+                  <option value="Canceled">Canceled</option>
+                </select>
+              )}
+
+              <button
+                disabled={appointment.status === "Canceled"}
+                onClick={() =>
+                  updateStatus(appointment._id, appointment.status)
+                }
               >
-                <option value="Pending">Pending</option>
-                <option value="Confirmed">Confirmed</option>
-                <option value="Completed">Completed</option>
-                <option value="Canceled">Canceled</option>
-              </select>
-            )}
-
-            <button
-              disabled={appointment.status === "Canceled"}
-              onClick={() => updateStatus(appointment._id, appointment.status)}
-            >
-              Update status
-            </button>
-          </div>
-        );
-      })}
+                Update status
+              </button>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };

@@ -5,7 +5,14 @@
   --dirty-white: #efefef;
   --rough-black: #2e2e2e;
 }
-
+.appointment-container {
+  display: flex;
+  justify-content: space-between;
+}
+.appointment-content {
+  width: 100%;
+  padding: 0 10px;
+}
 .list {
   display: grid;
   grid-template-columns: 2fr 0.6fr 1fr 1.5fr 1fr 1fr;
