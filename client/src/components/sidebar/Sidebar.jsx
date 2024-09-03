@@ -30,7 +30,7 @@ const Sidebar = () => {
         )}
 
         <Link to="/service">
-          <li>Services</li>
+          <li>Add Services</li>
         </Link>
       </ul>
     </div>

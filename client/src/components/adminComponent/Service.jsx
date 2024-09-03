@@ -1,7 +1,12 @@
 import axios from "axios";
 import { useState } from "react";
+import "./service.css";
+import Sidebar from "../sidebar/Sidebar";
+import { useSelector } from "react-redux";
+import Close from "../../assets/close.svg";
 
 const Service = () => {
+  const { currentClinic } = useSelector((state) => state.clinic);
   const [addFeatures, setAddFeatures] = useState([]);
   const [newFeature, setNewFeature] = useState("");
   const [formData, setFormData] = useState({
@@ -61,8 +66,14 @@ const Service = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
+    <div className="service-container">
+      <Sidebar />
+
+      <form className="service-form" onSubmit={handleSubmit}>
+        <div className="form-header">
+          <h1>Create Services</h1>
+          <img src={currentClinic.logo} alt="logo" />
+        </div>
         <div className="form-elements">
           <input
             type="text"
@@ -77,6 +88,7 @@ const Service = () => {
             value={formData.description}
             onChange={handleChange}
             placeholder="Description"
+            rows="4"
           ></textarea>
 
           <input
@@ -84,6 +96,7 @@ const Service = () => {
             name="category"
             value={formData.category}
             onChange={handleChange}
+            placeholder="Category"
           />
         </div>
 
@@ -95,19 +108,20 @@ const Service = () => {
             placeholder="Add Features"
           />
           <button onClick={handleAddFeature}>Add Feature</button>
-          {addFeatures.map((feature, index) => {
-            return (
-              <div className="feature-container" key={index}>
-                <p>{feature}</p>
-                <button
-                  type="button"
-                  onClick={() => handleRemoveFeature(index)}
-                >
-                  Remove
-                </button>
-              </div>
-            );
-          })}
+          <div className="features-flex">
+            {addFeatures.map((feature, index) => {
+              return (
+                <div className="feature-container" key={index}>
+                  <p>{feature}</p>
+                  <img
+                    onClick={() => handleRemoveFeature(index)}
+                    src={Close}
+                    alt="close"
+                  />
+                </div>
+              );
+            })}
+          </div>
         </div>
 
         <button type="submit">Create</button>
