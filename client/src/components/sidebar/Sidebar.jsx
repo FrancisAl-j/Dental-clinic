@@ -28,6 +28,10 @@ const Sidebar = () => {
             <li>Dental Chart</li>
           </Link>
         )}
+
+        <Link to="/service">
+          <li>Services</li>
+        </Link>
       </ul>
     </div>
   );

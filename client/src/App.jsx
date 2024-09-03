@@ -21,6 +21,7 @@ import ViewAppointment from "./components/patientComponents/ViewAppointment";
 import PatientList from "./components/adminComponent/PatientList";
 import AddPatient from "./components/popUp/AddPatient";
 import DentalChart from "./components/Chart/DentalChart";
+import Service from "./components/adminComponent/Service";
 import "./app.css";
 import { useState } from "react";
 
@@ -60,6 +61,7 @@ const App = () => {
               <Route path="/profile" element={<Profile />} />
               <Route path="/patients" element={<PatientList />} />
               <Route path="/chart" element={<DentalChart />} />
+              <Route path="/service" element={<Service />} />
             </Route>
           </Routes>
         </main>
