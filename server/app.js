@@ -18,6 +18,7 @@ import searchRoute from "./router/searchRoute.js";
 import sendAppointmentsReminder from "./sendingEmails/nodeMailer.js";
 import dentalRecordRoute from "./router/dentalRecordRoute.js";
 import serviceRoute from "./router/serviceRoute.js";
+import recommendationRoute from "./router/recommendationRoute.js";
 
 const app = express();
 
@@ -59,6 +60,9 @@ app.use("/dental", dentalRecordRoute);
 
 // For services of each clinics
 app.use("/service", serviceRoute);
+
+// API for recommendation
+app.use("/api", recommendationRoute);
 
 app.use((err, req, res, next) => {
   if (res.headersSent) {
