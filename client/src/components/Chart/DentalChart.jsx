@@ -109,6 +109,7 @@ const DentalChart = () => {
       });
       if (res.status === 200) {
         setResults(res.data);
+        console.log(res.data);
       }
     } catch (error) {
       console.log(error);
@@ -132,7 +133,7 @@ const DentalChart = () => {
     fetchPatients();
   }, [query]);*/
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e, patientId) => {
     e.preventDefault();
     const treatments = addTreatments;
     const conditions = addConditions;
@@ -144,6 +145,7 @@ const DentalChart = () => {
           treatments,
           conditions,
           chartDetails,
+          patientId,
         },
         {
           withCredentials: true,
@@ -157,95 +159,102 @@ const DentalChart = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <div ref={elementRef}>
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search Patients"
-          />
-          <button onClick={handleSearch}>Search</button>
-          {results.map((patient) => {
-            return (
-              <div key={patient._id}>
-                <h1>{patient.patientName}</h1>
+      <div ref={elementRef}>
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search Patients"
+        />
+        <button onClick={handleSearch}>Search</button>
+        {results.map((result) => {
+          return (
+            <div key={result._id}>
+              <h1>{result.patientName}</h1>
+            </div>
+          );
+        })}
+
+        <div className="elements">
+          <input type="text" placeholder="First Name" />
+          <input type="text" placeholder="Surname" />
+        </div>
+      </div>
+      <button type="button" onClick={htmlToImage}>
+        Download
+      </button>
+
+      {results.map((patient, index) => {
+        return (
+          <div key={index}>
+            <form onSubmit={(e) => handleSubmit(e, patient._id)}>
+              <div className="form-to-submit">
+                <input
+                  type="file"
+                  ref={fileRef}
+                  accept="image/*"
+                  onChange={(e) => setImage(e.target.files[0])}
+                  hidden
+                />
+                <img
+                  onClick={() => fileRef.current.click()}
+                  src={addChartDetails}
+                  alt=""
+                />
+
+                <div className="treatment-container">
+                  <input
+                    type="text"
+                    value={inputTreatments}
+                    onChange={(e) => setInputTreatments(e.target.value)}
+                    placeholder="Treatments"
+                  />
+                  <button onClick={handleTreatments} type="button">
+                    ADD
+                  </button>
+                  {addTreatments.map((treatment, index) => {
+                    return (
+                      <div key={index}>
+                        <p>{treatment}</p>
+                        <img
+                          onClick={() => removeTreatment(index)}
+                          src={Close}
+                          alt=""
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <div className="condition-container">
+                  <input
+                    type="text"
+                    value={inputConditions}
+                    onChange={(e) => setInputConditions(e.target.value)}
+                    placeholder="Conditions"
+                  />
+                  <button onClick={handleConditions} type="button">
+                    ADD
+                  </button>
+                  {addConditions.map((condition, index) => {
+                    return (
+                      <div key={index}>
+                        <p>{condition}</p>
+                        <img
+                          onClick={() => removeConditions(index)}
+                          src={Close}
+                          alt=""
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-            );
-          })}
-          <div className="elements">
-            <input type="text" placeholder="First Name" />
-            <input type="text" placeholder="Surname" />
+              <button type="submit">Submit</button>
+            </form>
           </div>
-        </div>
-        <button type="button" onClick={htmlToImage}>
-          Download
-        </button>
-
-        <div className="form-to-submit">
-          <input
-            type="file"
-            ref={fileRef}
-            accept="image/*"
-            onChange={(e) => setImage(e.target.files[0])}
-            hidden
-          />
-          <img
-            onClick={() => fileRef.current.click()}
-            src={addChartDetails}
-            alt=""
-          />
-
-          <div className="treatment-container">
-            <input
-              type="text"
-              value={inputTreatments}
-              onChange={(e) => setInputTreatments(e.target.value)}
-              placeholder="Treatments"
-            />
-            <button onClick={handleTreatments} type="button">
-              ADD
-            </button>
-            {addTreatments.map((treatment, index) => {
-              return (
-                <div key={index}>
-                  <p>{treatment}</p>
-                  <img
-                    onClick={() => removeTreatment(index)}
-                    src={Close}
-                    alt=""
-                  />
-                </div>
-              );
-            })}
-          </div>
-
-          <div className="condition-container">
-            <input
-              type="text"
-              value={inputConditions}
-              onChange={(e) => setInputConditions(e.target.value)}
-              placeholder="Conditions"
-            />
-            <button onClick={handleConditions} type="button">
-              ADD
-            </button>
-            {addConditions.map((condition, index) => {
-              return (
-                <div key={index}>
-                  <p>{condition}</p>
-                  <img
-                    onClick={() => removeConditions(index)}
-                    src={Close}
-                    alt=""
-                  />
-                </div>
-              );
-            })}
-          </div>
-        </div>
-        <button type="submit">Submit</button>
-      </form>
+        );
+      })}
     </div>
   );
 };
