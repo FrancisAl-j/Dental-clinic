@@ -7,6 +7,7 @@ import {
 } from "../../redux/clinic/patientClinicReducer.js";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Recommendation from "./Recommendation.jsx";
 
 const ViewClinic = () => {
   const navigate = useNavigate();
@@ -53,6 +54,7 @@ const ViewClinic = () => {
       <img src={clinic.logo} alt="" />
       <h1>{clinic.clinicName}</h1>
       <h3>{clinic.location}</h3>
+      <Recommendation id={clinic.id} />
       <span>{clinic.email}</span>
       <Link to={`/clinic/${clinic.id}/${clinic.clinicName}/appointment`}>
         <button>Book an appointment</button>

@@ -30,10 +30,14 @@ const getRecommendation = async (req, res, next) => {
     if (!user) {
       return res.status(401).json({ message: "User unauthenticated!" });
     }
+    console.log(user);
+
     const dentalRecord = await DentalRecord.findOne({
-      patientId: req.user.user.id,
-      clinicId: id,
+      patientId: user._id,
     });
+
+    console.log(dentalRecord);
+
     const services = await Service.find({ clinicId: dentalRecord.clinicId });
 
     const recommendations = services.map((service) => {

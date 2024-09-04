@@ -187,7 +187,7 @@ const DentalChart = () => {
       {results.map((patient, index) => {
         return (
           <div key={index}>
-            <form onSubmit={(e) => handleSubmit(e, patient._id)}>
+            <form onSubmit={(e) => handleSubmit(e, patient.patientId)}>
               <div className="form-to-submit">
                 <input
                   type="file"
