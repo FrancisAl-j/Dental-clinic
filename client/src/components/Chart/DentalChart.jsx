@@ -15,12 +15,12 @@ const DentalChart = () => {
   const elementRef = useRef(null);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
-  const [chartDetails, setChartDetails] = useState(Upload);
+  const [addChartDetails, setAddChartDetails] = useState(Upload);
   const [image, setImage] = useState(undefined);
   const [imageLoading, setImageLoading] = useState(0);
   const [imageError, setImageError] = useState(false); // handles error
-  const [treatments, setTreatments] = useState([]);
-  const [conditions, setConditions] = useState([]);
+  const [addTreatments, setAddTreatments] = useState([]);
+  const [addConditions, setAddConditions] = useState([]);
   const [inputTreatments, setInputTreatments] = useState("");
   const [inputConditions, setInputConditions] = useState("");
 
@@ -51,38 +51,38 @@ const DentalChart = () => {
       },
       () => {
         getDownloadURL(updloadTask.snapshot.ref).then((downloadURL) =>
-          setChartDetails(downloadURL)
+          setAddChartDetails(downloadURL)
         );
       }
     );
   };
 
   // Adding array index from treatments and conditions
-  const addTreatments = (e) => {
+  const handleTreatments = (e) => {
     e.preventDefault();
     if (inputTreatments.trim()) {
-      setTreatments([...treatments, inputTreatments.trim()]);
+      setAddTreatments([...addTreatments, inputTreatments.trim()]);
       setInputTreatments("");
     }
   };
 
-  const addConditions = (e) => {
+  const handleConditions = (e) => {
     e.preventDefault();
     if (inputConditions.trim()) {
-      setConditions([...conditions, inputConditions.trim()]);
+      setAddConditions([...addConditions, inputConditions.trim()]);
       setInputConditions("");
     }
   };
 
   // Removing array indexes
   const removeTreatment = (index) => {
-    const updatedTreatment = treatments.filter((_, i) => i !== index);
-    setTreatments(updatedTreatment);
+    const updatedTreatment = addTreatments.filter((_, i) => i !== index);
+    setAddTreatments(updatedTreatment);
   };
 
   const removeConditions = (index) => {
-    const updatedCondition = conditions.filter((_, i) => i !== index);
-    setConditions(updatedCondition);
+    const updatedCondition = addConditions.filter((_, i) => i !== index);
+    setAddConditions(updatedCondition);
   };
 
   // Converting form to image
@@ -132,9 +132,32 @@ const DentalChart = () => {
     fetchPatients();
   }, [query]);*/
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const treatments = addTreatments;
+    const conditions = addConditions;
+    const chartDetails = addChartDetails;
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/dental/create-record",
+        {
+          treatments,
+          conditions,
+          chartDetails,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      console.log(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div ref={elementRef}>
           <input
             type="text"
@@ -169,7 +192,7 @@ const DentalChart = () => {
           />
           <img
             onClick={() => fileRef.current.click()}
-            src={chartDetails}
+            src={addChartDetails}
             alt=""
           />
 
@@ -180,10 +203,10 @@ const DentalChart = () => {
               onChange={(e) => setInputTreatments(e.target.value)}
               placeholder="Treatments"
             />
-            <button onClick={addTreatments} type="button">
+            <button onClick={handleTreatments} type="button">
               ADD
             </button>
-            {treatments.map((treatment, index) => {
+            {addTreatments.map((treatment, index) => {
               return (
                 <div key={index}>
                   <p>{treatment}</p>
@@ -204,10 +227,10 @@ const DentalChart = () => {
               onChange={(e) => setInputConditions(e.target.value)}
               placeholder="Conditions"
             />
-            <button onClick={addConditions} type="button">
+            <button onClick={handleConditions} type="button">
               ADD
             </button>
-            {conditions.map((condition, index) => {
+            {addConditions.map((condition, index) => {
               return (
                 <div key={index}>
                   <p>{condition}</p>
