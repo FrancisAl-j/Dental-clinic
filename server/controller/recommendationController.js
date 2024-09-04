@@ -1,5 +1,6 @@
 import Admin from "../models/adminModel.js";
 import DentalRecord from "../models/dentalRecordModel.js";
+import Patient from "../models/patientModel.js";
 import Service from "../models/serviceModel.js";
 
 // Algorithm to find the similarity of conditions and treatments to services
@@ -25,15 +26,15 @@ const calculateSimilarities = (record, service) => {
 const getRecommendation = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const admin = await Admin.findById(req.user.id);
-    if (!admin) {
-      return res.status(401).json({ message: "Admin Unauthenticated" });
+    const user = await Patient.findById(req.user.user.id);
+    if (!user) {
+      return res.status(401).json({ message: "User unauthenticated!" });
     }
-    const dentalRecord = await DentalRecord.find({
-      patientId: id,
-      clinicId: admin.clinicId,
+    const dentalRecord = await DentalRecord.findOne({
+      patientId: req.user.user.id,
+      clinicId: id,
     });
-    const services = await Service.find({ clinicId: admin.clinicId });
+    const services = await Service.find({ clinicId: dentalRecord.clinicId });
 
     const recommendations = services.map((service) => {
       const similarity = calculateSimilarities(dentalRecord, service);
