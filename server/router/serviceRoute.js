@@ -8,4 +8,6 @@ router.post("/create", verifyUser, controller.createService);
 
 router.get("/get", verifyUser, controller.getServices);
 
+router.get("/get/:id", verifyUser, controller.getService);
+
 export default router;

@@ -6,6 +6,7 @@ import {
 } from "../../../redux/clinic/services/servicesReducer.js";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const GetServices = () => {
   const dispatch = useDispatch();
@@ -32,9 +33,11 @@ const GetServices = () => {
       <div className="services-container">
         {services.map((service) => {
           return (
-            <div key={service._id}>
-              <h1>{service.name}</h1>
-            </div>
+            <Link key={service._id} to={`/service/${service._id}`}>
+              <div>
+                <h1>{service.name}</h1>
+              </div>
+            </Link>
           );
         })}
       </div>

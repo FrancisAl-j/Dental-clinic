@@ -42,4 +42,19 @@ const getServices = async (req, res, next) => {
   }
 };
 
-export default { createService, getServices };
+// Fetching specific service when click or visit
+const getService = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const admin = await Admin.findById(req.user.id);
+    if (!admin) {
+      return res.status(401).json({ message: "Admin not authenticated!" });
+    }
+    const service = await Service.findById(id);
+    res.status(200).json(service);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default { createService, getServices, getService };
