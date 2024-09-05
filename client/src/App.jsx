@@ -22,6 +22,7 @@ import PatientList from "./components/adminComponent/PatientList";
 import AddPatient from "./components/popUp/AddPatient";
 import DentalChart from "./components/Chart/DentalChart";
 import Service from "./components/adminComponent/Service";
+import GetServices from "./components/adminComponent/getServices/GetServices";
 import "./app.css";
 import { useState } from "react";
 
@@ -62,6 +63,7 @@ const App = () => {
               <Route path="/patients" element={<PatientList />} />
               <Route path="/chart" element={<DentalChart />} />
               <Route path="/service" element={<Service />} />
+              <Route path="/services" element={<GetServices />} />
             </Route>
           </Routes>
         </main>

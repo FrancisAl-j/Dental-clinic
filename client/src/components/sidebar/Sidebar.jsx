@@ -32,6 +32,10 @@ const Sidebar = () => {
         <Link to="/service">
           <li>Add Services</li>
         </Link>
+
+        <Link to="/services">
+          <li>Services</li>
+        </Link>
       </ul>
     </div>
   );
