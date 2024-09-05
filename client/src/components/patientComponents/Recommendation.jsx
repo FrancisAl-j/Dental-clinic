@@ -26,6 +26,9 @@ const Recommendation = ({ id }) => {
   return (
     <div>
       <h1>Recommendation</h1>
+      {recommendation.map((rec) => {
+        return <li key={rec.service._id}>{rec.service.name}</li>;
+      })}
     </div>
   );
 };

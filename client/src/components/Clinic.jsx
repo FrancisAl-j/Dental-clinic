@@ -56,7 +56,6 @@ const Clinic = ({ setPopUp }) => {
           // Convert the map values to an array of unique patients
           const uniquePatientsList = Array.from(patientMap.values());
           setUniquePatients(uniquePatientsList);
-          console.log(uniquePatientsList);
 
           // Send the unique patients to the backend
           await axios.post(

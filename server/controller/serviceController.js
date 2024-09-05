@@ -1,6 +1,7 @@
 import Admin from "../models/adminModel.js";
 import Service from "../models/serviceModel.js";
 
+// Creating Services
 const createService = async (req, res, next) => {
   const { name, description, category, features } = req.body;
   try {
@@ -25,4 +26,20 @@ const createService = async (req, res, next) => {
   }
 };
 
-export default { createService };
+// Displaying services
+const getServices = async (req, res, next) => {
+  try {
+    const admin = await Admin.findById(req.user.id);
+    if (!admin) {
+      return res.status(401).json({ message: "Admin not authenticated" });
+    }
+
+    const services = await Service.find({ clinicId: admin.clinicId });
+
+    res.status(200).json(services);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default { createService, getServices };

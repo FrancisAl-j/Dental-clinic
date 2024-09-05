@@ -4,20 +4,21 @@ import Patient from "../models/patientModel.js";
 import Service from "../models/serviceModel.js";
 
 // Algorithm to find the similarity of conditions and treatments to services
-const calculateSimilarities = (record, service) => {
+const calculateSimilarities = (dentalRecords, service) => {
   let score = 0;
 
-  // Matching for conditions and treatments
-  record.conditions.forEach((condition) => {
-    if (service.features.includes(condition)) {
-      score += 1;
-    }
-  });
+  dentalRecords.forEach((record) => {
+    record.conditions.forEach((condition) => {
+      if (service.features.includes(condition)) {
+        score += 1;
+      }
+    });
 
-  record.treatments.forEach((treatment) => {
-    if (service.features.includes(treatment)) {
-      score += 1;
-    }
+    record.treatments.forEach((treatment) => {
+      if (service.features.includes(treatment)) {
+        score += 1;
+      }
+    });
   });
 
   return score;
@@ -30,15 +31,13 @@ const getRecommendation = async (req, res, next) => {
     if (!user) {
       return res.status(401).json({ message: "User unauthenticated!" });
     }
-    console.log(user);
 
-    const dentalRecord = await DentalRecord.findOne({
+    const dentalRecord = await DentalRecord.find({
       patientId: user._id,
+      clinicId: id,
     });
 
-    console.log(dentalRecord);
-
-    const services = await Service.find({ clinicId: dentalRecord.clinicId });
+    const services = await Service.find({ clinicId: id });
 
     const recommendations = services.map((service) => {
       const similarity = calculateSimilarities(dentalRecord, service);
