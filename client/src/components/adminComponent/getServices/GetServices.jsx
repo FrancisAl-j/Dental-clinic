@@ -35,6 +35,7 @@ const GetServices = () => {
           return (
             <Link key={service._id} to={`/service/${service._id}`}>
               <div>
+                <img src={service.imageLogo} alt="" />
                 <h1>{service.name}</h1>
               </div>
             </Link>

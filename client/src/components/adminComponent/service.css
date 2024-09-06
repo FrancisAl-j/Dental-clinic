@@ -59,3 +59,15 @@ textarea {
   width: 40px;
   cursor: pointer;
 }
+p {
+  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+  margin: 10px 0;
+}
+.imageLogo-container img {
+  aspect-ratio: 1/1;
+  width: 129px;
+}
+.bgImage-container img {
+  aspect-ratio: 16/9;
+  height: 400px;
+}

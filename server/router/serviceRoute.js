@@ -10,4 +10,6 @@ router.get("/get", verifyUser, controller.getServices);
 
 router.get("/get/:id", verifyUser, controller.getService);
 
+router.put("update/:id", verifyUser, controller.updateService);
+
 export default router;

@@ -3,7 +3,8 @@ import Service from "../models/serviceModel.js";
 
 // Creating Services
 const createService = async (req, res, next) => {
-  const { name, description, category, features } = req.body;
+  const { name, description, category, features, imageLogo, bgImage } =
+    req.body;
   try {
     const admin = await Admin.findById(req.user.id);
     if (!admin) {
@@ -15,6 +16,8 @@ const createService = async (req, res, next) => {
       description,
       category,
       features,
+      imageLogo,
+      bgImage,
       clinicId: admin.clinicId,
     });
 
@@ -57,4 +60,18 @@ const getService = async (req, res, next) => {
   }
 };
 
-export default { createService, getServices, getService };
+// Updating service
+const updateService = async (req, res, next) => {
+  const { id } = req.params;
+  const { name, description, imageLogo, bgImage } = req.body;
+  try {
+    const admin = await Admin.findById(req.user.id);
+    if (!admin) {
+      return res.status(401).json({ message: "Admin not authenticated!" });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default { createService, getServices, getService, updateService };

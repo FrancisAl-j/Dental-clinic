@@ -1,19 +1,104 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./service.css";
 import Sidebar from "../sidebar/Sidebar";
 import { useSelector } from "react-redux";
 import Close from "../../assets/close.svg";
 
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
+import { app } from "../../firebase.js";
+
+// File images
+import ImageLogo from "../../assets/imageLogo.png";
+import BgImage from "../../assets/bgImage.jpg";
+
 const Service = () => {
   const { currentClinic } = useSelector((state) => state.clinic);
   const [addFeatures, setAddFeatures] = useState([]);
   const [newFeature, setNewFeature] = useState("");
+  const [addImageLogo, setAddImageLogo] = useState(undefined);
+  const [addBgImage, setAddBgImage] = useState(undefined);
+  const [imageLoading, setImageLoading] = useState(0);
+  const [imageError, setImageError] = useState(false); // handles error
   const [formData, setFormData] = useState({
     name: "",
     description: "",
     category: "",
+    imageLogo: ImageLogo,
+    bgImage: BgImage,
   });
+
+  const imageLogoRef = useRef();
+  const bgImageRef = useRef();
+
+  useEffect(() => {
+    if (addImageLogo) {
+      handleImageLogo(addImageLogo);
+    }
+  }, [addImageLogo]);
+
+  const handleImageLogo = async (addImageLogo) => {
+    const storage = getStorage(app);
+    const fileName = new Date().getTime() + addImageLogo.name;
+    const storageRef = ref(storage, fileName);
+
+    const updloadTask = uploadBytesResumable(storageRef, addImageLogo);
+
+    // this coded below show the percentage of loading or upload
+    updloadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setImageLoading(Math.round(progress));
+      },
+      (error) => {
+        setImageError(true);
+      },
+      () => {
+        getDownloadURL(updloadTask.snapshot.ref).then((downloadURL) =>
+          setFormData({ ...formData, imageLogo: downloadURL })
+        );
+      }
+    );
+  };
+
+  useEffect(() => {
+    if (addBgImage) {
+      handleBgImage(addBgImage);
+    }
+  }, [addBgImage]);
+
+  const handleBgImage = async (addBgImage) => {
+    const storage = getStorage(app);
+    const fileName = new Date().getTime() + addBgImage.name;
+    const storageRef = ref(storage, fileName);
+
+    const updloadTask = uploadBytesResumable(storageRef, addBgImage);
+
+    // this coded below show the percentage of loading or upload
+    updloadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setImageLoading(Math.round(progress));
+      },
+      (error) => {
+        setImageError(true);
+      },
+      () => {
+        getDownloadURL(updloadTask.snapshot.ref).then((downloadURL) =>
+          setFormData({ ...formData, bgImage: downloadURL })
+        );
+      }
+    );
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -43,7 +128,7 @@ const Service = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { name, description, category } = formData;
+    const { name, description, category, imageLogo, bgImage } = formData;
     const features = addFeatures;
     try {
       const res = await axios.post(
@@ -53,13 +138,13 @@ const Service = () => {
           description,
           category,
           features,
+          imageLogo,
+          bgImage,
         },
         {
           withCredentials: true,
         }
       );
-
-      console.log(res.data);
     } catch (error) {
       console.log(error);
     }
@@ -74,7 +159,42 @@ const Service = () => {
           <h1>Create Services</h1>
           <img src={currentClinic.logo} alt="logo" />
         </div>
+        <hr />
         <div className="form-elements">
+          <div className="imageLogo-container">
+            <p>Image Logo</p>
+            <input
+              type="file"
+              name="imageLogo"
+              accept="image/*"
+              onChange={(e) => setAddImageLogo(e.target.files[0])}
+              ref={imageLogoRef}
+              hidden
+            />
+            <img
+              onClick={() => imageLogoRef.current.click()}
+              src={formData.imageLogo}
+              alt=""
+            />
+          </div>
+
+          <div className="bgImage-container">
+            <p>Background Image</p>
+            <input
+              type="file"
+              name="bgImage"
+              onChange={(e) => setAddBgImage(e.target.files[0])}
+              accept="image/*"
+              ref={bgImageRef}
+              hidden
+            />
+            <img
+              onClick={() => bgImageRef.current.click()}
+              src={formData.bgImage}
+              alt=""
+            />
+          </div>
+
           <input
             type="text"
             name="name"
