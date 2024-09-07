@@ -20,9 +20,12 @@ export const clinicsSlice = createSlice({
         };
       });
     },
+    clearClinics: (state) => {
+      state.clinics = [];
+    },
   },
 });
 
 export default clinicsSlice.reducer;
 
-export const { getClinics } = clinicsSlice.actions;
+export const { getClinics, clearClinics } = clinicsSlice.actions;

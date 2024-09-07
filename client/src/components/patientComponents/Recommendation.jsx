@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import "./recommend.css";
 
 const Recommendation = ({ id }) => {
   const [recommendation, setRecommendation] = useState([]);
@@ -15,7 +16,6 @@ const Recommendation = ({ id }) => {
           }
         );
         setRecommendation(res.data);
-        console.log(res.data);
       } catch (error) {
         console.log(error);
       }
@@ -25,10 +25,28 @@ const Recommendation = ({ id }) => {
   }, [id]);
   return (
     <div>
-      <h1>Recommendation</h1>
-      {recommendation.map((rec) => {
-        return <li key={rec.service._id}>{rec.service.name}</li>;
-      })}
+      {recommendation.length === 0 ? (
+        <></>
+      ) : (
+        <h1>Recommended Dental Services for you</h1>
+      )}
+      {!recommendation ? (
+        <div></div>
+      ) : (
+        <div className="recommend-wrapper">
+          {recommendation.map((rec) => {
+            return (
+              <div className="recommend-container" key={rec.service._id}>
+                <img src={rec.service.imageLogo} alt="" />
+                <div className="service-info">
+                  <h1>{rec.service.name}</h1>
+                  <p>{rec.service.description}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };

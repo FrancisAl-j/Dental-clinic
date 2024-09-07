@@ -48,6 +48,11 @@ nav ul li {
   display: grid;
   place-items: center;
 }
+.sign-container img {
+  aspect-ratio: 1/1;
+  height: 50px;
+  display: block;
+}
 .icon-container {
   display: flex;
   justify-content: center;

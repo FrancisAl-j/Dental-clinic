@@ -8,6 +8,7 @@ import { clearHistoryAppointment } from "../redux/clinic/historyAppointmentReduc
 import { clearPatients } from "../redux/clinic/patientListReducer.js";
 import Login from "../assets/logout.svg";
 import Signup from "../assets/register.svg";
+import Profile from "../assets/profile.svg";
 
 const Nav = () => {
   const dispatch = useDispatch();
@@ -63,11 +64,12 @@ const Nav = () => {
         <div className="sign-container">
           {currentUser ? (
             <Link to="/profile">
-              <h1>
+              {/*<h1>
                 {currentUser.role === "Admin"
                   ? currentUser.name
                   : currentUser.username}
-              </h1>
+              </h1>*/}
+              <img src={Profile} alt="" />
             </Link>
           ) : (
             <div className="icon-container">

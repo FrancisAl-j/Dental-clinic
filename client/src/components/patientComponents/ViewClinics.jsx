@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { getClinics } from "../../redux/clinic/ClinicsReducer.js";
+import { getClinics, clearClinics } from "../../redux/clinic/ClinicsReducer.js";
 import { Link } from "react-router-dom";
 import "./viewClinics.css";
 
@@ -24,6 +24,10 @@ const ViewClinics = () => {
     };
 
     fetchClinics();
+
+    return () => {
+      dispatch(clearClinics());
+    };
   }, [dispatch]);
 
   return (

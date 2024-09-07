@@ -1,0 +1,35 @@
+:root {
+  --light-blue: #87d3f0;
+  --grayish-blue: #5ca7c3;
+  --dark-blue: #236078;
+  --dirty-white: #efefef;
+  --rough-black: #2e2e2e;
+}
+.flex-container {
+  display: flex;
+  justify-content: space-between;
+
+  gap: 10px;
+}
+.left-container {
+  width: 100%;
+  background: var(--dark-blue);
+  border-radius: 25px;
+  padding: 10px;
+}
+.left-container-logo {
+  display: flex;
+  color: var(--dirty-white);
+  text-transform: capitalize;
+  justify-content: space-between;
+  align-items: center;
+}
+.left-container-logo img {
+  aspect-ratio: 1/1;
+  height: 100px;
+  border-radius: 50%;
+}
+.right-container {
+  width: 100%;
+  padding: 5px;
+}

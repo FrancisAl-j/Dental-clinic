@@ -8,6 +8,8 @@ import {
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Recommendation from "./Recommendation.jsx";
+import "./viewClinic.css";
+import Header from "./header/Header.jsx";
 
 const ViewClinic = () => {
   const navigate = useNavigate();
@@ -42,23 +44,24 @@ const ViewClinic = () => {
       </div>
     );
   }
-  console.log(clinic.clinicName);
+
   const handleBack = () => {
     dispatch(clearClinic());
     navigate("/clinics");
   };
 
   return (
-    <div>
-      <button onClick={handleBack}>Back</button>
-      <img src={clinic.logo} alt="" />
-      <h1>{clinic.clinicName}</h1>
-      <h3>{clinic.location}</h3>
+    <div className="container">
+      {clinic && <Header clinic={clinic} />}
+      <hr />
+
+      <div className="container-background">
+        <img src={clinic.background} alt="background" />
+      </div>
       <Recommendation id={clinic.id} />
+      <h3>{clinic.location}</h3>
+
       <span>{clinic.email}</span>
-      <Link to={`/clinic/${clinic.id}/${clinic.clinicName}/appointment`}>
-        <button>Book an appointment</button>
-      </Link>
     </div>
   );
 };

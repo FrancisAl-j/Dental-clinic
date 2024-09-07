@@ -7,6 +7,8 @@ import {
   getClinic,
   clearClinic,
 } from "../../redux/clinic/patientClinicReducer.js";
+import Header from "../patientComponents/header/Header.jsx";
+import "./appointment.css";
 
 const Appointment = () => {
   const dispatch = useDispatch();
@@ -26,6 +28,7 @@ const Appointment = () => {
   });
   const [error, setError] = useState(null);
   const [message, setMessage] = useState(false);
+  const [clinic, setClinic] = useState(null);
 
   useEffect(() => {
     const fetchClinic = async () => {
@@ -35,6 +38,7 @@ const Appointment = () => {
         });
 
         dispatch(getClinic(res.data));
+        setClinic(res.data);
       } catch (error) {
         console.log(error);
       }
@@ -102,82 +106,92 @@ const Appointment = () => {
   };
 
   return (
-    <div className="flex-container">
-      <div className="left-container"></div>
-
-      <div className="right-container">
-        <form onSubmit={handleSubmit} className="appointment-form">
-          <h2 className="form-title">Book an Appointment</h2>
-
-          <div className="form-input-container">
-            <div className="form-elements">
-              <input
-                type="text"
-                name="fName"
-                placeholder="Fist name"
-                value={formData.fName}
-                onChange={handleChange}
-              />
-
-              <input
-                type="text"
-                name="lName"
-                placeholder="Last name"
-                value={formData.lName}
-                onChange={handleChange}
-              />
-
-              <input
-                type="text"
-                name="midInitial"
-                placeholder="Middle Initial"
-                value={formData.midInitial}
-                onChange={handleChange}
-              />
-
-              <input
-                type="email"
-                name="patientEmail"
-                value={formData.patientEmail}
-                onChange={handleChange}
-              />
-
-              <input
-                type="number"
-                name="patientContact"
-                placeholder="Phone number"
-                value={formData.patientContact}
-                onChange={handleChange}
-              />
-
-              <input
-                type="number"
-                name="patientAge"
-                placeholder="Age"
-                value={formData.patientAge}
-                onChange={handleChange}
-              />
-
-              <select
-                name="patientGender"
-                value={formData.patientGender}
-                onChange={handleChange}
-              >
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-              </select>
-
-              <input
-                type="date"
-                name="appointmentDate"
-                value={formData.appointmentDate}
-                onChange={handleChange}
-              />
+    <div>
+      {clinic && <Header clinic={clinic} />}
+      <div className="flex-container">
+        {clinic && (
+          <div className="left-container">
+            <div className="left-container-logo">
+              <img src={clinic.logo} alt="" />
+              <h1>{clinic.clinicName}</h1>
             </div>
           </div>
-          <button>Book Appointment</button>
-        </form>
+        )}
+
+        <div className="right-container">
+          <form onSubmit={handleSubmit} className="appointment-form">
+            <h2 className="form-title">Book an Appointment</h2>
+
+            <div className="form-input-container">
+              <div className="form-elements">
+                <input
+                  type="text"
+                  name="fName"
+                  placeholder="Fist name"
+                  value={formData.fName}
+                  onChange={handleChange}
+                />
+
+                <input
+                  type="text"
+                  name="lName"
+                  placeholder="Last name"
+                  value={formData.lName}
+                  onChange={handleChange}
+                />
+
+                <input
+                  type="text"
+                  name="midInitial"
+                  placeholder="Middle Initial"
+                  value={formData.midInitial}
+                  onChange={handleChange}
+                />
+
+                <input
+                  type="email"
+                  name="patientEmail"
+                  value={formData.patientEmail}
+                  onChange={handleChange}
+                />
+
+                <input
+                  type="number"
+                  name="patientContact"
+                  placeholder="Phone number"
+                  value={formData.patientContact}
+                  onChange={handleChange}
+                />
+
+                <input
+                  type="number"
+                  name="patientAge"
+                  placeholder="Age"
+                  value={formData.patientAge}
+                  onChange={handleChange}
+                />
+
+                <select
+                  name="patientGender"
+                  value={formData.patientGender}
+                  onChange={handleChange}
+                >
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+
+                <input
+                  type="date"
+                  name="appointmentDate"
+                  value={formData.appointmentDate}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+            <button>Book Appointment</button>
+          </form>
+        </div>
       </div>
     </div>
   );
