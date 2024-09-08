@@ -2,6 +2,8 @@ import Patient from "../models/patientModel.js";
 import Admin from "../models/adminModel.js";
 import Clinic from "../models/clinicModel.js";
 import Patient_List from "../models/patientListModel.js";
+import Assistant from "../models/assistantModel.js";
+import Cashier from "../models/cashierModel.js";
 
 // Storing patient to patient List
 const storePatient = async (req, res, next) => {
@@ -12,9 +14,12 @@ const storePatient = async (req, res, next) => {
   }
 
   try {
-    const user = await Admin.findById(req.user.id);
+    let user = await Admin.findById(req.user.id);
     if (!user) {
-      return res.status(400).json({ message: "Unauthenticated User!" });
+      user = await Assistant.findById(req.user.id);
+      if (!user) {
+        return res.status(401).json({ message: "User not authenticated" });
+      }
     }
 
     for (const patient of patients) {
@@ -81,12 +86,18 @@ const displayPatients = async (req, res, next) => {
   const { query } = req.query;
   const searchQuery = query ? String(query) : "";
   try {
-    const admin = await Admin.findById(req.user.id);
-    if (!admin) {
-      return res.status(400).json({ message: "Unauthenticated admin" });
+    let user = await Admin.findById(req.user.id);
+    if (!user) {
+      user = await Assistant.findById(req.user.id);
+      if (!user) {
+        user = await Cashier.findById(req.user.id);
+        if (!user) {
+          return res.status(401).json({ message: "User is not authenticated" });
+        }
+      }
     }
 
-    const clinicId = admin.clinicId;
+    const clinicId = user.clinicId;
 
     const patient_list = await Patient_List.find({
       clinicId,
@@ -111,9 +122,15 @@ const addPatient = async (req, res, next) => {
     patientContact,
   } = req.body;
   try {
-    const admin = await Admin.findById(req.user.id);
-    if (!admin) {
-      return res.status(400).json({ message: "Admin unauthenticated" });
+    let user = await Admin.findById(req.user.id);
+    if (!user) {
+      user = await Assistant.findById(req.user.id);
+      if (!user) {
+        user = await Cashier.findById(req.user.id);
+        if (!user) {
+          return res.status(401).json({ message: "User is not authenticated" });
+        }
+      }
     }
 
     const newPatient = new Patient_List({

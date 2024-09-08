@@ -218,9 +218,15 @@ const updateStatus = async (req, res, next) => {
 // Fetching Patients
 const getPatients = async (req, res, next) => {
   try {
-    const user = await Admin.findById(req.user.id);
+    let user = await Admin.findById(req.user.id);
     if (!user) {
-      return res.status(404).json({ message: "Admin not found" });
+      user = await Assistant.findById(req.user.id);
+      if (!user) {
+        user = await Cashier.findById(req.user.id);
+        if (!user) {
+          return res.status(401).json({ message: "User not authenticated" });
+        }
+      }
     }
     const clinicId = req.user.clinicId;
 
