@@ -2,6 +2,9 @@ import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const AssistantSignup = () => {
   const [formData, setFormData] = useState({
     username: "",
@@ -44,6 +47,8 @@ const AssistantSignup = () => {
       );
       if (res.status === 400) {
         setError(true);
+      } else {
+        toast.success("Assistant successfully created");
       }
     } catch (error) {
       setError(true);
@@ -52,6 +57,7 @@ const AssistantSignup = () => {
 
   return (
     <div className="form-container">
+      <ToastContainer />
       <h1>Create Account for assistant</h1>
 
       <div className="form-wrapper">

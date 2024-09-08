@@ -63,12 +63,13 @@ const Nav = () => {
             </Link>
           )}
 
-          {currentUser && <span onClick={handleSignout}>Sign out</span>}
           {currentUser && currentUser.role === "Patient" && (
             <Link to="/view-appointments">
               <li>Appointments</li>
             </Link>
           )}
+
+          {currentUser && <span onClick={handleSignout}>Sign out</span>}
         </ul>
 
         <div className="sign-container">

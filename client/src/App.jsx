@@ -27,12 +27,15 @@ import GetService from "./components/adminComponent/getServices/getService";
 import "./app.css";
 import { useState } from "react";
 
+// To toast message
+
 const App = () => {
   const [popUp, setPopUp] = useState(false);
   return (
     <>
       <BrowserRouter>
         {popUp && <AddPatient setPopUp={setPopUp} />}
+
         <Nav />
         <main>
           <Routes>
