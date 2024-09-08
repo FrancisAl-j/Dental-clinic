@@ -59,7 +59,7 @@ textarea {
   width: 40px;
   cursor: pointer;
 }
-p {
+.service-container p {
   font-size: clamp(1.2rem, 2.5vw, 1.8rem);
   margin: 10px 0;
 }

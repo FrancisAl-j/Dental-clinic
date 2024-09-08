@@ -8,6 +8,7 @@
 .appointment-container {
   display: flex;
   justify-content: space-between;
+  height: 100svh;
 }
 .appointment-content {
   width: 100%;
@@ -21,4 +22,5 @@
 .list p {
   color: var(--rough-black);
   margin: 10px 0;
+  font-size: clamp(0.5rem, 2vw, 1rem);
 }

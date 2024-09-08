@@ -1,4 +1,6 @@
 import Admin from "../models/adminModel.js";
+import Assistant from "../models/assistantModel.js";
+import Cashier from "../models/cashierModel.js";
 import Service from "../models/serviceModel.js";
 
 // Creating Services
@@ -32,12 +34,18 @@ const createService = async (req, res, next) => {
 // Displaying services
 const getServices = async (req, res, next) => {
   try {
-    const admin = await Admin.findById(req.user.id);
-    if (!admin) {
-      return res.status(401).json({ message: "Admin not authenticated" });
+    let user = await Admin.findById(req.user.id);
+    if (!user) {
+      user = await Assistant.findById(req.user.id);
+      if (!user) {
+        user = await Cashier.findById(req.user.id);
+        if (!user) {
+          return res.status(401).json({ message: "User not authenticated!" });
+        }
+      }
     }
 
-    const services = await Service.find({ clinicId: admin.clinicId });
+    const services = await Service.find({ clinicId: user.clinicId });
 
     res.status(200).json(services);
   } catch (error) {
@@ -49,9 +57,15 @@ const getServices = async (req, res, next) => {
 const getService = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const admin = await Admin.findById(req.user.id);
-    if (!admin) {
-      return res.status(401).json({ message: "Admin not authenticated!" });
+    let user = await Admin.findById(req.user.id);
+    if (!user) {
+      user = await Assistant.findById(req.user.id);
+      if (!user) {
+        user = await Cashier.findById(req.user.id);
+        if (!user) {
+          return res.status(401).json({ message: "User not authenticated!" });
+        }
+      }
     }
     const service = await Service.findById(id);
     res.status(200).json(service);

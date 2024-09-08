@@ -1,0 +1,8 @@
+.update-service-container {
+  height: 100svh;
+  position: fixed;
+  background: #00000090;
+  z-index: 999;
+  display: grid;
+  place-items: center;
+}

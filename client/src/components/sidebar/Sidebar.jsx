@@ -28,10 +28,11 @@ const Sidebar = () => {
             <li>Dental Chart</li>
           </Link>
         )}
-
-        <Link to="/service">
-          <li>Add Services</li>
-        </Link>
+        {currentUser && currentUser.role === "Admin" && (
+          <Link to="/service">
+            <li>Add Services</li>
+          </Link>
+        )}
 
         <Link to="/services">
           <li>Services</li>

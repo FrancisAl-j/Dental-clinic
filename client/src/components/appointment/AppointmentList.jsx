@@ -100,23 +100,23 @@ const AppointmentList = () => {
 
       <div className="appointment-content">
         <div className="list">
-          <p>Name</p>
-          <p>Age</p>
-          <p>Gender</p>
-          <p>Date</p>
-          <p>Status</p>
-          <p>Update</p>
+          <h3>Name</h3>
+          <h3>Age</h3>
+          <h3>Gender</h3>
+          <h3>Date</h3>
+          <h3>Status</h3>
+          <h3>Update</h3>
         </div>
         <hr />
         {appointments.map((appointment) => {
           return (
             <div className="list" key={appointment._id}>
-              <p>{appointment.patientName}</p>
-              <p>{appointment.patientAge}</p>
-              <p>{appointment.patientGender}</p>
+              <p className="list-content">{appointment.patientName}</p>
+              <p className="list-content">{appointment.patientAge}</p>
+              <p className="list-content">{appointment.patientGender}</p>
               <CheckDate appointment={appointment} />
               {appointment.status === "Canceled" ? (
-                <p>Canceled</p>
+                <p className="list-content">Canceled</p>
               ) : (
                 <select
                   value={appointment.status} // Set the select's value to the current status of the appointment

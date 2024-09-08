@@ -52,6 +52,16 @@ const Nav = () => {
               <li>Clinic</li>
             </Link>
           )}
+          {currentUser && currentUser.role === "Assistant" && (
+            <Link to="/clinic">
+              <li>Clinic</li>
+            </Link>
+          )}
+          {currentUser && currentUser.role === "Cashier" && (
+            <Link to="/clinic">
+              <li>Clinic</li>
+            </Link>
+          )}
 
           {currentUser && <span onClick={handleSignout}>Sign out</span>}
           {currentUser && currentUser.role === "Patient" && (
