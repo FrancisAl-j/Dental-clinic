@@ -19,6 +19,7 @@ export const patientClinicSlice = createSlice({
         contact: clinic.phone,
         logo: clinic.logo,
         background: clinic.background,
+        details: clinic.details,
       };
     },
     clearClinic: (state) => {

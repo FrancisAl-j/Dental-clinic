@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const AdminSignUp = () => {
   const navigate = useNavigate();
@@ -42,6 +43,8 @@ const AdminSignUp = () => {
       navigate("/signin");
       if (res.status === 400) {
         setError(true);
+      } else {
+        toast.success("Successfully register as an admin");
       }
     } catch (error) {
       if (error.response) {

@@ -8,26 +8,91 @@ import {
   getStorage,
   ref,
   uploadBytesResumable,
+  uploadBytes,
 } from "firebase/storage"; // <- line 6-10 importing the necessary for uploading the images to firebase
 import { app } from "../firebase.js";
 
 import "./css/createClinic.css";
 
+// For Philippines address
+import {
+  regions,
+  provinces,
+  cities,
+  barangays,
+} from "select-philippines-address";
+import { toast } from "react-toastify";
+
 const CreateClinic = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [image, setImage] = useState(undefined);
+  const [background, setBackground] = useState(undefined);
   const [imageLoading, setImageLoading] = useState(0);
   const [imageError, setImageError] = useState(false); // handles error
   const [formData, setFormData] = useState({
     clinicName: "",
-    location: "",
     email: "",
     phone: "",
+    details: "",
     logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb51ZwKCKqU4ZrB9cfaUNclbeRiC-V-KZsfQ&s",
+    background:
+      "https://www.shutterstock.com/image-photo/white-healthy-tooth-different-tools-600nw-1069579256.jpg",
   });
 
+  // For address
+  const [regionData, setRegion] = useState([]);
+  const [provinceData, setProvince] = useState([]);
+  const [cityData, setCity] = useState([]);
+  const [barangayData, setBarangay] = useState([]);
+
+  const [regionAddr, setRegionAddr] = useState("");
+  const [provinceAddr, setProvinceAddr] = useState("");
+  const [cityAddr, setCityAddr] = useState("");
+  const [barangayAddr, setBarangayAddr] = useState("");
+  const [street, setStreet] = useState("");
+
   const fileRef = useRef(null);
+  const backgroundRef = useRef(null);
+
+  // Address
+  const region = () => {
+    regions().then((response) => {
+      setRegion(response);
+    });
+  };
+
+  const province = (e) => {
+    setRegionAddr(e.target.selectedOptions[0].text);
+    provinces(e.target.value).then((response) => {
+      setProvince(response);
+      setCity([]);
+      setBarangay([]);
+    });
+  };
+
+  const city = (e) => {
+    setProvinceAddr(e.target.selectedOptions[0].text);
+    cities(e.target.value).then((response) => {
+      setCity(response);
+    });
+  };
+
+  const barangay = (e) => {
+    setCityAddr(e.target.selectedOptions[0].text);
+    barangays(e.target.value).then((response) => {
+      setBarangay(response);
+    });
+  };
+
+  const brgy = (e) => {
+    setBarangayAddr(e.target.selectedOptions[0].text);
+  };
+
+  useEffect(() => {
+    region();
+  }, []);
+  // End of Address code
 
   useEffect(() => {
     if (image) {
@@ -61,6 +126,28 @@ const CreateClinic = () => {
     );
   };
 
+  useEffect(() => {
+    if (background) {
+      handleBackgroundImage(background);
+    }
+  }, [background]);
+
+  const handleBackgroundImage = async (background) => {
+    const storage = getStorage(app);
+    const fileName = new Date().getTime() + background.name;
+    const storageRef = ref(storage, fileName);
+
+    try {
+      const uploadSnapshot = await uploadBytes(storageRef, background);
+
+      const downloadURL = await getDownloadURL(uploadSnapshot.ref);
+
+      setFormData({ ...formData, background: downloadURL });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -73,10 +160,21 @@ const CreateClinic = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const { clinicName, details, email, phone, logo, background } = formData;
+    const location = `${street} St. ${barangayAddr}, ${cityAddr}`;
+
     try {
       const res = await axios.post(
         "http://localhost:5000/clinic/create",
-        formData,
+        {
+          clinicName,
+          location,
+          email,
+          logo,
+          phone,
+          details,
+          background,
+        },
         {
           withCredentials: true,
         }
@@ -86,6 +184,7 @@ const CreateClinic = () => {
       if (res.status === 200) {
         dispatch(setClinic(data));
         navigate("/clinic");
+        toast.success("Clinic successfully created");
       } else {
         dispatch(failClinic({ message: "Something went wrong!" }));
       }
@@ -113,6 +212,7 @@ const CreateClinic = () => {
       <div className="form-wrapper">
         <form onSubmit={handleSubmit}>
           <div className="logo-container">
+            <span>Logo</span>
             <input
               type="file"
               accept="image/*"
@@ -126,18 +226,25 @@ const CreateClinic = () => {
               src={formData.logo}
               alt=""
             />
-            <p className="img-text">
-              {imageError ? (
-                <span className="img-err">Error uploading image</span>
-              ) : imageLoading > 0 && imageLoading < 100 ? (
-                <span className="img-loading">{`Uploading image... ${imageLoading}%`}</span>
-              ) : imageLoading === 100 ? (
-                <span className="img-success">Image uploaded successfully</span>
-              ) : (
-                ""
-              )}
-            </p>
           </div>
+
+          <div className="background-image">
+            <span>Background</span>
+            <input
+              type="file"
+              accept="image/*"
+              ref={backgroundRef}
+              onChange={(e) => setBackground(e.target.files[0])}
+              hidden
+            />
+
+            <img
+              src={formData.background}
+              alt=""
+              onClick={() => backgroundRef.current.click()}
+            />
+          </div>
+
           <div className="form-element">
             <span>Clinic name</span>
             <input
@@ -149,13 +256,87 @@ const CreateClinic = () => {
           </div>
 
           <div className="form-element">
-            <span>Location</span>
-            <input
-              type="text"
-              name="location"
-              value={formData.location}
+            <span>Details</span>
+            <textarea
+              name="details"
+              value={formData.details}
               onChange={handleChange}
-            ></input>
+              rows="5"
+            ></textarea>
+          </div>
+
+          <div className="form-element">
+            <span>Address</span>
+            <hr />
+            <div className="form-element">
+              <span>Region</span>
+              <select onChange={province} onSelect={region}>
+                <option disabled>Select Region</option>
+                {regionData &&
+                  regionData.length > 0 &&
+                  regionData.map((item, index) => (
+                    <option key={index} value={item.region_code}>
+                      {item.region_name}
+                    </option>
+                  ))}
+              </select>
+            </div>
+
+            <div className="pair-elements">
+              <div className="form-element">
+                <span>Province</span>
+                <select onChange={city}>
+                  <option disabled>Select Province</option>
+                  {provinceData &&
+                    provinceData.length > 0 &&
+                    provinceData.map((item, index) => (
+                      <option key={index} value={item.province_code}>
+                        {item.province_name}
+                      </option>
+                    ))}
+                </select>
+              </div>
+
+              <div className="form-element">
+                <span>City</span>
+                <select onChange={barangay}>
+                  <option disabled>Select City</option>
+                  {cityData &&
+                    cityData.length > 0 &&
+                    cityData.map((item, index) => (
+                      <option key={index} value={item.city_code}>
+                        {item.city_name}
+                      </option>
+                    ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="pair-elements">
+              <div className="form-element">
+                <span>Street</span>
+                <input
+                  type="text"
+                  name="street"
+                  value={street}
+                  onChange={(e) => setStreet(e.target.value)}
+                />
+              </div>
+
+              <div className="form-element">
+                <span>Barangay</span>
+                <select onChange={brgy}>
+                  <option disabled>Select Barangay</option>
+                  {barangayData &&
+                    barangayData.length > 0 &&
+                    barangayData.map((item, index) => (
+                      <option key={index} value={item.brgy_code}>
+                        {item.brgy_name}
+                      </option>
+                    ))}
+                </select>
+              </div>
+            </div>
           </div>
 
           <div className="form-element">

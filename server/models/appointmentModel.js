@@ -41,6 +41,9 @@ const appointmentSchema = mongoose.Schema(
       type: Date,
       required: true,
     },
+    appointmentTime: {
+      type: String,
+    },
     status: {
       type: String,
       enum: ["Pending", "Confirmed", "Completed", "Canceled"],

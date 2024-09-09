@@ -28,6 +28,8 @@ import "./app.css";
 import { useState } from "react";
 
 // To toast message
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   const [popUp, setPopUp] = useState(false);
@@ -35,7 +37,7 @@ const App = () => {
     <>
       <BrowserRouter>
         {popUp && <AddPatient setPopUp={setPopUp} />}
-
+        <ToastContainer />
         <Nav />
         <main>
           <Routes>

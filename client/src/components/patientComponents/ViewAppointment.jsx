@@ -8,6 +8,8 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 
+import "./viewAppointment.css";
+
 const ViewAppointment = () => {
   const dispatch = useDispatch();
   const appointments = useSelector(
@@ -58,20 +60,29 @@ const ViewAppointment = () => {
 
   return (
     <div>
+      <div className="flex-table">
+        <b>Name</b>
+        <b>Clinic</b>
+        <b>Date</b>
+        <b>Status</b>
+        <b>Action</b>
+      </div>
       {appointments.map((appointment) => {
         return (
           <div key={appointment._id}>
             <p>{appointment.patientName}</p>
-            <p>{appointment.patientAge}</p>
             <p>{appointment.clinic}</p>
-            <p>{appointment.appointentDate}</p>
+            <p>{appointment.appointmentDate}</p>
+            <p>{appointment.status}</p>
             <button
               disabled={appointment.status === "Canceled"}
               onClick={() =>
                 cancelAppointment(appointment._id, appointment.status)
               }
             >
-              {appointment.status === "Canceled" ? "Appointment Canceled" : "Cancel"}
+              {appointment.status === "Canceled"
+                ? "Appointment Canceled"
+                : "Cancel"}
             </button>
           </div>
         );

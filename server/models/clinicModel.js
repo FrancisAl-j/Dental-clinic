@@ -21,6 +21,11 @@ const clinicSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    details: {
+      type: String,
+      default:
+        "Here you can put anything that you want to introduce your clinic to the audiences/patients it can include details, phrase, proverb, and etc... ",
+    },
     logo: {
       type: String,
       default:

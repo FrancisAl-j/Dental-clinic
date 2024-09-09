@@ -111,3 +111,7 @@ form button {
 .form-container p {
   color: var(--rough-black);
 }
+.sign-out {
+  color: red;
+  cursor: pointer;
+}

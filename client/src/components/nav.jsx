@@ -47,19 +47,31 @@ const Nav = () => {
               <li>Clinics</li>
             </Link>
           )}
-          {currentUser && currentUser.role === "Admin" && (
-            <Link to="/clinic">
-              <li>Clinic</li>
-            </Link>
-          )}
-          {currentUser && currentUser.role === "Assistant" && (
-            <Link to="/clinic">
-              <li>Clinic</li>
-            </Link>
-          )}
-          {currentUser && currentUser.role === "Cashier" && (
-            <Link to="/clinic">
-              <li>Clinic</li>
+          {currentUser &&
+            currentUser.clinicId &&
+            currentUser.role === "Admin" && (
+              <Link to="/clinic">
+                <li>Clinic</li>
+              </Link>
+            )}
+          {currentUser &&
+            currentUser.clinicId &&
+            currentUser.role === "Assistant" && (
+              <Link to="/clinic">
+                <li>Clinic</li>
+              </Link>
+            )}
+          {currentUser &&
+            currentUser.clinicId &&
+            currentUser.role === "Cashier" && (
+              <Link to="/clinic">
+                <li>Clinic</li>
+              </Link>
+            )}
+
+          {currentUser && !currentUser.clinicId && (
+            <Link to="/create-clinic">
+              <li>Create Clinic</li>
             </Link>
           )}
 
@@ -69,7 +81,11 @@ const Nav = () => {
             </Link>
           )}
 
-          {currentUser && <span onClick={handleSignout}>Sign out</span>}
+          {currentUser && (
+            <span className="sign-out" onClick={handleSignout}>
+              Sign out
+            </span>
+          )}
         </ul>
 
         <div className="sign-container">
