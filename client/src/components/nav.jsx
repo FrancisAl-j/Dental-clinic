@@ -48,6 +48,7 @@ const Nav = () => {
             </Link>
           )}
           {currentUser &&
+            currentClinic &&
             currentUser.clinicId &&
             currentUser.role === "Admin" && (
               <Link to="/clinic">
@@ -69,11 +70,13 @@ const Nav = () => {
               </Link>
             )}
 
-          {currentUser && !currentUser.clinicId && (
-            <Link to="/create-clinic">
-              <li>Create Clinic</li>
-            </Link>
-          )}
+          {currentUser &&
+            !currentUser.clinicId &&
+            currentUser.role === "Admin" && (
+              <Link to="/create-clinic">
+                <li>Create Clinic</li>
+              </Link>
+            )}
 
           {currentUser && currentUser.role === "Patient" && (
             <Link to="/view-appointments">

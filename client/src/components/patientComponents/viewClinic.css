@@ -14,19 +14,19 @@
   background: transparent;
   padding: 10px 0;
 }
-.clinic-header .logo-container {
+.clinic-header .logo-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 10px;
   cursor: pointer;
 }
-.clinic-header .logo-container img {
+.clinic-header .logo-header img {
   aspect-ratio: 1/1;
   height: 60px;
   border-radius: 50%;
 }
-.clinic-header .logo-container h1 {
+.clinic-header .logo-header h1 {
   color: var(--rough-black);
 }
 .clinic-header button {

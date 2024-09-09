@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const PatientSignup = () => {
   const [formData, setFormData] = useState({
@@ -42,6 +43,7 @@ const PatientSignup = () => {
       );
       if (res.status === 200) {
         setMessage("Account created successfully");
+        toast.success("Account successfully created");
       }
     } catch (error) {
       if (error.response) {
