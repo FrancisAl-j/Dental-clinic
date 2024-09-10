@@ -2,13 +2,18 @@ import { useEffect, useState } from "react";
 import "./getService.css";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import UpdateService from "../updateService/UpdateService";
+import {
+  getServiceStart,
+  getServiceSuccess,
+  clearService,
+} from "../../../redux/clinic/services/serviceReducer.js";
+import { useDispatch, useSelector } from "react-redux";
 
-const GetService = () => {
-  const [service, setService] = useState({});
+const GetService = ({ setShow }) => {
+  const dispatch = useDispatch();
+  const service = useSelector((state) => state.service.service);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [show, setShow] = useState(false);
 
   const { id } = useParams();
 
@@ -19,19 +24,23 @@ const GetService = () => {
         const res = await axios.get(`http://localhost:5000/service/get/${id}`, {
           withCredentials: true,
         });
-        setService(res.data);
-        console.log(res.data);
+        if (res.status === 200) {
+          dispatch(getServiceSuccess(res.data));
+        }
       } catch (error) {
         setError("Something went wrong fetching service");
       }
     };
 
     fetchService();
-  }, [id]);
+
+    return () => {
+      dispatch(clearService());
+    };
+  }, [id, dispatch]);
 
   return (
     <div>
-      {show && <UpdateService setShow={setShow} service={service} />}
       <div className="service-header">
         <h1>{service.name}</h1>
         <div className="service-btn">

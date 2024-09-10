@@ -9,8 +9,17 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../../../firebase.js";
+import { useSelector, useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import axios from "axios";
+import {
+  updateServiceStart,
+  updateServiceSuccess,
+} from "../../../redux/clinic/services/serviceReducer.js";
 
-const UpdateService = ({ setShow, service }) => {
+const UpdateService = ({ setShow }) => {
+  const dispatch = useDispatch();
+  const service = useSelector((state) => state.service.service);
   const [imageLogo, setImageLogo] = useState(undefined);
   const [bgImage, setBgImage] = useState(undefined);
   const [formData, setFormData] = useState({
@@ -20,7 +29,8 @@ const UpdateService = ({ setShow, service }) => {
     bgImage: service.bgImage,
   });
 
-  const imageLogoRef = useRef();
+  const imageLogoRef = useRef(null);
+  const bgImageRef = useRef(null);
 
   // Handles Image Logo
   useEffect(() => {
@@ -45,6 +55,29 @@ const UpdateService = ({ setShow, service }) => {
     }
   };
 
+  // Handles background image
+  useEffect(() => {
+    if (bgImage) {
+      handleBgImage(bgImage);
+    }
+  }, [bgImage]);
+
+  const handleBgImage = async (bgImage) => {
+    const storage = getStorage(app);
+    const fileName = new Date().getTime() + bgImage.name;
+    const storageRef = ref(storage, fileName);
+
+    try {
+      const uploadSnapshot = await uploadBytes(storageRef, bgImage);
+
+      const downloadURL = await getDownloadURL(uploadSnapshot.ref);
+
+      setFormData({ ...formData, bgImage: downloadURL });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -53,14 +86,36 @@ const UpdateService = ({ setShow, service }) => {
       [name]: value,
     });
   };
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    try {
+      dispatch(updateServiceStart());
+      const res = await axios.put(
+        `http://localhost:5000/service/update/${service._id}`,
+        formData,
+        {
+          withCredentials: true,
+        }
+      );
+      if (res.status === 200) {
+        toast.success("Successfully updated");
+        dispatch(updateServiceSuccess(res.data));
+      }
+      console.log(res.data);
+    } catch (error) {
+      toast.error("Something went wrong.");
+    }
+  };
   return (
     <div className="update-service-container">
-      <form>
+      <form onSubmit={handleUpdate}>
         <div className="form-header">
           <h1>Update Service</h1>
           <img onClick={() => setShow(false)} src={Close} alt="close" />
         </div>
         <div className="image-logo-container">
+          <p>Image Logo</p>
           <input
             type="file"
             name="imageLogo"
@@ -77,7 +132,20 @@ const UpdateService = ({ setShow, service }) => {
         </div>
 
         <div className="bgImage-container">
-          <img src={formData.bgImage} alt="" />
+          <p>Background Image</p>
+          <input
+            type="file"
+            name="imageLogo"
+            onChange={(e) => setBgImage(e.target.files[0])}
+            accept="image/*"
+            ref={bgImageRef}
+            hidden
+          />
+          <img
+            src={formData.bgImage}
+            alt=""
+            onClick={() => bgImageRef.current.click()}
+          />
         </div>
 
         <div className="service-elements">
@@ -91,8 +159,10 @@ const UpdateService = ({ setShow, service }) => {
             name="description"
             value={formData.description}
             onChange={handleChange}
+            rows="5"
           ></textarea>
         </div>
+        <button>Update</button>
       </form>
     </div>
   );

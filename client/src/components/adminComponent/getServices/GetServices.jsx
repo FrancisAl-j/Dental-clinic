@@ -7,6 +7,7 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import Sidebar from "../../sidebar/Sidebar.jsx";
 
 const GetServices = () => {
   const dispatch = useDispatch();
@@ -28,19 +29,23 @@ const GetServices = () => {
     fetchServices();
   }, [dispatch]);
   return (
-    <div>
-      <h1>Our Services</h1>
-      <div className="services-container">
-        {services.map((service) => {
-          return (
-            <Link key={service._id} to={`/service/${service._id}`}>
-              <div>
-                <img src={service.imageLogo} alt="" />
-                <h1>{service.name}</h1>
-              </div>
-            </Link>
-          );
-        })}
+    <div className="services-wrapper">
+      <Sidebar />
+
+      <div className="services-content">
+        <h1>Our Services</h1>
+        <div className="services-container">
+          {services.map((service) => {
+            return (
+              <Link key={service._id} to={`/service/${service._id}`}>
+                <div>
+                  <img src={service.imageLogo} alt="" />
+                  <h1>{service.name}</h1>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

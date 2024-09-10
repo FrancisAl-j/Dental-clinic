@@ -83,6 +83,20 @@ const updateService = async (req, res, next) => {
     if (!admin) {
       return res.status(401).json({ message: "Admin not authenticated!" });
     }
+    const updatedData = {
+      name,
+      description,
+      imageLogo,
+      bgImage,
+    };
+    const service = await Service.findByIdAndUpdate(id, updatedData, {
+      new: true,
+    });
+    if (!service) {
+      return res.status(404).json({ message: "Service not found!" });
+    }
+
+    res.status(200).json({ message: "Service successfully updated" });
   } catch (error) {
     next(error);
   }

@@ -24,6 +24,7 @@ import DentalChart from "./components/Chart/DentalChart";
 import Service from "./components/adminComponent/Service";
 import GetServices from "./components/adminComponent/getServices/GetServices";
 import GetService from "./components/adminComponent/getServices/getService";
+import UpdateService from "./components/adminComponent/updateService/UpdateService";
 import "./app.css";
 import { useState } from "react";
 
@@ -33,10 +34,12 @@ import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   const [popUp, setPopUp] = useState(false);
+  const [show, setShow] = useState(false);
   return (
     <>
       <BrowserRouter>
         {popUp && <AddPatient setPopUp={setPopUp} />}
+        {show && <UpdateService setShow={setShow} />}
         <ToastContainer />
         <Nav />
         <main>
@@ -70,7 +73,10 @@ const App = () => {
               <Route path="/chart" element={<DentalChart />} />
               <Route path="/service" element={<Service />} />
               <Route path="/services" element={<GetServices />} />
-              <Route path="/service/:id" element={<GetService />} />
+              <Route
+                path="/service/:id"
+                element={<GetService setShow={setShow} />}
+              />
             </Route>
           </Routes>
         </main>

@@ -1,0 +1,10 @@
+.services-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  height: 100svh;
+}
+.services-content {
+  width: 100%;
+  padding: 10px;
+}

@@ -7,6 +7,7 @@ import appointmentReducer from "./clinic/appointmentReducer.js";
 import historyAppointmentReducer from "./clinic/historyAppointmentReducer.js";
 import patientListReducer from "./clinic/patientListReducer.js";
 import servicesReducer from "./clinic/services/servicesReducer.js";
+import serviceReducer from "./clinic/services/serviceReducer.js";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   historyAppoinment: historyAppointmentReducer,
   patients: patientListReducer,
   services: servicesReducer,
+  service: serviceReducer,
 });
 
 const persistConfig = {

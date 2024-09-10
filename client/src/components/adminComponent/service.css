@@ -66,8 +66,10 @@ textarea {
 .imageLogo-container img {
   aspect-ratio: 1/1;
   width: 129px;
+  cursor: pointer;
 }
 .bgImage-container img {
   aspect-ratio: 16/9;
   height: 400px;
+  cursor: pointer;
 }

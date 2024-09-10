@@ -12,6 +12,7 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../../firebase.js";
+import { toast } from "react-toastify";
 
 // File images
 import ImageLogo from "../../assets/imageLogo.png";
@@ -145,6 +146,17 @@ const Service = () => {
           withCredentials: true,
         }
       );
+      if (res.status === 200) {
+        toast.success("Service created successfully!");
+        setFormData({
+          name: "",
+          description: "",
+          category: "",
+          imageLogo: ImageLogo,
+          bgImage: BgImage,
+        });
+        setAddFeatures([]);
+      }
     } catch (error) {
       console.log(error);
     }

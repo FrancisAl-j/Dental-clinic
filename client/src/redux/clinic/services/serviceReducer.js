@@ -21,10 +21,22 @@ export const serviceSlice = createSlice({
       state.loading = false;
       state.service = {};
     },
+    updateServiceStart: (state) => {
+      state.loading = true;
+    },
+    updateServiceSuccess: (state, action) => {
+      state.loading = false;
+      state.service = action.payload;
+    },
   },
 });
 
 export default serviceSlice.reducer;
 
-export const { getServiceStart, getServiceSuccess, clearService } =
-  serviceSlice.actions;
+export const {
+  getServiceStart,
+  getServiceSuccess,
+  clearService,
+  updateServiceStart,
+  updateServiceSuccess,
+} = serviceSlice.actions;
