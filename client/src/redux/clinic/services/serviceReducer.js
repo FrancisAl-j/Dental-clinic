@@ -28,6 +28,16 @@ export const serviceSlice = createSlice({
       state.loading = false;
       state.service = action.payload;
     },
+    patientGetServiceStart: (state) => {
+      state.loading = true;
+    },
+    patientGetServiceSuccess: (state, action) => {
+      state.loading = false;
+      state.service = action.payload;
+    },
+    patientClearService: (state) => {
+      state.service = {};
+    },
   },
 });
 
@@ -39,4 +49,7 @@ export const {
   clearService,
   updateServiceStart,
   updateServiceSuccess,
+  patientGetServiceStart,
+  patientGetServiceSuccess,
+  patientClearService,
 } = serviceSlice.actions;

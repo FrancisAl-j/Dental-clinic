@@ -9,11 +9,13 @@ import {
 } from "../../redux/clinic/patientClinicReducer.js";
 import Header from "../patientComponents/header/Header.jsx";
 import "./appointment.css";
+import { toast } from "react-toastify";
 
 const Appointment = () => {
   const dispatch = useDispatch();
   const { id, name } = useParams();
   const { currentUser } = useSelector((state) => state.user);
+  const clinic = useSelector((state) => state.patientClinic.clinic);
   const [formData, setFormData] = useState({
     fName: "",
     lName: "",
@@ -28,7 +30,6 @@ const Appointment = () => {
   });
   const [error, setError] = useState(null);
   const [message, setMessage] = useState(false);
-  const [clinic, setClinic] = useState(null);
 
   useEffect(() => {
     const fetchClinic = async () => {
@@ -38,7 +39,6 @@ const Appointment = () => {
         });
 
         dispatch(getClinic(res.data));
-        setClinic(res.data);
       } catch (error) {
         console.log(error);
       }
@@ -98,7 +98,19 @@ const Appointment = () => {
       if (res.status === 200) {
         dispatch(addAppointment(res.data));
 
-        setMessage("Appointment booked succesfully.");
+        toast.success("Successfully book an appointment.");
+        setFormData({
+          fName: "",
+          lName: "",
+          midInitial: "",
+          patientAge: "",
+          patientGender: "Male",
+          patientEmail: currentUser.email,
+          patientContact: "",
+          clinicId: id,
+          appointmentDate: "",
+          clinic: name,
+        });
       }
     } catch (error) {
       setError("Something went wrong!");

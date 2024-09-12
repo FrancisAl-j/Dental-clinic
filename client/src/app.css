@@ -19,51 +19,6 @@ body {
   background: var(--dirty-white);
   font-family: Arial, Helvetica, sans-serif;
 }
-header {
-  width: 100%;
-  background: var(--grayish-blue);
-  line-height: 70px;
-}
-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: min(100% - 30px, 1350px);
-  margin: auto;
-}
-nav h1 {
-  color: var(--rough-black);
-  font-size: clamp(1.9rem, 2.5vw, 2.3rem);
-}
-nav ul {
-  display: flex;
-  list-style: none;
-  gap: 10px;
-}
-nav ul li {
-  color: var(--rough-black);
-  font-size: clamp(1rem, 2vw, 1.5rem);
-}
-.sign-container {
-  display: grid;
-  place-items: center;
-}
-.sign-container img {
-  aspect-ratio: 1/1;
-  height: 50px;
-  display: block;
-}
-.icon-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-}
-.icon-container img {
-  aspect-ratio: 1/1;
-  height: 50px;
-  display: block;
-}
 
 /* Form CSS */
 .form-container {

@@ -2,6 +2,7 @@ import Admin from "../models/adminModel.js";
 import Assistant from "../models/assistantModel.js";
 import Cashier from "../models/cashierModel.js";
 import Service from "../models/serviceModel.js";
+import Patient from "../models/patientModel.js";
 
 // Creating Services
 const createService = async (req, res, next) => {
@@ -102,4 +103,82 @@ const updateService = async (req, res, next) => {
   }
 };
 
-export default { createService, getServices, getService, updateService };
+// Deleting service
+const deleteService = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const admin = await Admin.findById(req.user.id);
+    if (!admin) {
+      return res.status(401).json({ message: "Admin not authenticated!" });
+    }
+    const service = await Service.findByIdAndDelete(id);
+
+    res.status(200).json({ message: "Service deleted." });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Fetching service patient side
+const patientService = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const user = await Patient.findById(req.user.user.id);
+    if (!user) {
+      return res.status(401).json({ message: "User not authenticated!" });
+    }
+    const service = await Service.findById(id);
+
+    res.status(200).json(service);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const paginatedServices = async (req, res, next) => {
+  const { clinicId } = req.query;
+  try {
+    const user = await Patient.findById(req.user.user.id);
+    if (!user) {
+      return res.status(401).json({ message: "User not authenthicated" });
+    }
+
+    const services = await Service.find({ clinicId });
+    const page = parseInt(req.query.page);
+    const limit = parseInt(req.query.limit);
+
+    const startIndex = (page - 1) * limit;
+    const lastIndex = page * limit;
+
+    const results = {};
+    results.totalServices = services.length;
+    results.pageCount = Math.ceil(services.length / limit);
+
+    if (lastIndex < services.length) {
+      results.next = {
+        page: page + 1,
+      };
+    }
+
+    if (startIndex > 0) {
+      results.previous = {
+        page: page - 1,
+      };
+    }
+
+    const result = services.slice(startIndex, lastIndex);
+    res.status(200).json({ results, result });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default {
+  createService,
+  getServices,
+  getService,
+  updateService,
+  deleteService,
+  patientService,
+  paginatedServices,
+};

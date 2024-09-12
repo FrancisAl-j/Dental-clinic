@@ -1,4 +1,4 @@
-const Button = ({ appointment }) => {
+const Button = ({ appointment, updateStatus }) => {
   const appointmentDate = new Date(appointment.appointmentDate);
 
   const isPastAppointment = appointmentDate < new Date();
@@ -16,7 +16,7 @@ const Button = ({ appointment }) => {
           disabled={appointment.status === "Canceled"}
           onClick={() => updateStatus(appointment._id, appointment.status)}
         >
-          Update status
+          Update Status
         </button>
       )}
     </div>

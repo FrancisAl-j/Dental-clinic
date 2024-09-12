@@ -45,11 +45,6 @@ const ViewClinic = () => {
     );
   }
 
-  const handleBack = () => {
-    dispatch(clearClinic());
-    navigate("/clinics");
-  };
-
   return (
     <div className="container">
       {clinic && <Header clinic={clinic} />}
@@ -59,6 +54,11 @@ const ViewClinic = () => {
         <img src={clinic.background} alt="background" />
       </div>
       <Recommendation id={clinic.id} />
+
+      <Link to={`/${clinic.id}/paginate/services`}>
+        <button>Services</button>
+      </Link>
+
       <h3>{clinic.location}</h3>
 
       <span>{clinic.email}</span>

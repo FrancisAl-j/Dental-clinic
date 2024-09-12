@@ -12,4 +12,12 @@ router.get("/get/:id", verifyUser, controller.getService);
 
 router.put("/update/:id", verifyUser, controller.updateService);
 
+router.delete("/delete/:id", verifyUser, controller.deleteService);
+
+// Patient Side
+router.get("/fetch/:id", verifyUser, controller.patientService);
+
+// Pagination Services
+router.get("/paginated/services", verifyUser, controller.paginatedServices);
+
 export default router;

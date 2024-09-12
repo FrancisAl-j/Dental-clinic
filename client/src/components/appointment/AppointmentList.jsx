@@ -25,30 +25,30 @@ const AppointmentList = () => {
   };
 
   useEffect(() => {
-    const fetchAppointment = async () => {
-      try {
-        dispatch(getAppoinmentStart());
-        const res = await axios.get(
-          "http://localhost:5000/clinic/appointment/list",
-          {
-            withCredentials: true,
-          }
-        );
-        if (res.status === 200) {
-          dispatch(getAppoinmentSuccess(res.data));
-        }
-      } catch (error) {
-        dispatch(
-          getAppointmentFailure({
-            message:
-              "There is something wrong with fetching the appointment lists",
-          })
-        );
-      }
-    };
-
     fetchAppointment();
   }, [dispatch]);
+
+  const fetchAppointment = async () => {
+    try {
+      dispatch(getAppoinmentStart());
+      const res = await axios.get(
+        "http://localhost:5000/clinic/appointment/list",
+        {
+          withCredentials: true,
+        }
+      );
+      if (res.status === 200) {
+        dispatch(getAppoinmentSuccess(res.data));
+      }
+    } catch (error) {
+      dispatch(
+        getAppointmentFailure({
+          message:
+            "There is something wrong with fetching the appointment lists",
+        })
+      );
+    }
+  };
 
   const formatDate = (isoString) => {
     const date = new Date(isoString);
@@ -129,7 +129,7 @@ const AppointmentList = () => {
                 </select>
               )}
 
-              <Button appointment={appointment} />
+              <Button appointment={appointment} updateStatus={updateStatus} />
             </div>
           );
         })}

@@ -60,16 +60,17 @@ const ViewAppointment = () => {
 
   return (
     <div>
-      <div className="flex-table">
+      <div className="flex-table title">
         <b>Name</b>
         <b>Clinic</b>
         <b>Date</b>
         <b>Status</b>
         <b>Action</b>
       </div>
+      <hr />
       {appointments.map((appointment) => {
         return (
-          <div key={appointment._id}>
+          <div className="flex-table" key={appointment._id}>
             <p>{appointment.patientName}</p>
             <p>{appointment.clinic}</p>
             <p>{appointment.appointmentDate}</p>

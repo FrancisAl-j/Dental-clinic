@@ -9,6 +9,7 @@ import { clearPatients } from "../redux/clinic/patientListReducer.js";
 import Login from "../assets/logout.svg";
 import Signup from "../assets/register.svg";
 import Profile from "../assets/profile.svg";
+import "./nav.css";
 
 const Nav = () => {
   const dispatch = useDispatch();

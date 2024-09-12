@@ -36,13 +36,18 @@ const getRecommendation = async (req, res, next) => {
       patientId: user._id,
       clinicId: id,
     });
+    if (!dentalRecord || dentalRecord.length === 0) {
+      return res.json([]);
+    }
 
     const services = await Service.find({ clinicId: id });
 
-    const recommendations = services.map((service) => {
-      const similarity = calculateSimilarities(dentalRecord, service);
-      return { service, similarity };
-    });
+    const recommendations = services
+      .map((service) => {
+        const similarity = calculateSimilarities(dentalRecord, service);
+        return { service, similarity };
+      })
+      .filter((recommendation) => recommendation.similarity > 0);
 
     recommendations.sort((a, b) => b.similarity - a.similarity);
 

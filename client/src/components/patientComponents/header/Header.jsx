@@ -10,7 +10,7 @@ const Header = ({ clinic }) => {
   }
   return (
     <header className="clinic-header">
-      <Link to={`/clinic/${clinic._id}/${clinic.clinicName}`}>
+      <Link to={`/clinic/${clinic.id}/${clinic.clinicName}`}>
         <section className="logo-header">
           <img src={clinic.logo} alt="" />
           <h1>{clinic.clinicName}</h1>

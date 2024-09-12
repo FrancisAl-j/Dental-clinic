@@ -21,6 +21,7 @@
   padding: 10px;
   background: var(--light-blue);
   border-radius: 25px;
+  color: var(--rough-black);
 }
 .recommend-container img {
   aspect-ratio: 1/1;

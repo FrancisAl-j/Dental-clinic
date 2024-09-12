@@ -182,7 +182,7 @@ const patientSignin = async (req, res, next) => {
   try {
     const user = await Patient.findOne({ email });
     if (!user) {
-      res.status(400).json({ message: "Invalid Credentials!" });
+      return res.status(400).json({ message: "Invalid Credentials!" });
     }
 
     const isMatch = bcryptjs.compareSync(password, user.password);

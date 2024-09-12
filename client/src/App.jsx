@@ -25,6 +25,8 @@ import Service from "./components/adminComponent/Service";
 import GetServices from "./components/adminComponent/getServices/GetServices";
 import GetService from "./components/adminComponent/getServices/getService";
 import UpdateService from "./components/adminComponent/updateService/UpdateService";
+import ViewService from "./components/patientComponents/viewService/ViewService";
+import ViewServices from "./components/patientComponents/viewService/ViewServices";
 import "./app.css";
 import { useState } from "react";
 
@@ -77,6 +79,12 @@ const App = () => {
                 path="/service/:id"
                 element={<GetService setShow={setShow} />}
               />
+              <Route
+                path="/:clinicId/service/:id/:name"
+                element={<ViewService />}
+              />
+
+              <Route path="/:id/paginate/services" element={<ViewServices />} />
             </Route>
           </Routes>
         </main>
