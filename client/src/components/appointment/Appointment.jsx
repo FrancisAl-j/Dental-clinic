@@ -27,10 +27,42 @@ const Appointment = () => {
     clinicId: id,
     appointmentDate: "",
     clinic: name,
+    services: "Appointment",
+    appointmentTime: "",
   });
   const [error, setError] = useState(null);
   const [message, setMessage] = useState(false);
+  const [services, setServices] = useState([]);
 
+  //Fetching services for appointment
+  useEffect(() => {
+    fetchServices();
+
+    return () => {
+      setServices([]);
+    };
+  }, []);
+
+  const fetchServices = async () => {
+    try {
+      const res = await axios.get(
+        "http://localhost:5000/service/appointment/services",
+        {
+          params: {
+            clinicId: id,
+          },
+          withCredentials: true,
+        }
+      );
+      if (res.status === 200) {
+        setServices(res.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Fetching clinic details
   useEffect(() => {
     const fetchClinic = async () => {
       try {
@@ -74,6 +106,8 @@ const Appointment = () => {
         clinicId,
         appointmentDate,
         clinic,
+        services,
+        appointmentTime,
       } = formData;
 
       const patientName = `${lName}, ${fName} ${midInitial}.`;
@@ -89,6 +123,8 @@ const Appointment = () => {
           clinic,
           patientEmail,
           patientContact,
+          services,
+          appointmentTime,
         },
         {
           withCredentials: true,
@@ -110,10 +146,13 @@ const Appointment = () => {
           clinicId: id,
           appointmentDate: "",
           clinic: name,
+          sercies: "Appointment",
+          appointmentTime: "",
         });
       }
     } catch (error) {
       setError("Something went wrong!");
+      toast.error("Appointment date and time already taken.");
     }
   };
 
@@ -137,6 +176,7 @@ const Appointment = () => {
             <div className="form-input-container">
               <div className="form-elements">
                 <input
+                  required
                   type="text"
                   name="fName"
                   placeholder="Fist name"
@@ -145,6 +185,7 @@ const Appointment = () => {
                 />
 
                 <input
+                  required
                   type="text"
                   name="lName"
                   placeholder="Last name"
@@ -153,6 +194,7 @@ const Appointment = () => {
                 />
 
                 <input
+                  required
                   type="text"
                   name="midInitial"
                   placeholder="Middle Initial"
@@ -161,13 +203,31 @@ const Appointment = () => {
                 />
 
                 <input
+                  required
                   type="email"
                   name="patientEmail"
                   value={formData.patientEmail}
                   onChange={handleChange}
                 />
 
+                <select
+                  required
+                  name="services"
+                  value={formData.services}
+                  onChange={handleChange}
+                >
+                  <option value="Appointment">Appointment</option>
+                  {services.map((service) => {
+                    return (
+                      <option key={service._id} value={service.name}>
+                        {service.name}
+                      </option>
+                    );
+                  })}
+                </select>
+
                 <input
+                  required
                   type="number"
                   name="patientContact"
                   placeholder="Phone number"
@@ -176,6 +236,7 @@ const Appointment = () => {
                 />
 
                 <input
+                  required
                   type="number"
                   name="patientAge"
                   placeholder="Age"
@@ -184,6 +245,7 @@ const Appointment = () => {
                 />
 
                 <select
+                  required
                   name="patientGender"
                   value={formData.patientGender}
                   onChange={handleChange}
@@ -193,12 +255,23 @@ const Appointment = () => {
                   <option value="Other">Other</option>
                 </select>
 
-                <input
-                  type="date"
-                  name="appointmentDate"
-                  value={formData.appointmentDate}
-                  onChange={handleChange}
-                />
+                <div className="pair-elements">
+                  <input
+                    required
+                    type="date"
+                    name="appointmentDate"
+                    value={formData.appointmentDate}
+                    onChange={handleChange}
+                  />
+
+                  <input
+                    required
+                    type="time"
+                    name="appointmentTime"
+                    value={formData.appointmentTime}
+                    onChange={handleChange}
+                  />
+                </div>
               </div>
             </div>
             <button>Book Appointment</button>

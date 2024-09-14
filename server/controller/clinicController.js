@@ -5,6 +5,7 @@ import Cashier from "../models/cashierModel.js";
 import Clinic from "../models/clinicModel.js";
 import Patient from "../models/patientModel.js";
 import Appointment from "../models/appointmentModel.js";
+import Service from "../models/serviceModel.js";
 
 const createClinic = async (req, res, next) => {
   const { clinicName, location, email, phone, logo } = req.body;
@@ -136,6 +137,7 @@ const deleteClinic = async (req, res, next) => {
 
 // Appointment scheduling
 const appointment = async (req, res, next) => {
+  const { clinicId } = req.query;
   try {
     const user = await Patient.findById(req.user.user.id);
     if (!user) {
@@ -151,7 +153,21 @@ const appointment = async (req, res, next) => {
       appointmentDate,
       patientContact,
       clinic,
+      services,
+      appointmentTime,
     } = req.body;
+
+    const existingAppointment = await Appointment.findOne({
+      clinicId,
+      appointmentDate,
+      appointmentTime,
+    });
+
+    if (existingAppointment) {
+      return res
+        .status(400)
+        .json({ message: "Appointment Date and Time already taken" });
+    }
 
     const newAppointment = new Appointment({
       clinicId,
@@ -164,6 +180,8 @@ const appointment = async (req, res, next) => {
       patientContact,
       appointmentDate,
       status: "Pending",
+      services,
+      appointmentTime,
     });
 
     await newAppointment.save();

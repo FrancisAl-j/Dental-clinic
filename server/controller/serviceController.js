@@ -3,6 +3,7 @@ import Assistant from "../models/assistantModel.js";
 import Cashier from "../models/cashierModel.js";
 import Service from "../models/serviceModel.js";
 import Patient from "../models/patientModel.js";
+import Appointment from "../models/appointmentModel.js";
 
 // Creating Services
 const createService = async (req, res, next) => {
@@ -135,6 +136,7 @@ const patientService = async (req, res, next) => {
   }
 };
 
+// Patient see this paginated services of clinics
 const paginatedServices = async (req, res, next) => {
   const { clinicId } = req.query;
   try {
@@ -173,6 +175,23 @@ const paginatedServices = async (req, res, next) => {
   }
 };
 
+// Get services for patients
+const patientGetServices = async (req, res, next) => {
+  const { clinicId } = req.query;
+  try {
+    const user = await Patient.findById(req.user.user.id);
+    if (!user) {
+      return res.status(401).json({ message: "User not authenticated!" });
+    }
+
+    const services = await Service.find({ clinicId });
+
+    res.status(200).json(services);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   createService,
   getServices,
@@ -181,4 +200,5 @@ export default {
   deleteService,
   patientService,
   paginatedServices,
+  patientGetServices,
 };

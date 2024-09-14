@@ -1,3 +1,11 @@
+:root {
+  --light-blue: #87d3f0;
+  --grayish-blue: #5ca7c3;
+  --dark-blue: #236078;
+  --dirty-white: #efefef;
+  --rough-black: #2e2e2e;
+}
+
 .pagination {
   display: flex;
   justify-content: center;
@@ -14,7 +22,7 @@
   display: block;
   padding: 10px 15px;
   border: 1px solid #ddd;
-  color: #007bff;
+  color: var(--dark-blue);
   text-decoration: none;
 }
 
@@ -40,20 +48,28 @@
   height: auto;
   gap: 15px;
   padding: 20px 0;
+  align-items: stretch;
 }
 .service-wrapper {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  width: 250px;
+  width: 265px;
   border: 1px solid #000;
-  height: 250px;
+  padding: 5px;
+  border-radius: 15px;
+  color: var(--rough-black);
+  align-items: stretch;
 }
 .service-name-container {
   display: flex;
   gap: 10px;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
+}
+.service-name-container h1 {
+  font-size: 1.3rem;
 }
 .service-wrapper img {
   aspect-ratio: 1/1;
@@ -61,4 +77,14 @@
 }
 .services-main {
   padding: 20px 0;
+}
+.features-container {
+  display: flex;
+  gap: 5px;
+}
+.features-container span {
+  background: var(--grayish-blue);
+  color: var(--rough-black);
+  padding: 5px;
+  border-radius: 25px;
 }

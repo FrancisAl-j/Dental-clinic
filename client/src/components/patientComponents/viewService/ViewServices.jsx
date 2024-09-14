@@ -7,7 +7,7 @@ import {
   clearClinic,
 } from "../../../redux/clinic/patientClinicReducer";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Header from "../header/Header";
 
 const ViewServices = () => {
@@ -58,7 +58,6 @@ const ViewServices = () => {
   1;
 
   const getPaginateServices = async () => {
-    const clinicId = id;
     try {
       const res = await axios.get(
         `http://localhost:5000/service/paginated/services?page=${currentPage.current}&limit=${limit}`,
@@ -83,24 +82,31 @@ const ViewServices = () => {
   return (
     <div className="services-main">
       <Header clinic={clinic} />
-      <h1>Services</h1>
+      <h1>Services we can offer</h1>
       <div className="services-wrapper">
-        {services.map((service) => {
+        {services.map((service, index) => {
           return (
-            <div key={service._id} className="service-wrapper">
-              <div className="service-name-container">
-                <img src={service.imageLogo} alt="" />
-                <h1>{service.name}</h1>
+            <Link
+              to={`/${id}/service/${service._id}/${service.name}`}
+              key={index}
+            >
+              <div key={service._id} className="service-wrapper">
+                <div className="service-name-container">
+                  <img src={service.imageLogo} alt="" />
+                  <h1>{service.name}</h1>
+                </div>
+                <p>{service.description}</p>
+                <div className="features-container">
+                  {service.features.map((feature, index) => {
+                    return <span key={index}>{feature}</span>;
+                  })}
+                </div>
               </div>
-              <div className="features-container">
-                {service.features.map((feature, index) => {
-                  return <h1 key={index}>{feature}</h1>;
-                })}
-              </div>
-            </div>
+            </Link>
           );
         })}
       </div>
+
       <div>
         <ReactPaginate
           breakLabel="..."

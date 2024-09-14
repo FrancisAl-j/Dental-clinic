@@ -20,4 +20,7 @@ router.get("/fetch/:id", verifyUser, controller.patientService);
 // Pagination Services
 router.get("/paginated/services", verifyUser, controller.paginatedServices);
 
+// Patient services for appointent
+router.get("/appointment/services", verifyUser, controller.patientGetServices);
+
 export default router;
