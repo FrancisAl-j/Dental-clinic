@@ -55,7 +55,6 @@ const ViewServices = () => {
     currentPage.current = e.selected + 1;
     getPaginateServices();
   };
-  1;
 
   const getPaginateServices = async () => {
     try {
@@ -107,26 +106,28 @@ const ViewServices = () => {
         })}
       </div>
 
-      <div>
-        <ReactPaginate
-          breakLabel="..."
-          nextLabel="next >"
-          onPageChange={handlePageClick}
-          pageRangeDisplayed={5}
-          pageCount={pageCount}
-          previousLabel="< previous"
-          renderOnZeroPageCount={null}
-          marginPagesDisplayed={2}
-          containerClassName="pagination"
-          pageClassName="page-item"
-          pageLinkClassName="page-link"
-          previousClassName="page-item"
-          previousLinkClassName="page-link"
-          nextClassName="page-item"
-          nextLinkClassName="page-link"
-          activeClassName="active"
-        />
-      </div>
+      {services.length === 10 && (
+        <div>
+          <ReactPaginate
+            breakLabel="..."
+            nextLabel="next >"
+            onPageChange={handlePageClick}
+            pageRangeDisplayed={5}
+            pageCount={pageCount}
+            previousLabel="< previous"
+            renderOnZeroPageCount={null}
+            marginPagesDisplayed={2}
+            containerClassName="pagination"
+            pageClassName="page-item"
+            pageLinkClassName="page-link"
+            previousClassName="page-item"
+            previousLinkClassName="page-link"
+            nextClassName="page-item"
+            nextLinkClassName="page-link"
+            activeClassName="active"
+          />
+        </div>
+      )}
     </div>
   );
 };

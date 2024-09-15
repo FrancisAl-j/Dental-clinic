@@ -84,24 +84,26 @@ const Nav = () => {
               <li>Appointments</li>
             </Link>
           )}
-
-          {currentUser && (
-            <span className="sign-out" onClick={handleSignout}>
-              Sign out
-            </span>
-          )}
         </ul>
 
         <div className="sign-container">
           {currentUser ? (
-            <Link to="/profile">
-              {/*<h1>
+            <div className="profile-container">
+              <Link to="/profile">
+                {/*<h1>
                 {currentUser.role === "Admin"
                   ? currentUser.name
                   : currentUser.username}
               </h1>*/}
-              <img src={Profile} alt="" />
-            </Link>
+                <img src={Profile} alt="" />
+              </Link>
+
+              {currentUser && (
+                <span className="sign-out" onClick={handleSignout}>
+                  Sign out
+                </span>
+              )}
+            </div>
           ) : (
             <div className="icon-container">
               <Link to="/patient-signin">

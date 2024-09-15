@@ -146,7 +146,7 @@ const Appointment = () => {
           clinicId: id,
           appointmentDate: "",
           clinic: name,
-          sercies: "Appointment",
+          services: "Appointment",
           appointmentTime: "",
         });
       }

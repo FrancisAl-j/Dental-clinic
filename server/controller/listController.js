@@ -83,6 +83,7 @@ const storePatient = async (req, res, next) => {
 
 // Displaying all the patients
 const displayPatients = async (req, res, next) => {
+  // Query is use to search the patients name
   const { query } = req.query;
   const searchQuery = query ? String(query) : "";
   try {

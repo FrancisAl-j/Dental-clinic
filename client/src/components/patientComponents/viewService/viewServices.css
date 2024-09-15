@@ -60,6 +60,7 @@
   border-radius: 15px;
   color: var(--rough-black);
   align-items: stretch;
+  height: 265px;
 }
 .service-name-container {
   display: flex;
