@@ -129,6 +129,7 @@ const patientService = async (req, res, next) => {
       return res.status(401).json({ message: "User not authenticated!" });
     }
     const service = await Service.findById(id);
+    await Service.findByIdAndUpdate(id, { $inc: { visited: 0.5 } });
 
     res.status(200).json(service);
   } catch (error) {

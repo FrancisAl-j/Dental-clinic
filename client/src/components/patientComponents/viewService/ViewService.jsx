@@ -21,35 +21,33 @@ const ViewService = () => {
   const { clinicId, id, name } = useParams();
 
   useEffect(() => {
-    const fetchClinic = async () => {
-      try {
-        const res = await axios.get(
-          `http://localhost:5000/clinic/view/${clinicId}`,
-          {
-            withCredentials: true,
-          }
-        );
-
-        dispatch(getClinic(res.data));
-      } catch (error) {
-        console.log(error);
-      }
+    const loadData = async () => {
+      await fetchClinic();
+      await fetchService();
     };
 
-    fetchClinic();
+    loadData();
 
     return () => {
       dispatch(clearClinic());
-    };
-  }, [clinicId, dispatch]);
-
-  useEffect(() => {
-    fetchService();
-
-    return () => {
       dispatch(patientClearService());
     };
-  }, [id, dispatch]);
+  }, [dispatch]);
+
+  const fetchClinic = async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:5000/clinic/view/${clinicId}`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      dispatch(getClinic(res.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const fetchService = async () => {
     try {

@@ -26,6 +26,10 @@ const serviceSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Clinic",
   },
+  visited: {
+    type: Number,
+    default: 0,
+  },
 });
 
 const Service = mongoose.model("Service", serviceSchema);
