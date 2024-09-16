@@ -233,6 +233,23 @@ const updateStatus = async (req, res, next) => {
   }
 };
 
+// deleting appointments Patient's side
+const deleteAppointment = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const user = await Patient.findById(req.user.user.id);
+    if (!user) {
+      return res.status(401).json({ message: "User unauthenticated" });
+    }
+
+    const appointment = await Appointment.findByIdAndDelete(id);
+
+    res.status(200).json({ message: "Appointment Deleted" });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // Fetching Patients
 const getPatients = async (req, res, next) => {
   try {
@@ -267,4 +284,5 @@ export default {
   appointmentLists,
   updateStatus,
   getPatients,
+  deleteAppointment,
 };

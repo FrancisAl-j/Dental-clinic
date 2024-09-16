@@ -34,4 +34,10 @@ router.get("/appointment/list", verifyUser, controller.appointmentLists);
 // Updating status
 router.put("/status/:id", verifyUser, controller.updateStatus);
 
+router.delete(
+  "/appointment/delete/:id",
+  verifyUser,
+  controller.deleteAppointment
+);
+
 export default router;
