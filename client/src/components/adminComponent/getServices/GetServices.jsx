@@ -29,7 +29,7 @@ const GetServices = () => {
     fetchServices();
   }, [dispatch]);
   return (
-    <div className="services-wrapper">
+    <div className="services-admin-wrapper">
       <Sidebar />
 
       <div className="services-content">
@@ -41,6 +41,13 @@ const GetServices = () => {
                 <div>
                   <img src={service.imageLogo} alt="" />
                   <h1>{service.name}</h1>
+                  {service.features.map((feature, index) => {
+                    return (
+                      <ul key={index}>
+                        <li>{feature}</li>
+                      </ul>
+                    );
+                  })}
                 </div>
               </Link>
             );

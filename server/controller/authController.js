@@ -4,6 +4,11 @@ import Cashier from "../models/cashierModel.js";
 import jwt from "jsonwebtoken";
 import Assistant from "../models/assistantModel.js";
 import Patient from "../models/patientModel.js";
+import { transporter } from "../sendingEmails/nodeMailer.js";
+
+const createToken = async (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET_KEY);
+};
 
 // Admin registration
 const adminRegister = async (req, res, next) => {
@@ -161,15 +166,93 @@ const patientSignup = async (req, res, next) => {
     return res.status(400).json({ message: "Password is required" });
   }
 
-  const hashedPassword = bcryptjs.hashSync(password, 10);
-  const patient = new Patient({
-    username,
-    email,
-    password: hashedPassword,
-  });
   try {
-    await patient.save();
-    res.status(200).json({ message: "Account created successfully" });
+    const payload = {
+      username: username,
+      email: email,
+    };
+
+    const hashedPassword = bcryptjs.hashSync(password, 10);
+    const patient = new Patient({
+      username,
+      email,
+      password: hashedPassword,
+      temporaryToken: jwt.sign(payload, process.env.JWT_SECRET_KEY, {
+        expiresIn: 86400, // Expires in a day
+      }),
+    });
+
+    const user = await patient.save();
+    const token = await createToken(user._id);
+
+    const activateEmail = {
+      from: "Dental Suite Admin, dental-suite@gmail.com",
+      to: user.email,
+      subject: "Account Activation",
+      text: `Hello ${user.username}, Activate your account by clinic the provided link`, // Plain text fallback
+      html: `Hello <strong>${user.username}</strong>,<br><br>Activate your account by clicking the link provided!<br><br>
+  <a href="http://localhost:5173/verify/email/${user.temporaryToken}">Click here to log in</a>`,
+    };
+
+    transporter.sendMail(activateEmail, (err, info) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Activation Message Confirmation:", info.response);
+      }
+    });
+
+    res.status(200).json({ user, token: token });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Verifying token
+const verifyToken = async (req, res, next) => {
+  const { token } = req.params;
+  try {
+    const user = await Patient.findOne({ temporaryToken: token });
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "Temporary token has been expired!" });
+    }
+
+    const tempToken = token;
+
+    jwt.verify(tempToken, process.env.JWT_SECRET_KEY, async (err, decoded) => {
+      if (err) {
+        return res.json({ message: "Activation link expired!" });
+      }
+    });
+
+    user.temporaryToken = false;
+    user.active = true;
+    try {
+      await user.save();
+
+      const emailActivate = {
+        from: "Dental Suite Admin, dental-suite@gmail.com",
+        to: user.email,
+        subject: "Localhost Account Activated",
+        text: `Hello ${user.username}, Your account has been successfully activated!`,
+        html: `Hello <strong>${user.username}</strong>,<br><br>Your account has been successfully activated!`,
+      };
+
+      transporter.sendMail(emailActivate, (err, info) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("Activation Message Confirmation:", info.response);
+        }
+      });
+
+      res.status(200).json({ message: "Account successfully activated" });
+    } catch (error) {
+      next(error);
+    }
   } catch (error) {
     next(error);
   }
@@ -224,4 +307,5 @@ export default {
   patientSignup,
   patientSignin,
   signout,
+  verifyToken,
 };

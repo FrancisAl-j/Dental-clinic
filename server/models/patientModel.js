@@ -20,6 +20,15 @@ const patientSchema = mongoose.Schema(
       type: String,
       default: "Patient",
     },
+    active: {
+      type: Boolean,
+      default: false,
+      required: true,
+    },
+    temporaryToken: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,

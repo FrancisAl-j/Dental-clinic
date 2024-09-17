@@ -1,6 +1,7 @@
 import express from "express";
 import controller from "../controller/authController.js";
 import { verifyUser } from "../utils/verifyUser.js";
+import { authMiddleware } from "../utils/verifyUser.js";
 
 const router = express.Router();
 
@@ -22,5 +23,8 @@ router.post("/patient/signin", controller.patientSignin);
 
 // Sign out
 router.get("/admin/signout", verifyUser, controller.signout);
+
+// Verify email
+router.put("/email/:token", controller.verifyToken);
 
 export default router;

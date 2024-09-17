@@ -27,6 +27,7 @@ import GetService from "./components/adminComponent/getServices/getService";
 import UpdateService from "./components/adminComponent/updateService/UpdateService";
 import ViewService from "./components/patientComponents/viewService/ViewService";
 import ViewServices from "./components/patientComponents/viewService/ViewServices";
+import VerifyEmail from "./components/verify/verifyEmail";
 import "./app.css";
 import { useState } from "react";
 
@@ -37,6 +38,8 @@ import "react-toastify/dist/ReactToastify.css";
 const App = () => {
   const [popUp, setPopUp] = useState(false);
   const [show, setShow] = useState(false);
+  const [token, setToken] = useState("");
+
   return (
     <>
       <BrowserRouter>
@@ -51,7 +54,11 @@ const App = () => {
             <Route path="/signin" element={<Signin />} />
             <Route path="/adminSignup" element={<AdminSignUp />} />
             <Route path="/patient-signin" element={<PatientSignin />} />
-            <Route path="/patient-signup" element={<PatientSignup />} />
+            <Route
+              path="/patient-signup"
+              element={<PatientSignup token={token} setToken={setToken} />}
+            />
+            <Route path="/verify/email/:token" element={<VerifyEmail />} />
 
             <Route element={<PrivateRoute />}>
               <Route path="/create-clinic" element={<CreateClinic />} />

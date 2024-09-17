@@ -3,7 +3,7 @@ import nodemailer from "nodemailer";
 import Clinic from "../models/clinicModel.js";
 
 // Create a transporter
-const transporter = nodemailer.createTransport({
+export const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 587,
   secure: false,

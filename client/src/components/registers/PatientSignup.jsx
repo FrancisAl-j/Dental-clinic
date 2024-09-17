@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const PatientSignup = () => {
+const PatientSignup = ({ token, setToken }) => {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -43,7 +43,11 @@ const PatientSignup = () => {
       );
       if (res.status === 200) {
         setMessage("Account created successfully");
-        toast.success("Account successfully created");
+        toast.success("Email activation sent!");
+        setToken(res.data.token);
+        console.log(token);
+
+        localStorage.getItem("token", res.data.token);
       }
     } catch (error) {
       if (error.response) {
