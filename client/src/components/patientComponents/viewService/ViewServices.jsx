@@ -52,6 +52,7 @@ const ViewServices = () => {
 
   const handlePageClick = async (e) => {
     console.log(e);
+
     currentPage.current = e.selected + 1;
     getPaginateServices();
   };

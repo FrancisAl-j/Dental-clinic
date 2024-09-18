@@ -21,16 +21,42 @@ const adminRegister = async (req, res, next) => {
     return res.status(400).json({ message: "Password is required" });
   }
 
+  const payload = {
+    name: fullname,
+    email: email,
+  };
+
   const hashedPassword = bcryptjs.hashSync(password, 10);
   const newAdmin = new Admin({
     name: fullname,
     email,
     password: hashedPassword,
+    temporaryToken: jwt.sign(payload, process.env.JWT_SECRET_KEY, {
+      expiresIn: 86400,
+    }),
   });
 
   try {
-    await newAdmin.save();
-    res.status(201).json("Admin created successfully");
+    const user = await newAdmin.save();
+
+    const activateEmail = {
+      from: "Dental Suite Admin, dental-suite@gmail.com",
+      to: user.email,
+      subject: "Account Activation",
+      text: `Hello ${user.fullname}, Activate your account by clinic the provided link`, // Plain text fallback
+      html: `Hello <strong>${user.fullname}</strong>,<br><br>Activate your account by clicking the link provided!<br><br>
+  <a href="http://localhost:5173/verify/email/${user.temporaryToken}">Click here to log in</a>`,
+    };
+
+    transporter.sendMail(activateEmail, (err, info) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Activation Message Confirmation:", info.response);
+      }
+    });
+
+    res.status(201).json(user);
   } catch (error) {
     next(error);
   }
@@ -212,12 +238,15 @@ const patientSignup = async (req, res, next) => {
 const verifyToken = async (req, res, next) => {
   const { token } = req.params;
   try {
-    const user = await Patient.findOne({ temporaryToken: token });
+    let user = await Patient.findOne({ temporaryToken: token });
 
     if (!user) {
-      return res
-        .status(404)
-        .json({ message: "Temporary token has been expired!" });
+      user = await Admin.findOne({ temporaryToken: token });
+      if (!user) {
+        return res
+          .status(404)
+          .json({ message: "Temporary token has been expired!" });
+      }
     }
 
     const tempToken = token;
@@ -249,7 +278,7 @@ const verifyToken = async (req, res, next) => {
         }
       });
 
-      res.status(200).json({ message: "Account successfully activated" });
+      res.status(200).json(user);
     } catch (error) {
       next(error);
     }

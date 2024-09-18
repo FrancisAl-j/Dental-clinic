@@ -9,6 +9,7 @@ import {
 import { setClinic } from "../redux/clinic/clinicReducer.js";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Signin = () => {
   const dispatch = useDispatch();
@@ -44,7 +45,14 @@ const Signin = () => {
       const data = res.data;
 
       const clinicId = res.data.clinicId;
-      dispatch(signInSuccess(data));
+      if (res.status === 200) {
+        if (res.data.active === true) {
+          dispatch(signInSuccess(data));
+        } else {
+          toast.error("Please activate your account first.");
+          dispatch(signInFailure());
+        }
+      }
 
       if (res.data.role === "Admin") {
         if (!clinicId) {

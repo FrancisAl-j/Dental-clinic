@@ -23,6 +23,15 @@ const adminSchema = new mongoose.Schema(
       type: String,
       default: "Admin",
     },
+    active: {
+      type: Boolean,
+      default: false,
+      required: true,
+    },
+    temporaryToken: {
+      type: String,
+      required: true,
+    },
   },
 
   {

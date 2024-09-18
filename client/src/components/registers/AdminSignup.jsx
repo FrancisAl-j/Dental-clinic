@@ -44,7 +44,7 @@ const AdminSignUp = () => {
       if (res.status === 400) {
         setError(true);
       } else {
-        toast.success("Successfully register as an admin");
+        toast.success("Activation of account sent");
       }
     } catch (error) {
       if (error.response) {
