@@ -5,6 +5,7 @@ import {
   updateFailClinic,
   deleteSuccessClinic,
 } from "../../redux/clinic/clinicReducer.js";
+import { deleteUpdatedUser } from "../../redux/user/userSlice.js";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -95,8 +96,12 @@ const UpdateClinic = () => {
             withCredentials: true,
           }
         );
+        const { admin } = res.data;
+        console.log(admin);
+
         if (res.status === 200) {
           dispatch(deleteSuccessClinic());
+          dispatch(deleteUpdatedUser(admin));
           navigate("/create-clinic");
         }
       }

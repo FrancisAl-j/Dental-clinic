@@ -1,0 +1,57 @@
+:root {
+  --light-blue: #87d3f0;
+  --grayish-blue: #5ca7c3;
+  --dark-blue: #236078;
+  --dirty-white: #efefef;
+  --rough-black: #2e2e2e;
+}
+
+.home-header {
+  margin: 10px 0;
+  line-height: 0;
+  border-radius: 24px;
+  overflow: hidden;
+  position: relative;
+  height: 50vh;
+}
+.home-header .fill {
+  height: 100%;
+  width: 100%;
+  object-fit: fill;
+}
+.home-content {
+  position: absolute;
+  bottom: 3%;
+  left: 5%;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+.home-content h1 {
+  font-size: clamp(1.2rem, 3vw, 2.3rem);
+}
+.home-content .buttons {
+  align-self: flex-end;
+}
+.home-content .buttons button {
+  padding: 8px 22px;
+  background: transparent;
+  border-radius: 40px;
+  outline: none;
+  border: 2px solid var(--grayish-blue);
+  cursor: pointer;
+  margin: 0 5px;
+  font-size: clamp(0.8rem, 2vw, 1.3rem);
+}
+section .buttons button:hover {
+  background: var(--grayish-blue);
+  border: 2px solid var(--rough-black);
+  color: var(--dirty-white);
+}
+
+/* For smaller screen sizes */
+@media (max-width: 840px) {
+  .home-header {
+    height: 30vh;
+  }
+}

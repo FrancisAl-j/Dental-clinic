@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { setClinic, failClinic } from "../redux/clinic/clinicReducer.js";
+import { setUpdatedUser } from "../redux/user/userSlice.js";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -180,9 +181,13 @@ const CreateClinic = () => {
         }
       );
 
-      const data = res.data;
+      const { clinic } = res.data;
+      const { updatedAdmin } = res.data;
+      console.log(updatedAdmin);
+
       if (res.status === 200) {
-        dispatch(setClinic(data));
+        dispatch(setClinic(clinic));
+        dispatch(setUpdatedUser(updatedAdmin));
         navigate("/clinic");
         toast.success("Clinic successfully created");
       } else {

@@ -4,6 +4,12 @@ import { verifyUser } from "../utils/verifyUser.js";
 
 const router = express.Router();
 
+router.delete(
+  "/appointment/delete/:id",
+  verifyUser,
+  controller.deleteAppointment
+);
+
 // Patients list
 router.get("/patient", verifyUser, controller.getPatients);
 
@@ -33,11 +39,5 @@ router.get("/appointment/list", verifyUser, controller.appointmentLists);
 
 // Updating status
 router.put("/status/:id", verifyUser, controller.updateStatus);
-
-router.delete(
-  "/appointment/delete/:id",
-  verifyUser,
-  controller.deleteAppointment
-);
 
 export default router;

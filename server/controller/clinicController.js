@@ -6,6 +6,36 @@ import Clinic from "../models/clinicModel.js";
 import Patient from "../models/patientModel.js";
 import Appointment from "../models/appointmentModel.js";
 import Service from "../models/serviceModel.js";
+import Patient_List from "../models/patientListModel.js";
+import sendAppointmentsReminder, {
+  transporter,
+} from "../sendingEmails/nodeMailer.js";
+
+const sendAppointmentStatus = async (userEmail, name) => {
+  const mailOption = {
+    from: "dental-suite@gmail.com",
+    to: userEmail,
+    subject: "Appointment status",
+    html: `<h1>Hello ${name}</h1>
+          <p>Your appointment has been confirmed!</p>
+    `,
+  };
+
+  transporter.sendMail(mailOption);
+};
+
+const cancelAppointmentNotif = async (userEmail, name) => {
+  const mailOption = {
+    from: "denta-suite@gmail.com",
+    to: userEmail,
+    subject: "Appointment Cancelled",
+    html: `<h1>Hello ${name}</h1>
+          <p>Sorry for the inconvenience your appointment has been cancelled by the dentist</p>
+    `,
+  };
+
+  transporter.sendMail(mailOption);
+};
 
 const createClinic = async (req, res, next) => {
   const { clinicName, location, email, phone, logo } = req.body;
@@ -18,10 +48,16 @@ const createClinic = async (req, res, next) => {
     const clinic = new Clinic({ clinicName, location, email, phone, logo });
     await clinic.save();
 
+    console.log("Admin before:" + admin);
+
     admin.clinicId = clinic._id;
     await admin.save();
 
-    res.status(200).json(clinic);
+    const updatedAdmin = await Admin.findById(req.user.id);
+
+    console.log(`Admin After: ${updatedAdmin}`);
+
+    res.status(200).json({ clinic, updatedAdmin });
   } catch (error) {
     next(error);
   }
@@ -122,6 +158,10 @@ const deleteClinic = async (req, res, next) => {
 
     await Admin.findByIdAndUpdate(user._id, { clinicId: null });
 
+    const admin = await Admin.findById(user._id);
+
+    console.log(`Admin after deleting: ${admin}`);
+
     await Assistant.deleteMany({
       clinicId: id,
     });
@@ -129,7 +169,7 @@ const deleteClinic = async (req, res, next) => {
 
     res
       .status(200)
-      .json({ message: "Clinic and Employees deleted successfully!" });
+      .json({ message: "Clinic and Employees deleted successfully!", admin });
   } catch (error) {
     next(error);
   }
@@ -223,8 +263,19 @@ const updateStatus = async (req, res, next) => {
       { new: true }
     );
 
+    const userId = appointment.patientId;
+
     if (!appointment) {
       return res.status(404).json({ message: "Appointment not found!" });
+    }
+    const patient = await Patient.findById(userId);
+
+    const updatedAppointment = await Appointment.findById(id);
+    const newPatient = await Patient_List.findOne({ patientId: patient._id });
+    console.log(newPatient);
+    if (updatedAppointment.status === "Confirmed") {
+      await sendAppointmentStatus(patient.email, newPatient.patientName);
+      console.log("Send Successfully");
     }
 
     res.status(200).json(appointment);
@@ -237,12 +288,20 @@ const updateStatus = async (req, res, next) => {
 const deleteAppointment = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const user = await Patient.findById(req.user.user.id);
+    const user = await Admin.findById(req.user.id);
     if (!user) {
       return res.status(401).json({ message: "User unauthenticated" });
     }
 
-    const appointment = await Appointment.findByIdAndDelete(id);
+    console.log(id);
+
+    const appointment = await Appointment.findById(id);
+    const patientId = appointment.patientId; // Id for finding patient or user
+    const patient = await Patient_List.findOne({ patientId: patientId });
+    const newUser = await Patient.findById(patientId);
+    await Appointment.findByIdAndDelete(id);
+
+    await cancelAppointmentNotif(newUser.email, patient.patientName);
 
     res.status(200).json({ message: "Appointment Deleted" });
   } catch (error) {

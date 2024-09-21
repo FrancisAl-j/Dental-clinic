@@ -5,6 +5,7 @@ import {
   getAppoinmentSuccess,
   getAppointmentFailure,
   updateAppointment,
+  clearAppointment,
 } from "../../redux/clinic/appointmentReducer";
 import axios from "axios";
 import "./appointmentList.css";
@@ -19,13 +20,12 @@ const AppointmentList = () => {
 
   const [error, setError] = useState(null);
 
-  const handleChange = (e, id) => {
-    const updatedStatus = e.target.value;
-    updateStatus(id, updatedStatus);
-  };
-
   useEffect(() => {
     fetchAppointment();
+
+    return () => {
+      dispatch(clearAppointment());
+    };
   }, [dispatch]);
 
   const fetchAppointment = async () => {
@@ -50,29 +50,24 @@ const AppointmentList = () => {
     }
   };
 
-  const formatDate = (isoString) => {
-    const date = new Date(isoString);
-    const options = {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      timeZone: "UTC",
-    };
-    let formattedDate = date.toLocaleString("en-GB", options);
-
-    // Remove ":00" if the time is exactly on the hour (e.g., "00:00", "01:00")
-    if (formattedDate.endsWith(":00")) {
-      formattedDate = formattedDate.slice(0, -3); // Remove the ":00"
+  const handleUpdateStatus = async (e, id) => {
+    try {
+      const res = await axios.put(
+        `http://localhost:5000/clinic/status/${id}`,
+        {
+          status: e.target.value,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      if (res.status === 200) {
+        dispatch(updateAppointment(res.data));
+        await fetchAppointment();
+      }
+    } catch (error) {
+      console.log(error);
     }
-
-    // If the hour is 00 and the time part was completely removed, remove the comma
-    if (formattedDate.endsWith(", 00")) {
-      formattedDate = formattedDate.replace(", 00", ""); // Remove ", 00"
-    }
-
-    return formattedDate; // e.g., "06/09/2024" if the time was 00:00
   };
 
   const updateStatus = async (id, status) => {
@@ -94,6 +89,23 @@ const AppointmentList = () => {
     }
   };
 
+  // Canceling apointments means deleting it
+  const handleDelete = async (id) => {
+    try {
+      const res = await axios.delete(
+        `http://localhost:5000/clinic/appointment/delete/${id}`,
+        {
+          withCredentials: true,
+        }
+      );
+      if (res.status === 200) {
+        await fetchAppointment();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="appointment-container">
       <Sidebar />
@@ -108,31 +120,34 @@ const AppointmentList = () => {
           <h3>Update</h3>
         </div>
         <hr />
-        {appointments.map((appointment) => {
-          return (
-            <div className="list" key={appointment._id}>
-              <p className="list-content">{appointment.patientName}</p>
-              <p className="list-content">{appointment.patientAge}</p>
-              <p className="list-content">{appointment.patientGender}</p>
-              <CheckDate appointment={appointment} />
-              {appointment.status === "Canceled" ? (
-                <p className="list-content">Canceled</p>
-              ) : (
-                <select
-                  value={appointment.status} // Set the select's value to the current status of the appointment
-                  onChange={(e) => handleChange(e, appointment._id)} // Pass the id and new status to the update function
-                >
-                  <option value="Pending">Pending</option>
-                  <option value="Confirmed">Confirmed</option>
-                  <option value="Completed">Completed</option>
-                  <option value="Canceled">Canceled</option>
-                </select>
-              )}
+        {appointments &&
+          appointments.map((appointment) => {
+            return (
+              <div className="list" key={appointment._id}>
+                <p className="list-content">{appointment.patientName}</p>
+                <p className="list-content">{appointment.patientAge}</p>
+                <p className="list-content">{appointment.patientGender}</p>
+                <CheckDate appointment={appointment} />
+                {appointment.status === "Canceled" ? (
+                  <p className="list-content">Canceled</p>
+                ) : (
+                  <select
+                    value={appointment.status} // Set the select's value to the current status of the appointment
+                    onChange={(e) => handleUpdateStatus(e, appointment._id)} // Pass the id and new status to the update function
+                  >
+                    <option value="Pending">Pending</option>
+                    <option value="Confirmed">Confirmed</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Canceled">Canceled</option>
+                  </select>
+                )}
 
-              <Button appointment={appointment} updateStatus={updateStatus} />
-            </div>
-          );
-        })}
+                <button onClick={() => handleDelete(appointment._id)}>
+                  Cancel Appointment
+                </button>
+              </div>
+            );
+          })}
       </div>
     </div>
   );

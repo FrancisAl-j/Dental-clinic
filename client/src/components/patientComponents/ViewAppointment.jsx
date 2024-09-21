@@ -59,18 +59,18 @@ const ViewAppointment = () => {
     }
   };
 
-  const cancelAppointment = async (id, status) => {
+  const cancelAppointment = async (id) => {
     try {
       if (window.confirm("Are you sure you want to cancel your appointment?")) {
-        const res = await axios.put(
+        const res = await axios.delete(
           `http://localhost:5000/user/cancel/${id}`,
-          { status },
           {
             withCredentials: true,
           }
         );
         if (res.status === 200) {
-          dispatch(cancelStatus(res.data));
+          await fetchAppointments();
+          toast.success("Appointment Canceled");
         }
       }
     } catch (error) {
@@ -105,9 +105,6 @@ const ViewAppointment = () => {
                 {appointment.status === "Canceled"
                   ? "Appointment Canceled"
                   : "Cancel"}
-              </button>
-              <button onClick={() => deleteAppointment(appointment._id)}>
-                Delete
               </button>
             </div>
           </div>

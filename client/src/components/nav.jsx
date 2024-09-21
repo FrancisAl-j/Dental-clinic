@@ -56,6 +56,7 @@ const Nav = () => {
                 <li>Clinic</li>
               </Link>
             )}
+
           {currentUser &&
             currentUser.clinicId &&
             currentUser.role === "Assistant" && (

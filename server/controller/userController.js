@@ -124,11 +124,7 @@ const cancelAppointment = async (req, res, next) => {
       return res.status(404).json({ message: "User not found!" });
     }
 
-    const appointment = await Appointment.findByIdAndUpdate(
-      id,
-      { status: "Canceled" },
-      { new: true }
-    );
+    const appointment = await Appointment.findByIdAndDelete(id);
     if (!appointment) {
       return res.status(404).json({ message: "Appointment not found." });
     }

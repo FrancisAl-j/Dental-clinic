@@ -39,7 +39,8 @@ export const appointmentSlice = createSlice({
       }
     },
     clearAppointment: (state) => {
-      (state.appointment = []), (state.error = null);
+      state.appointment = [];
+      state.error = null;
     },
   },
 });
