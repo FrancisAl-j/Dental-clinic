@@ -6,5 +6,6 @@ const router = express.Router();
 
 // Get the recommendation base on conditions and treatments needed by the patient
 router.get("/recommendation/:id", verifyUser, controller.getRecommendation);
+router.get("/top/services", verifyUser, controller.topServices);
 
 export default router;

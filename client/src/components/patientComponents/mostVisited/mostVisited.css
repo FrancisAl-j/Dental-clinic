@@ -1,0 +1,50 @@
+:root {
+  --light-blue: #87d3f0;
+  --grayish-blue: #5ca7c3;
+  --dark-blue: #236078;
+  --dirty-white: #efefef;
+  --rough-black: #2e2e2e;
+}
+
+.most-container {
+  display: grid;
+  place-items: center;
+  gap: 30px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.most-container h1 {
+  font-size: clamp(1.2rem, 3vw, 2.2rem);
+}
+.most-wrapper {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+.most-service-container {
+  display: flex;
+  gap: 50px;
+  align-items: center;
+  background: var(--light-blue);
+  padding: 20px;
+  border-radius: 10px;
+  position: relative;
+  max-width: 500px;
+}
+.most-service-container img {
+  aspect-ratio: 1/1;
+  width: 100px;
+  border-radius: 50%;
+}
+.most-service-container .fire {
+  aspect-ratio: 1/1;
+  width: 20px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 5px;
+}
+.most-service-container p {
+  font-weight: 600;
+  font-size: clamp(0.9rem, 2vw, 1.5rem);
+}

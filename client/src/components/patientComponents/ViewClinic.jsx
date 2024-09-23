@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import Recommendation from "./Recommendation.jsx";
 import "./viewClinic.css";
 import Header from "./header/Header.jsx";
+import MostVisitedServices from "./mostVisited/MostVisistedServices.jsx";
 
 const ViewClinic = () => {
   const navigate = useNavigate();
@@ -53,6 +54,7 @@ const ViewClinic = () => {
       <div className="container-background">
         <img src={clinic.background} alt="background" />
       </div>
+      <MostVisitedServices id={clinic.id} />
       <Recommendation id={clinic.id} />
 
       <Link to={`/${clinic.id}/paginate/services`}>

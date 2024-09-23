@@ -57,4 +57,23 @@ const getRecommendation = async (req, res, next) => {
   }
 };
 
-export default { getRecommendation };
+// Recommend most visits services on clinics
+const topServices = async (req, res, next) => {
+  const { clinicId } = req.query;
+  try {
+    const user = Patient.findById(req.user.user.id);
+    if (!user) {
+      return res.status(401).json({ message: "User not authenticated!" });
+    }
+    const services = await Service.find({ clinicId }).sort({ visited: -1 });
+    const mostVisited = services.filter((service) => {
+      return service.visited > 10;
+    });
+    const results = mostVisited.slice(0, 5);
+    res.status(200).json(results);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default { getRecommendation, topServices };

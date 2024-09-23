@@ -45,8 +45,6 @@ const Recommendation = ({ id }) => {
     };
   }, [id]);
 
-  console.log(recommendation);
-
   return (
     <div>
       {recommendation.length === 0 ? (

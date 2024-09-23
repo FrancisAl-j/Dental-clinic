@@ -11,15 +11,23 @@ const Home = () => {
         <img className="fill" src={Header} alt="header" />
         <section className="home-content">
           <h1>Your smile is our priority</h1>
-          <div className="buttons">
-            <Link to="/patient-signup">
-              <button className="signup">Sign up</button>
-            </Link>
+          {currentUser ? (
+            <div className="buttons">
+              <Link to="/clinics">
+                <button>View Clinics</button>
+              </Link>
+            </div>
+          ) : (
+            <div className="buttons">
+              <Link to="/patient-signup">
+                <button className="signup">Sign up</button>
+              </Link>
 
-            <Link to="patient-signin">
-              <button className="signin">Sign in</button>
-            </Link>
-          </div>
+              <Link to="patient-signin">
+                <button className="signin">Sign in</button>
+              </Link>
+            </div>
+          )}
         </section>
       </header>
     </div>
