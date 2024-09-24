@@ -1,19 +1,25 @@
 import { useSelector } from "react-redux";
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { getClinics, clearClinics } from "../../redux/clinic/ClinicsReducer.js";
 import { Link } from "react-router-dom";
 import "./viewClinics.css";
+import usegeoaddress from "usegeoaddress";
 
 const ViewClinics = () => {
+  const { address, err, status } = usegeoaddress();
   const dispatch = useDispatch();
   const currentClinics = useSelector((state) => state.clinics.clinics);
+  const [city, setCity] = useState(null); // City of user if allowed on website
 
   useEffect(() => {
     const fetchClinics = async () => {
       try {
         const res = await axios.get("http://localhost:5000/clinic/", {
+          params: {
+            city,
+          },
           withCredentials: true,
         });
         const data = res.data;
@@ -29,6 +35,12 @@ const ViewClinics = () => {
       dispatch(clearClinics());
     };
   }, [dispatch]);
+
+  useEffect(() => {
+    if (address && address.city) {
+      setCity(address.city); // Set the city from geolocation data
+    }
+  }, [address]);
 
   return (
     <div>

@@ -85,17 +85,26 @@ const getClinic = async (req, res, next) => {
   }
 };
 
-// All clinics
+// All clinics patient's side
 const getClinics = async (req, res, next) => {
+  const { city } = req.query; // Checks the city of the user if there is one or allowed by the user
   try {
     const user = await Patient.findById(req.user.user.id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const clinics = await Clinic.find();
+    let clinics;
+    if (!city || city.trim() === "") {
+      clinics = await Clinic.find();
+      return res.status(200).json(clinics);
+    } else {
+      clinics = await Clinic.find({
+        location: { $regex: city.trim(), $options: "i" },
+      });
 
-    return res.status(200).json(clinics);
+      return res.status(200).json(clinics);
+    }
   } catch (error) {
     next(error);
   }
