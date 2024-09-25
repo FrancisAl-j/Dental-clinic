@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 
+// Using token and cookies for authentication
 export const verifyUser = (req, res, next) => {
   const token = req.cookies.token;
   //console.log(token);
@@ -15,6 +16,7 @@ export const verifyUser = (req, res, next) => {
   });
 };
 
+// Using only token on authentication
 export const authMiddleware = (req, res, next) => {
   const { token } = req.headers;
 

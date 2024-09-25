@@ -6,6 +6,7 @@ import { getClinics, clearClinics } from "../../redux/clinic/ClinicsReducer.js";
 import { Link } from "react-router-dom";
 import "./viewClinics.css";
 import usegeoaddress from "usegeoaddress";
+import SearchClinics from "./searchClinic/SearchClinics.jsx";
 
 const ViewClinics = () => {
   const { address, err, status } = usegeoaddress();
@@ -44,11 +45,7 @@ const ViewClinics = () => {
 
   return (
     <div>
-      <div className="clinic-nav">
-        <Link to="/clinics">
-          <div>Clinics</div>
-        </Link>
-      </div>
+      <SearchClinics />
       <div className="clinic-content">
         <h1>Available Clinics</h1>
 
