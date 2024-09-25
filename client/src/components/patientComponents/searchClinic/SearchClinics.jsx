@@ -35,8 +35,11 @@ const SearchClinics = () => {
         <div className="data-container">
           {searchData.map((clinic, index) => {
             return (
-              <div key={index}>
-                <h1>{clinic.clinicName}</h1>
+              <div key={index} className="data-wrapper">
+                <div className="img-container">
+                  <img src={clinic.logo} alt="" />
+                  <h1>{clinic.clinicName}</h1>
+                </div>
               </div>
             );
           })}
