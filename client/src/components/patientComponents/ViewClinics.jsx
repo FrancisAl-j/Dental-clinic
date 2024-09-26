@@ -8,6 +8,7 @@ import "./viewClinics.css";
 import usegeoaddress from "usegeoaddress";
 import SearchClinics from "./searchClinic/SearchClinics.jsx";
 import Location from "../../assets/location.svg";
+import Phone from "../../assets/phone.svg";
 
 const ViewClinics = () => {
   const { address, err, status } = usegeoaddress();
@@ -68,6 +69,10 @@ const ViewClinics = () => {
                 <div className="location-container">
                   <img src={Location} alt="" />
                   <p>{clinic.location}</p>
+                </div>
+                <div className="contact-container">
+                  <img src={Phone} alt="" />
+                  <p>{clinic.contact}</p>
                 </div>
               </div>
             </Link>

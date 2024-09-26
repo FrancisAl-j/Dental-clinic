@@ -14,6 +14,12 @@
   height: 150px;
   box-shadow: 0 0 10px #00000015;
   border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.clinic-wrapper:hover {
+  box-shadow: 0 0 10px #00ff0080;
 }
 .image-wrapper {
   display: flex;
@@ -41,6 +47,19 @@
   width: 20px;
 }
 .location-container p {
+  font-size: 0.75rem;
+  color: gray;
+}
+.contact-container {
+  display: flex;
+  gap: 10px;
+  padding: 0 10px;
+}
+.contact-container img {
+  aspect-ratio: 1/1;
+  width: 20px;
+}
+.contact-container p {
   font-size: 0.75rem;
   color: gray;
 }
