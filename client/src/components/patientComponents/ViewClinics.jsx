@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import "./viewClinics.css";
 import usegeoaddress from "usegeoaddress";
 import SearchClinics from "./searchClinic/SearchClinics.jsx";
+import Location from "../../assets/location.svg";
 
 const ViewClinics = () => {
   const { address, err, status } = usegeoaddress();
@@ -30,12 +31,16 @@ const ViewClinics = () => {
       }
     };
 
-    fetchClinics();
+    if (city !== null) {
+      fetchClinics(); // Fetch clinics when city changes and is not null
+    } else {
+      fetchClinics();
+    }
 
     return () => {
       dispatch(clearClinics());
     };
-  }, [dispatch]);
+  }, [dispatch, city]);
 
   useEffect(() => {
     if (address && address.city) {
@@ -56,9 +61,14 @@ const ViewClinics = () => {
               to={`/clinic/${clinic.id}/${clinic.clinicName}`}
             >
               <div className="clinic-wrapper">
-                <img src={clinic.logo} alt="logo" />
-                <h1>{clinic.clinicName}</h1>
-                <p>{clinic.location}</p>
+                <div className="image-wrapper">
+                  <img src={clinic.logo} alt="logo" />
+                  <h1>{clinic.clinicName}</h1>
+                </div>
+                <div className="location-container">
+                  <img src={Location} alt="" />
+                  <p>{clinic.location}</p>
+                </div>
               </div>
             </Link>
           ))}
