@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./searchClinics.css";
+import { Link } from "react-router-dom";
 
 const SearchClinics = () => {
   const [searchData, setSearchData] = useState([]);
@@ -35,12 +36,17 @@ const SearchClinics = () => {
         <div className="data-container">
           {searchData.map((clinic, index) => {
             return (
-              <div key={index} className="data-wrapper">
-                <div className="img-container">
-                  <img src={clinic.logo} alt="" />
-                  <h1>{clinic.clinicName}</h1>
+              <Link
+                key={index}
+                to={`/clinic/${clinic._id}/${clinic.clinicName}`}
+              >
+                <div className="data-wrapper">
+                  <div className="img-container">
+                    <img src={clinic.logo} alt="" />
+                    <h1>{clinic.clinicName}</h1>
+                  </div>
                 </div>
-              </div>
+              </Link>
             );
           })}
         </div>

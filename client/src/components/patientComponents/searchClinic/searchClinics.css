@@ -31,6 +31,7 @@
 .data-container .data-wrapper {
   padding: 10px;
   cursor: pointer;
+  color: var(--rough-black);
 }
 .data-wrapper .img-container {
   display: flex;
