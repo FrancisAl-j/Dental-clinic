@@ -10,11 +10,16 @@ import Login from "../assets/logout.svg";
 import Signup from "../assets/register.svg";
 import Profile from "../assets/profile.svg";
 import "./nav.css";
+import { useState } from "react";
+import ArrowDown from "../assets/arrow.svg";
+import Logout from "../assets/signout.svg";
+import Appointment from "../assets/appointment.svg";
 
 const Nav = () => {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
   const { currentClinic } = useSelector((state) => state.clinic);
+  const [show, setShow] = useState(false);
 
   const handleSignout = async () => {
     try {
@@ -29,6 +34,10 @@ const Nav = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleShow = (e) => {
+    setShow((prevState) => !prevState);
   };
 
   return (
@@ -79,30 +88,47 @@ const Nav = () => {
                 <li>Create Clinic</li>
               </Link>
             )}
-
-          {currentUser && currentUser.role === "Patient" && (
-            <Link to="/view-appointments">
-              <li>Appointments</li>
-            </Link>
-          )}
         </ul>
 
         <div className="sign-container">
           {currentUser ? (
             <div className="profile-container">
-              <Link to="/profile">
-                {/*<h1>
+              {/*<h1> 
                 {currentUser.role === "Admin"
                   ? currentUser.name
                   : currentUser.username}
-              </h1>*/}
+              </h1> </Link>*/}
+              <div className="profile-wrapper" onClick={handleShow}>
                 <img src={Profile} alt="" />
-              </Link>
+                <img src={ArrowDown} alt="" className="arrow" />
+              </div>
 
-              {currentUser && (
-                <span className="sign-out" onClick={handleSignout}>
-                  Sign out
-                </span>
+              {show && (
+                <div className="hide-container">
+                  {currentUser && (
+                    <ul onClick={handleShow}>
+                      <Link to="/profile">
+                        <li>
+                          <p>Profile</p>
+                        </li>
+                      </Link>
+
+                      <li onClick={handleSignout}>
+                        <img src={Logout} alt="" />
+                        <p className="sign-out">Sign out</p>
+                      </li>
+
+                      {currentUser && currentUser.role === "Patient" && (
+                        <Link to="/view-appointments">
+                          <li>
+                            <img src={Appointment} alt="" />
+                            <p>Appointments</p>
+                          </li>
+                        </Link>
+                      )}
+                    </ul>
+                  )}
+                </div>
               )}
             </div>
           ) : (

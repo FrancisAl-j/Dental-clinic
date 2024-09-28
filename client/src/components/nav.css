@@ -1,3 +1,11 @@
+:root {
+  --light-blue: #87d3f0;
+  --grayish-blue: #5ca7c3;
+  --dark-blue: #236078;
+  --dirty-white: #efefef;
+  --rough-black: #2e2e2e;
+}
+
 header {
   width: 100%;
   background: var(--grayish-blue);
@@ -31,6 +39,7 @@ nav ul li {
   aspect-ratio: 1/1;
   height: 50px;
   display: block;
+  cursor: pointer;
 }
 .icon-container {
   display: flex;
@@ -48,4 +57,39 @@ nav ul li {
   justify-content: space-between;
   align-items: center;
   gap: 30px;
+  position: relative;
+}
+.profile-wrapper {
+  display: flex;
+}
+.profile-wrapper .arrow {
+  aspect-ratio: 1/1;
+  width: 17px;
+}
+.hide-container {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 1;
+  background: #fff;
+  border-radius: 10px;
+  width: 250px;
+}
+.hide-container ul {
+  display: flex;
+  flex-direction: column;
+}
+.hide-container ul li {
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 20px;
+  cursor: pointer;
+}
+.hide-container ul li img {
+  aspect-ratio: 1/1;
+  width: 40px;
+}
+.hide-container ul li p {
+  font-size: clamp(1rem, 2vw, 1.2rem);
 }
