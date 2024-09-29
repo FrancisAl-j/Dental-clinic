@@ -14,6 +14,8 @@ import { useState } from "react";
 import ArrowDown from "../assets/arrow.svg";
 import Logout from "../assets/signout.svg";
 import Appointment from "../assets/appointment.svg";
+import Home from "../assets/home.svg";
+import Clinics from "../assets/clinics.svg";
 
 const Nav = () => {
   const dispatch = useDispatch();
@@ -110,6 +112,7 @@ const Nav = () => {
                       <div className="small-screen">
                         <Link to="/">
                           <li>
+                            <img src={Home} alt="" />
                             <p>Home</p>
                           </li>
                         </Link>
@@ -118,7 +121,10 @@ const Nav = () => {
                         </Link>
                         {currentUser && currentUser.role === "Patient" && (
                           <Link to="/clinics">
-                            <li>Clinics</li>
+                            <li>
+                              <img src={Clinics} alt="" />
+                              <p>Clinics</p>
+                            </li>
                           </Link>
                         )}
                         {currentUser &&
