@@ -107,8 +107,55 @@ const Nav = () => {
                 <div className="hide-container">
                   {currentUser && (
                     <ul onClick={handleShow}>
+                      <div className="small-screen">
+                        <Link to="/">
+                          <li>
+                            <p>Home</p>
+                          </li>
+                        </Link>
+                        <Link to="/about">
+                          <li>About</li>
+                        </Link>
+                        {currentUser && currentUser.role === "Patient" && (
+                          <Link to="/clinics">
+                            <li>Clinics</li>
+                          </Link>
+                        )}
+                        {currentUser &&
+                          currentClinic &&
+                          currentUser.clinicId &&
+                          currentUser.role === "Admin" && (
+                            <Link to="/clinic">
+                              <li>Clinic</li>
+                            </Link>
+                          )}
+
+                        {currentUser &&
+                          currentUser.clinicId &&
+                          currentUser.role === "Assistant" && (
+                            <Link to="/clinic">
+                              <li>Clinic</li>
+                            </Link>
+                          )}
+                        {currentUser &&
+                          currentUser.clinicId &&
+                          currentUser.role === "Cashier" && (
+                            <Link to="/clinic">
+                              <li>Clinic</li>
+                            </Link>
+                          )}
+
+                        {currentUser &&
+                          !currentUser.clinicId &&
+                          currentUser.role === "Admin" && (
+                            <Link to="/create-clinic">
+                              <li>Create Clinic</li>
+                            </Link>
+                          )}
+                      </div>
                       <Link to="/profile">
                         <li>
+                          <img src={Profile} alt="" />
                           <p>Profile</p>
                         </li>
                       </Link>

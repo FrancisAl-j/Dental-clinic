@@ -61,7 +61,7 @@ const ViewClinics = () => {
               key={clinic.id}
               to={`/clinic/${clinic.id}/${clinic.clinicName}`}
             >
-              <div className="clinic-wrapper">
+              <div className="clinic-view-wrapper">
                 <div className="image-wrapper">
                   <img src={clinic.logo} alt="logo" />
                   <h1>{clinic.clinicName}</h1>

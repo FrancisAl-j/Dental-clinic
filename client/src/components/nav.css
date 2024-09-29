@@ -93,3 +93,16 @@ nav ul li {
 .hide-container ul li p {
   font-size: clamp(1rem, 2vw, 1.2rem);
 }
+.hide-container .small-screen {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  nav ul {
+    display: none;
+  }
+  .hide-container .small-screen {
+    display: flex;
+    flex-direction: column;
+  }
+}
