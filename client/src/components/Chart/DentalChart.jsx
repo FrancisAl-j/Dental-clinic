@@ -23,6 +23,26 @@ const DentalChart = () => {
   const [addConditions, setAddConditions] = useState([]);
   const [inputTreatments, setInputTreatments] = useState("");
   const [inputConditions, setInputConditions] = useState("");
+  const [patient, setPatient] = useState(undefined);
+  const [options, setOptions] = useState([]);
+
+  useEffect(() => {
+    optionPatients();
+  }, []);
+
+  const optionPatients = async () => {
+    try {
+      const res = await axios.get("http://localhost:5000/list/option", {
+        withCredentials: true,
+      });
+      if (res.status === 200) {
+        setOptions(res.data);
+        console.log(res.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const fileRef = useRef(null);
   useEffect(() => {
@@ -160,6 +180,16 @@ const DentalChart = () => {
   return (
     <div>
       <div ref={elementRef}>
+        <select value={patient} onChange={(e) => setPatient(e.target.value)}>
+          <option value="Select Patient">Select Patient</option>
+          {options.map((option, index) => {
+            return (
+              <option key={index} value={option.patientName}>
+                {option.patientName}
+              </option>
+            );
+          })}
+        </select>
         <input
           type="text"
           value={query}
@@ -184,7 +214,7 @@ const DentalChart = () => {
         Download
       </button>
 
-      {results.map((patient, index) => {
+      {options.map((patient, index) => {
         return (
           <div key={index}>
             <form onSubmit={(e) => handleSubmit(e, patient.patientId)}>

@@ -151,4 +151,24 @@ const addPatient = async (req, res, next) => {
   }
 };
 
-export default { storePatient, displayPatients, addPatient };
+const optionPatients = async (req, res, next) => {
+  try {
+    let user = await Admin.findById(req.user.id);
+    if (!user) {
+      user = await Assistant.findById(req.user.id);
+      if (!user) {
+        return res.status(401).json({ message: "User unauthenticated" });
+      }
+    }
+
+    const clinicId = user.clinicId;
+
+    const patients = await Patient_List.find({ clinicId });
+
+    res.status(200).json(patients);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default { storePatient, displayPatients, addPatient, optionPatients };

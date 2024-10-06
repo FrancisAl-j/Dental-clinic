@@ -19,7 +19,7 @@
   gap: 10px;
   width: 100%;
 }
-.clinic-wrapper:hover {
+.clinic-view-wrapper:hover {
   box-shadow: 0 0 10px #00ff0080;
 }
 .image-wrapper {

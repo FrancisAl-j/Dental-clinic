@@ -13,4 +13,7 @@ router.get("/patient-list", verifyUser, controller.displayPatients);
 // Manually creating patients
 router.post("/create-patient", verifyUser, controller.addPatient);
 
+// Option patients
+router.get("/option", verifyUser, controller.optionPatients);
+
 export default router;
