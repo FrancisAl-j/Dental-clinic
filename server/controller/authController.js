@@ -21,6 +21,12 @@ const adminRegister = async (req, res, next) => {
     return res.status(400).json({ message: "Password is required" });
   }
 
+  if (password.trim().length < 8) {
+    return res
+      .status(400)
+      .json({ message: "Password should be more than 8 characters" });
+  }
+
   const payload = {
     name: fullname,
     email: email,
