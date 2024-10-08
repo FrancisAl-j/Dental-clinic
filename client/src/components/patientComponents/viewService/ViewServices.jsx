@@ -101,6 +101,13 @@ const ViewServices = () => {
                     return <span key={index}>{feature}</span>;
                   })}
                 </div>
+
+                <div className="visit-now">
+                  <h1>Visit Now</h1>
+                </div>
+                <div className="bg-image">
+                  <img src={service.bgImage} alt="" />
+                </div>
               </div>
             </Link>
           );

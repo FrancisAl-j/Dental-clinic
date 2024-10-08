@@ -16,6 +16,7 @@ import Logout from "../assets/signout.svg";
 import Appointment from "../assets/appointment.svg";
 import Home from "../assets/home.svg";
 import Clinics from "../assets/clinics.svg";
+import About from "../assets/about.svg";
 
 const Nav = () => {
   const dispatch = useDispatch();
@@ -117,7 +118,10 @@ const Nav = () => {
                           </li>
                         </Link>
                         <Link to="/about">
-                          <li>About</li>
+                          <li>
+                            <img src={About} alt="" />
+                            <p>About</p>
+                          </li>
                         </Link>
                         {currentUser && currentUser.role === "Patient" && (
                           <Link to="/clinics">
