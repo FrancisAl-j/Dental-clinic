@@ -44,6 +44,11 @@ const DentalChart = () => {
     }
   };
 
+  const handlePatientChange = () => {
+    const selectedPatient = options.find((p) => p._id === e.target.value);
+    setPatient(selectedPatient);
+  };
+
   const fileRef = useRef(null);
   useEffect(() => {
     if (image) {

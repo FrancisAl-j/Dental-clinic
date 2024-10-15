@@ -148,6 +148,8 @@ const assistantSignup = async (req, res, next) => {
 
     assistant.clinicId = admin.clinicId;
 
+    assistant.active = true;
+
     await assistant.save();
     res.status(200).json({ message: "Assitant succesfully created." });
   } catch (error) {

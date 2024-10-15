@@ -24,6 +24,11 @@ const assistantSchema = new mongoose.Schema(
       type: String,
       default: "Assistant",
     },
+    active: {
+      type: Boolean,
+      default: false,
+      required: true,
+    },
   },
 
   {

@@ -44,6 +44,8 @@ const Signin = () => {
       );
       const data = res.data;
 
+      console.log(data);
+
       const clinicId = res.data.clinicId;
       if (res.status === 200) {
         if (res.data.active === true) {
