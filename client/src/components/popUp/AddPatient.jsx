@@ -54,18 +54,17 @@ const AddPatient = ({ setPopUp }) => {
       );
       if (res.status === 200) {
         dispatch(addPatientSuccess(res.data));
+        setFormData({
+          patientName: "",
+          patientAge: "",
+          patientEmail: "",
+          patientGender: "Male",
+          patientContact: "",
+        });
       }
     } catch (error) {
       setError("There was a problem creating a patient");
     }
-
-    setFormData({
-      patientName: "",
-      patientAge: "",
-      patientEmail: "",
-      patientGender: "Male",
-      patientContact: "",
-    });
   };
 
   return (
