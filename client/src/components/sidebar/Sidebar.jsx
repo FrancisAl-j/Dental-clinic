@@ -37,6 +37,10 @@ const Sidebar = () => {
         <Link to="/services">
           <li>Services</li>
         </Link>
+
+        <Link to="/image-ocr">
+          <li>Add Patients</li>
+        </Link>
       </ul>
     </div>
   );

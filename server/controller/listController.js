@@ -12,7 +12,7 @@ import { fileURLToPath } from "url";
 import sharp from "sharp";
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.join(__filename);
+const __dirname = path.dirname(__filename);
 
 const preProccessImage = async (imagePath) => {
   const uploadsDir = path.join(__dirname, "uploads");
@@ -201,7 +201,7 @@ const optionPatients = async (req, res, next) => {
 };
 
 // For Extracting data/text from image based on name, email, age, etc..
-let extractPatientsData = (text) => {
+let extractPatientsData = (text, clinicId) => {
   console.log("Extracted Text:\n", text); // Debug: Log extracted text
   const lines = text.split("\n").filter((line) => line.trim() !== ""); // Split text into lines
   const patients = [];
@@ -228,6 +228,7 @@ let extractPatientsData = (text) => {
           patientAge: parseInt(age, 10),
           patientContact: contact.trim().replace(/\s+/g, ""), // Clean up the contact number
           patientGender: gender.trim(),
+          clinicId,
         });
       } else {
         skipped.push({
@@ -257,6 +258,12 @@ let extractPatientsData = (text) => {
 // Adding patient using image OCR
 const createPatientWithImage = async (req, res, next) => {
   try {
+    const admin = await Admin.findById(req.user.id);
+    if (!admin) {
+      return res.status(401).json({ message: "Admin unauthenticated!" });
+    }
+
+    const clinicId = admin.clinicId;
     const processImagePath = await preProccessImage(req.file.path);
     let worker = await createWorker();
 
@@ -269,7 +276,7 @@ const createPatientWithImage = async (req, res, next) => {
 
     await worker.terminate();
 
-    const { patients, skipped } = extractPatientsData(text);
+    const { patients, skipped } = extractPatientsData(text, clinicId);
 
     if (patients.length === 0) {
       return res
@@ -284,7 +291,7 @@ const createPatientWithImage = async (req, res, next) => {
     // Log the patients data before saving
     console.log("Patients to be saved:", patients);
 
-    const savedPatients = await Patient.insertMany(patients);
+    const savedPatients = await Patient_List.insertMany(patients);
 
     await fs.unlink(req.file.path);
 

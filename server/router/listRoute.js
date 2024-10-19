@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage });
+const upload = multer({ storage: storage });
 
 // Storing patient to patient List
 router.post("/patients", verifyUser, controller.storePatient);
@@ -31,7 +31,7 @@ router.get("/option", verifyUser, controller.optionPatients);
 router.post(
   "/image-ocr",
   verifyUser,
-  upload.single("file"),
+  upload.single("image"),
   controller.createPatientWithImage
 );
 
