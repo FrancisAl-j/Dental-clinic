@@ -207,43 +207,51 @@ let extractPatientsData = (text, clinicId) => {
   const patients = [];
   const skipped = [];
 
-  const patientRegex =
-    /^([A-Za-z\s,.']+)\s+([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})\s+(\d+)\s+(\+?\d[\d\s-]+)\s+(Male|Female)$/i;
+  const nameRegex = /([A-Za-z\s,.']+)/;
+  const emailRegex = /([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})/;
+  const contactRegex = /(\+?\d[\d\s-]+)/;
+  const ageRegex = /(\d{1,3})/;
+  const genderRegex = /\b(Male|Female)\b/i;
 
   lines.forEach((line) => {
-    const match = patientRegex.exec(line.trim());
+    let name = line.match(nameRegex) ? line.match(nameRegex)[0].trim() : null;
+    let email = line.match(emailRegex)
+      ? line.match(emailRegex)[0].trim()
+      : null;
+    let contact = line.match(contactRegex)
+      ? line.match(contactRegex)[0].trim().replace(/\s+/g, "")
+      : null;
+    let age = line.match(ageRegex)
+      ? parseInt(line.match(ageRegex)[0], 10)
+      : null;
+    let gender = line.match(genderRegex)
+      ? line.match(genderRegex)[0].trim()
+      : null;
 
-    if (match) {
-      const [, name, email, age, contact, gender] = match;
+    const isValidEmail = email
+      ? /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+      : false;
+    const isValidAge = age ? /^\d+$/.test(age.toString()) : false; // Ensure age is a number
+    const isValidContact = contact ? /^\+?\d[\d\s-]+$/.test(contact) : false; // Ensure valid contact format
+    const isValidGender = gender ? /^(Male|Female)$/i.test(gender) : false;
 
-      const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-      const isValidAge = /^\d+$/.test(age); // Ensure age is a number
-      const isValidContact = /^\+?\d[\d\s-]+$/.test(contact); // Ensure valid contact format
-      const isValidGender = /^(Male|Female)$/i.test(gender);
-
-      if (isValidEmail && isValidAge && isValidContact && isValidGender) {
-        patients.push({
-          patientName: name.trim(),
-          patientEmail: email.trim(),
-          patientAge: parseInt(age, 10),
-          patientContact: contact.trim().replace(/\s+/g, ""), // Clean up the contact number
-          patientGender: gender.trim(),
-          clinicId,
-        });
-      } else {
-        skipped.push({
-          line,
-          reason: `Invalid field(s): ${!isValidEmail ? "Email" : ""} ${
-            !isValidAge ? "Age" : ""
-          } ${!isValidContact ? "Contact" : ""} ${
-            !isValidGender ? "Gender" : ""
-          }`.trim(),
-        });
-      }
+    if (isValidEmail && isValidAge && isValidContact && isValidGender) {
+      patients.push({
+        patientName: name.trim(),
+        patientEmail: email.trim(),
+        patientAge: parseInt(age, 10),
+        patientContact: contact.trim().replace(/\s+/g, ""), // Clean up the contact number
+        patientGender: gender.trim(),
+        clinicId,
+      });
     } else {
       skipped.push({
         line,
-        reason: "Incorrect format or missing data",
+        reason: `Invalid field(s): ${!isValidEmail ? "Email" : ""} ${
+          !isValidAge ? "Age" : ""
+        } ${!isValidContact ? "Contact" : ""} ${
+          !isValidGender ? "Gender" : ""
+        }`.trim(),
       });
     }
   });
