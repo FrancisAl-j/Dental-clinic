@@ -17,7 +17,7 @@
 }
 .patients-container {
   display: grid;
-  grid-template-columns: 1.4fr 0.5fr 1fr 1.4fr 1.4fr;
+  grid-template-columns: 1.4fr 0.5fr 1fr 1.4fr 1.4fr 0.5fr;
 }
 .patients-container .container-title {
   font-size: clamp(1rem, 2vw, 1.5rem);

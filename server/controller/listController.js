@@ -311,10 +311,28 @@ const createPatientWithImage = async (req, res, next) => {
   }
 };
 
+// Delete Patient
+const deletePatient = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const admin = await Admin.findById(req.user.id);
+    if (!admin) {
+      return res.status(401).json({ message: "Admin not authenticated" });
+    }
+
+    const patient = await Patient_List.findByIdAndDelete(id);
+
+    res.status(200).json({ message: "Patient deleted successfully" });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   storePatient,
   displayPatients,
   addPatient,
   optionPatients,
   createPatientWithImage,
+  deletePatient,
 };

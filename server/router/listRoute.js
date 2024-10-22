@@ -35,4 +35,5 @@ router.post(
   controller.createPatientWithImage
 );
 
+router.delete("/delete/:id", verifyUser, controller.deletePatient);
 export default router;

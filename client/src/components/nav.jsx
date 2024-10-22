@@ -46,7 +46,7 @@ const Nav = () => {
   return (
     <header>
       <nav>
-        <h1>Teeth-T</h1>
+        <h1>Dental-Suite</h1>
 
         <ul>
           <Link to="/">
