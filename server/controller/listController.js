@@ -207,10 +207,11 @@ let extractPatientsData = (text, clinicId) => {
   const patients = [];
   const skipped = [];
 
-  const nameRegex = /([A-Za-z\s,.']+)/;
+  const nameRegex =
+    /^[A-Za-z\s,.']+(?=\s[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})/;
   const emailRegex = /([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})/;
-  const contactRegex = /(\+?\d[\d\s-]+)/;
-  const ageRegex = /(\d{1,3})/;
+  const contactRegex = /\b\d{10,13}\b/;
+  const ageRegex = /\b(1[0-9]|[2-9][0-9])\b/;
   const genderRegex = /\b(Male|Female)\b/i;
 
   lines.forEach((line) => {
