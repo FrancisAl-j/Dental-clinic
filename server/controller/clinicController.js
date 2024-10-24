@@ -206,6 +206,20 @@ const appointment = async (req, res, next) => {
       appointmentTime,
     } = req.body;
 
+    const today = new Date();
+    // Remove the time part for comparison
+    today.setHours(0, 0, 0, 0);
+
+    // Convert appointmentDate to a Date object
+    const appointmentDateObj = new Date(appointmentDate);
+    appointmentDateObj.setHours(0, 0, 0, 0); // Reset the time to ensure a fair comparison
+
+    if (appointmentDateObj < today) {
+      return res.status(400).json({
+        message: "You cannot select a past date for the appointment.",
+      });
+    }
+
     const existingAppointment = await Appointment.findOne({
       clinicId,
       appointmentDate,

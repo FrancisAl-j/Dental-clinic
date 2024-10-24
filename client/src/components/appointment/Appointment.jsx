@@ -151,8 +151,9 @@ const Appointment = () => {
         });
       }
     } catch (error) {
-      setError("Something went wrong!");
-      toast.error("Appointment date and time already taken.");
+      //setError("Something went wrong!");
+
+      toast.error("An error occured!");
     }
   };
 
