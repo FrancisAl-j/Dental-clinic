@@ -34,6 +34,12 @@ const Sidebar = () => {
           </Link>
         )}
 
+        {currentUser && currentUser.role === "Admin" && (
+          <Link to="/dental-chart">
+            <li>Chart</li>
+          </Link>
+        )}
+
         <Link to="/services">
           <li>Services</li>
         </Link>

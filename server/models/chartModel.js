@@ -14,7 +14,7 @@ const chartSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Patient",
   },
-  clicnicId: {
+  clinicId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Clinic",
     required: true,

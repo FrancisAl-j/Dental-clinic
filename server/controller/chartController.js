@@ -19,6 +19,8 @@ const createDentalChart = async (req, res, next) => {
     });
 
     await newChart.save();
+
+    res.status(200).json({ message: "Dental Chart created!" });
   } catch (error) {
     next(error);
   }

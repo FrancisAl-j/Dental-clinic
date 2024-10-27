@@ -29,6 +29,7 @@ import ViewService from "./components/patientComponents/viewService/ViewService"
 import ViewServices from "./components/patientComponents/viewService/ViewServices";
 import VerifyEmail from "./components/verify/verifyEmail";
 import CreatePatients from "./components/adminComponent/imageOCR/CreatePatients";
+import CreateChart from "./components/adminComponent/dentalChart/createChart/CreateChart";
 import "./app.css";
 import { useState } from "react";
 
@@ -94,6 +95,7 @@ const App = () => {
 
               <Route path="/:id/paginate/services" element={<ViewServices />} />
               <Route path="/image-ocr" element={<CreatePatients />} />
+              <Route path="/dental-chart" element={<CreateChart />} />
             </Route>
           </Routes>
         </main>

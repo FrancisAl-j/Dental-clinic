@@ -19,6 +19,7 @@ import sendAppointmentsReminder from "./sendingEmails/nodeMailer.js";
 import dentalRecordRoute from "./router/dentalRecordRoute.js";
 import serviceRoute from "./router/serviceRoute.js";
 import recommendationRoute from "./router/recommendationRoute.js";
+import chartRoute from "./router/chartRoute.js";
 
 const app = express();
 
@@ -63,6 +64,9 @@ app.use("/service", serviceRoute);
 
 // API for recommendation
 app.use("/api", recommendationRoute);
+
+// Debtal Chart
+app.use("/api/chart", chartRoute);
 
 app.use((err, req, res, next) => {
   if (res.headersSent) {
