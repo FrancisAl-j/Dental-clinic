@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 
 const SubmitTeeth = ({ patient, setPatient }) => {
   const [teeth] = useState(teeth_data);
-  console.log(patient);
+  //console.log(patient);
 
   const createDentalChart = async (e) => {
     e.preventDefault();

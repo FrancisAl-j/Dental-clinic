@@ -26,4 +26,21 @@ const createDentalChart = async (req, res, next) => {
   }
 };
 
-export default { createDentalChart };
+// Fetching Dental Chart
+const fetchDentalChart = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const admin = await Admin.findById(req.user.id);
+    if (!admin) {
+      return res.status(401).json({ message: "Admin unauthenticated." });
+    }
+
+    const chart = await Chart.findById(id);
+
+    res.status(200).json(chart);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default { createDentalChart, fetchDentalChart };
