@@ -9,12 +9,14 @@ import Sidebar from "../sidebar/Sidebar.jsx";
 import axios from "axios";
 
 import "./patientList.css";
+import { Link } from "react-router-dom";
 
 const PatientList = () => {
   const dispatch = useDispatch();
   const patients = useSelector((state) => state.patients.patients);
   const [error, setError] = useState(null);
   const [query, setQuery] = useState("");
+  const [patientId, setPatientId] = useState(null);
 
   // This useEffect get all the data from patientList to display in the web
   useEffect(() => {
@@ -60,6 +62,16 @@ const PatientList = () => {
     }
   };
 
+  // Getting specific patient "id" to get the
+  const handlePatientId = (e) => {
+    const selectedPatientId = patients.find(
+      (patient) => patient.patientId === e.target.value
+    );
+    setPatientId(selectedPatientId);
+  };
+
+  //console.log(patients);
+
   return (
     <div className="list-container">
       <Sidebar />
@@ -93,9 +105,17 @@ const PatientList = () => {
                   onClick={() =>
                     deletePatient(patient._id, patient.patientName)
                   }
+                  className="delete-btn"
                 >
                   Delete
                 </button>
+                <Link
+                  to={`/chart/${
+                    patient.patientId ? patient.patientId : patient._id
+                  }`}
+                >
+                  <button className="chart-btn">Chart</button>
+                </Link>
               </div>
             </div>
           ))}

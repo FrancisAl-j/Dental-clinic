@@ -26,3 +26,20 @@
 .patients-container p {
   margin: 15px 0;
 }
+.btns {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.btns button {
+  cursor: pointer;
+}
+.delete-btn {
+  background-color: red;
+  color: #fff;
+}
+.chart-btn {
+  background: var(--light-blue);
+  color: var(--rough-black);
+  width: 100%;
+}

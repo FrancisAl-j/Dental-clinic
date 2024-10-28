@@ -30,6 +30,7 @@ import ViewServices from "./components/patientComponents/viewService/ViewService
 import VerifyEmail from "./components/verify/verifyEmail";
 import CreatePatients from "./components/adminComponent/imageOCR/CreatePatients";
 import CreateChart from "./components/adminComponent/dentalChart/createChart/CreateChart";
+import FetchChart from "./components/adminComponent/dentalChart/fetchChart/FetchChart";
 import "./app.css";
 import { useState } from "react";
 
@@ -96,6 +97,7 @@ const App = () => {
               <Route path="/:id/paginate/services" element={<ViewServices />} />
               <Route path="/image-ocr" element={<CreatePatients />} />
               <Route path="/dental-chart" element={<CreateChart />} />
+              <Route path="/chart/:id" element={<FetchChart />} />
             </Route>
           </Routes>
         </main>

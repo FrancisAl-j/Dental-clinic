@@ -35,7 +35,9 @@ const fetchDentalChart = async (req, res, next) => {
       return res.status(401).json({ message: "Admin unauthenticated." });
     }
 
-    const chart = await Chart.findById(id);
+    const clinicId = admin.clinicId;
+
+    const chart = await Chart.find({ patientId: id, clinicId });
 
     res.status(200).json(chart);
   } catch (error) {
