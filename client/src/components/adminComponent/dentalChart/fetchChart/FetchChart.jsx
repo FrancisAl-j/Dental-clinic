@@ -4,7 +4,8 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 const FetchChart = () => {
-  const [chart, setChart] = useState([]);
+  const [chart, setChart] = useState({});
+
   const { id } = useParams();
 
   useEffect(() => {
@@ -20,17 +21,32 @@ const FetchChart = () => {
       });
       if (res.status === 200) {
         setChart(res.data);
+        console.log(res.data);
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  console.log(chart);
+  console.log(chart._id);
 
   return (
-    <div>
-      <h1>Dental Chart</h1>
+    <div className="dental-chart-container">
+      {chart &&
+        chart.map((data, index) => {
+          return (
+            <div key={index}>
+              {data.teeth &&
+                data.teeth.map((tooth, index) => {
+                  return (
+                    <div key={index}>
+                      <p>{tooth.toothNumber}</p>
+                    </div>
+                  );
+                })}
+            </div>
+          );
+        })}
     </div>
   );
 };
