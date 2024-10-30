@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./fetchChart.css";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import ToothStatus from "../toothImages/ToothStatus";
 
 const FetchChart = () => {
   const [chart, setChart] = useState([]);
@@ -29,21 +30,53 @@ const FetchChart = () => {
 
   return (
     <div className="dental-chart-container">
-      {chart &&
-        chart.map((data, index) => {
-          return (
-            <div key={index}>
-              {data.teeth &&
-                data.teeth.map((tooth, index) => {
-                  return (
-                    <div key={index}>
-                      <p>{tooth.toothNumber}</p>
-                    </div>
-                  );
-                })}
-            </div>
-          );
-        })}
+      <div>
+        {chart &&
+          chart.map((data, index) => {
+            return (
+              <div key={index} className="top-jaw">
+                {data.teeth &&
+                  data.teeth.map((tooth, index) => {
+                    if (tooth.toothNumber <= 16) {
+                      return (
+                        <div key={index}>
+                          <p>{tooth.toothNumber}</p>
+                          <ToothStatus
+                            status={tooth.status}
+                            toothNumber={tooth.toothNumber}
+                          />
+                        </div>
+                      );
+                    }
+                  })}
+              </div>
+            );
+          })}
+      </div>
+
+      <div className="bottom-jaw">
+        {chart &&
+          chart.map((data, index) => {
+            return (
+              <div key={index}>
+                {data.teeth &&
+                  data.teeth.map((tooth, index) => {
+                    if (tooth.toothNumber > 16) {
+                      return (
+                        <div key={index}>
+                          <p>{tooth.toothNumber}</p>
+                          <ToothStatus
+                            status={tooth.status}
+                            toothNumber={tooth.toothNumber}
+                          />
+                        </div>
+                      );
+                    }
+                  })}
+              </div>
+            );
+          })}
+      </div>
     </div>
   );
 };
