@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 const FetchChart = () => {
-  const [chart, setChart] = useState({});
+  const [chart, setChart] = useState([]);
 
   const { id } = useParams();
 
@@ -21,14 +21,11 @@ const FetchChart = () => {
       });
       if (res.status === 200) {
         setChart(res.data);
-        console.log(res.data);
       }
     } catch (error) {
       console.log(error);
     }
   };
-
-  console.log(chart._id);
 
   return (
     <div className="dental-chart-container">
