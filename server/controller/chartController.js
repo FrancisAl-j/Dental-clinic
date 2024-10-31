@@ -59,7 +59,7 @@ const updateStatus = async (req, res, next) => {
 
     const chart = await Chart.findById(id);
 
-    const teeth = chart.teeth(toothId);
+    const teeth = chart.teeth.id(toothId);
 
     teeth.status = status;
 

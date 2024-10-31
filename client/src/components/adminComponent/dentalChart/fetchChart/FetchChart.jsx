@@ -56,6 +56,8 @@ const FetchChart = () => {
                               toothId={tooth._id}
                               status={tooth.status}
                               toothNumber={tooth.toothNumber}
+                              fetchChartInfo={fetchChartInfo}
+                              patientId={id}
                             />
                           )}
                         </div>

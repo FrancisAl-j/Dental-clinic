@@ -4,6 +4,7 @@ import Molar from "../../../../assets/sample/molar.png";
 import Canine from "../../../../assets/sample/canine.png";
 import Premolar from "../../../../assets/sample/premolar.png";
 import Inicisor from "../../../../assets/sample/incisor.png";
+import Decayed from "../../../../assets/sample/decayed.png";
 
 /* 
 ------- Number of teeths and their types
@@ -25,7 +26,10 @@ const ToothStatus = ({ status, toothNumber }) => {
       {(toothNumber >= 1 && toothNumber <= 3) ||
       (toothNumber >= 14 && toothNumber <= 19) ||
       (toothNumber >= 30 && toothNumber <= 32) ? (
-        <img src={status === "Healthy" && Molar} className="tooth"></img>
+        <img
+          src={status === "Healthy" ? Molar : Decayed}
+          className="tooth"
+        ></img>
       ) : (toothNumber >= 4 && toothNumber <= 5) ||
         (toothNumber >= 12 && toothNumber <= 13) ||
         (toothNumber >= 20 && toothNumber <= 21) ||
