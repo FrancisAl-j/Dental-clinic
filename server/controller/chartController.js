@@ -45,4 +45,30 @@ const fetchDentalChart = async (req, res, next) => {
   }
 };
 
-export default { createDentalChart, fetchDentalChart };
+// Update the status of the teeth
+const updateStatus = async (req, res, next) => {
+  const { status } = req.body;
+  const { id, toothId } = req.params;
+  try {
+    const admin = await Admin.findById(req.user.id);
+    if (!admin) {
+      return res.status(401).json({ message: "Admin not authenticated." });
+    }
+
+    const clinicId = admin.clinicId;
+
+    const chart = await Chart.findById(id);
+
+    const teeth = chart.teeth(toothId);
+
+    teeth.status = status;
+
+    await chart.save();
+
+    res.status(200).json(chart);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default { createDentalChart, fetchDentalChart, updateStatus };

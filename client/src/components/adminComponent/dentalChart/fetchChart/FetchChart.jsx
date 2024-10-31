@@ -3,9 +3,11 @@ import "./fetchChart.css";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import ToothStatus from "../toothImages/ToothStatus";
+import UpdateTooth from "../UpdateTooth/UpdateTooth";
 
 const FetchChart = () => {
   const [chart, setChart] = useState([]);
+  const [toothId, setToothId] = useState(null);
 
   const { id } = useParams();
 
@@ -40,11 +42,22 @@ const FetchChart = () => {
                     if (tooth.toothNumber <= 16) {
                       return (
                         <div key={index}>
-                          <p>{tooth.toothNumber}</p>
-                          <ToothStatus
-                            status={tooth.status}
-                            toothNumber={tooth.toothNumber}
-                          />
+                          <div onClick={() => setToothId(tooth._id)}>
+                            <p>{tooth.toothNumber}</p>
+                            <ToothStatus
+                              status={tooth.status}
+                              toothNumber={tooth.toothNumber}
+                            />
+                          </div>
+                          {toothId === tooth._id && (
+                            <UpdateTooth
+                              setToothId={setToothId}
+                              id={data._id}
+                              toothId={tooth._id}
+                              status={tooth.status}
+                              toothNumber={tooth.toothNumber}
+                            />
+                          )}
                         </div>
                       );
                     }
