@@ -46,7 +46,7 @@ const Home = () => {
   const [serviceId, setServiceId] = useState(null);
 
   useEffect(() => {
-    if (currentUser) {
+    if (currentUser && currentUser.role === "Patient") {
       fetchAppointments();
     }
   }, [dispatch]);

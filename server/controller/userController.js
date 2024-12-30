@@ -164,11 +164,12 @@ const interestedServices = async (req, res, next) => {
       return res.status(401).json({ message: error.messagee });
     }
 
-    const alreadyInterested = user.interested.some(
-      (item) => item.service === id
-    );
+    const alreadyInterested = await Patient.findOne({
+      "interested.service": id,
+    });
 
     if (alreadyInterested) {
+      console.log("Already existing");
       return res
         .status(400)
         .json({ message: "Service is already in interested list." });

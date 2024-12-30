@@ -203,7 +203,7 @@ const getSortedServices = async (req, res) => {
     // Extract the IDs of interested services
     const interestedServiceIds = patient.interested.map((item) => item.name);
 
-    console.log(interestedServiceIds);
+    //console.log(interestedServiceIds);
 
     // Fetch all services
     const allServices = await Service.find().populate("clinicId").exec();

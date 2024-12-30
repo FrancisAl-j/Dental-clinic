@@ -45,10 +45,15 @@ const AssistantSignup = () => {
           withCredentials: true,
         }
       );
-      if (res.status === 400) {
-        setError(true);
-      } else {
-        toast.success("Assistant successfully created");
+
+      if (res.status === 200) {
+        toast.success("Assistant created.");
+        setFormData({
+          username: "",
+          email: "",
+          password: "",
+          Cpassword: "",
+        });
       }
     } catch (error) {
       setError(true);
