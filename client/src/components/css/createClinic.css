@@ -32,3 +32,51 @@
 .pair-elements .form-element {
   width: 100%;
 }
+.form-wrapper button {
+  padding: 10px 20px;
+  background: var(--rough-black);
+  color: var(--dirty-white);
+  cursor: pointer;
+}
+.payment-container {
+  height: 100svh;
+  display: grid;
+  place-items: center;
+}
+.payment-container form {
+  width: min(100% - 10px, 650px);
+  background: var(--grayish-blue);
+  padding: 30px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.clinic-box {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  margin: 30px 0;
+}
+.clinic-box .info-box {
+  background: var(--light-blue);
+  width: 300px;
+  padding: 20px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.activity-logs {
+  width: min(100% - 10px, 1100px);
+  height: 55svh;
+  background: #fff;
+  border: 1px var(--rough-black) solid;
+  border-radius: 20px;
+  margin: 10px auto;
+  overflow-y: scroll;
+  padding: 10px;
+}
+.activity-logs ul li {
+  font-size: 1.2rem;
+}

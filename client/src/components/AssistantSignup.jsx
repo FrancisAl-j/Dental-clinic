@@ -73,7 +73,7 @@ const AssistantSignup = () => {
           </div>
 
           <div className="form-element">
-            <span>email</span>
+            <span>Email</span>
             <input
               type="email"
               name="email"
@@ -83,7 +83,7 @@ const AssistantSignup = () => {
           </div>
 
           <div className="form-element">
-            <span>password</span>
+            <span>Password</span>
             <input
               type="password"
               name="password"
@@ -107,7 +107,7 @@ const AssistantSignup = () => {
         <p>{error && "Something went wrong"}</p>
       </div>
       <Link to="/create-cashier">
-        <span>Create Cashier</span>
+        <button className="next-btn">Create Dentist</button>
       </Link>
     </div>
   );

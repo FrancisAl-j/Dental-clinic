@@ -5,6 +5,7 @@ import {
   signInSuccess,
   signInFailure,
 } from "../redux/user/userSlice.js";
+import "./css/login.css";
 
 import { setClinic } from "../redux/clinic/clinicReducer.js";
 import { useDispatch, useSelector } from "react-redux";
@@ -113,42 +114,44 @@ const Signin = () => {
   };
 
   return (
-    <div className="form-container">
-      <h1>Sign in as Admin</h1>
+    <div className="form-body">
+      <div className="form-container">
+        <h1>Sign in to Clinic</h1>
 
-      <div className="form-wrapper">
-        <form onSubmit={handleSubmit}>
-          <div className="form-element">
-            <span>Email</span>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-            />
-          </div>
+        <div className="form-wrapper">
+          <form onSubmit={handleSubmit}>
+            <div className="form-element">
+              <span>Email</span>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+              />
+            </div>
 
-          <div className="form-element">
-            <span>password</span>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-            />
-          </div>
+            <div className="form-element">
+              <span>Password</span>
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+              />
+            </div>
 
-          <button disabled={loading}>
-            {loading ? "Loading..." : "Sign in"}
-          </button>
-        </form>
-        {error && (
-          <p className="error">{error.message || "Something went wrong!"}</p>
-        )}
+            <button disabled={loading}>
+              {loading ? "Loading..." : "Sign in"}
+            </button>
+          </form>
+          {error && (
+            <p className="error">{error.message || "Something went wrong!"}</p>
+          )}
+        </div>
+        <Link to="/patient-signin">
+          <button className="next-btn">For patients</button>
+        </Link>
       </div>
-      <Link to="/patient-signin">
-        <p>For patients</p>
-      </Link>
     </div>
   );
 };

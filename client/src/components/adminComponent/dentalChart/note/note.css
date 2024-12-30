@@ -1,0 +1,82 @@
+:root {
+  --light-blue: #87d3f0;
+  --grayish-blue: #5ca7c3;
+  --dark-blue: #236078;
+  --dirty-white: #efefef;
+  --rough-black: #2e2e2e;
+}
+
+.note-container {
+  display: grid;
+  height: 100svh;
+  width: 100%;
+  background: #00000090;
+  place-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+}
+.note-container form {
+  width: min(100% - 10px, 1200px);
+  background: var(--dirty-white);
+  height: 90svh;
+  padding: 10px;
+  overflow: hidden;
+  border-radius: 25px;
+}
+.note-container form header {
+  background: var(--dirty-white);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.note-container form header h3 {
+  font-size: 1.4rem;
+  cursor: pointer;
+  color: red;
+}
+.note-container form .form-contents {
+  display: flex;
+}
+.note-container form .form-contents .notes-container {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  gap: 10px;
+}
+.note-container form .form-contents .notes-container span {
+  color: var(--rough-black);
+}
+.note-container form .form-contents .notes-container textarea {
+  width: 600px;
+  height: 200px;
+}
+.note-container form .form-contents .notes-contents {
+  background: #fff;
+  width: 600px;
+
+  padding: 10px 0;
+}
+.note-container form .form-contents .notes-contents ul {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  flex-direction: column;
+  height: 70svh;
+  overflow-y: scroll;
+}
+.note-container form .form-contents .notes-contents ul li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 10px;
+}
+.note-container form .form-contents .notes-contents ul li h4 {
+  color: red;
+  align-self: flex-start;
+  background: var(--rough-black);
+  padding: 5px;
+  border-radius: 50%;
+  cursor: pointer;
+}

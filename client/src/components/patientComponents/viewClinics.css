@@ -6,6 +6,9 @@
   row-gap: 20px;
   width: 100%;
 }
+.clinics-main {
+  height: 100svh;
+}
 .clinic-view-wrapper {
   cursor: pointer;
   color: #000;

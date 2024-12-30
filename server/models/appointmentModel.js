@@ -20,7 +20,7 @@ const appointmentSchema = mongoose.Schema(
       required: true,
     },
     patientContact: {
-      type: String,
+      type: Number,
       required: true,
     },
     clinic: {
@@ -52,6 +52,14 @@ const appointmentSchema = mongoose.Schema(
       type: String,
       enum: ["Pending", "Confirmed", "Completed", "Canceled"],
       required: true,
+    },
+    notif: {
+      type: Boolean,
+      default: false,
+    },
+    dentist: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Admin",
     },
   },
   {

@@ -10,7 +10,7 @@ const SubmitTeeth = ({ patient, setPatient }) => {
 
   const createDentalChart = async (e) => {
     e.preventDefault();
-    const patientId = patient.patientId ? patient.patientId : patient._id;
+    const patientId = patient._id;
     try {
       const res = await axios.post(
         "http://localhost:5000/api/chart/create",

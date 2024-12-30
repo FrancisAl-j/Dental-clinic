@@ -1,0 +1,103 @@
+@import url("https://fonts.googleapis.com/css2?family=Faculty+Glyphic&family=IM+Fell+DW+Pica:ital@0;1&family=IM+Fell+English:ital@0;1&family=Ibarra+Real+Nova:ital,wght@0,400;0,500;1,400&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Quattrocento&display=swap");
+
+/* delete later along with html and body tags
+to me, i worked on different weights 
+light = 300
+regular = 400
+medium = 500
+semi-bold = 600
+bold = 700
+*/
+
+.div {
+  display: flex;
+  height: fit-content;
+}
+
+:root {
+  --background-highlight: #00afff;
+
+  --light: 300;
+  --regular: 400;
+  --medium: 500;
+  --semi-bold: 600;
+  --bold: 700;
+}
+
+.about-header {
+  width: 100%;
+  background-color: var(--background-highlight);
+  font-weight: var(--semi-bold);
+  padding: 150px 0;
+  color: white;
+  display: flex;
+  justify-content: center;
+  font-size: 98px;
+}
+
+.base {
+  padding: 200px 0;
+  flex-direction: column;
+}
+
+.split {
+  /* background-color: aqua; */
+  display: flex;
+  justify-content: space-between; /* Ensures space between flex items */
+  width: 100%; /* Ensure the parent container is as wide as the viewport or available space */
+  padding: 0;
+}
+
+.art,
+.art1,
+.pic,
+.pic1 {
+  box-sizing: border-box;
+  flex: 1; /* This ensures equal space distribution */
+  flex-basis: 0; /* Makes sure they start at an equal base size */
+}
+
+.art {
+  flex-direction: column;
+  /* background-color: aquamarine; */
+  padding: 50px 50px 0 150px;
+  gap: 25px;
+  align-items: flex-start; /* Align items to the left (or modify as needed) */
+}
+
+.art1 {
+  flex-direction: column;
+  /* background-color: aquamarine; */
+  padding: 50px 150px 0 50px;
+  gap: 25px;
+  align-items: flex-start; /* Align items to the left (or modify as needed) */
+}
+
+.byl,
+.autitle,
+.story {
+  line-height: 1.2;
+  margin: 0;
+  padding: 0;
+  word-wrap: break-word; /* Forces long words to wrap to the next line */
+  overflow-wrap: break-word; /* Another way to allow text to wrap */
+  gap: 0;
+}
+
+.pic,
+.pic1 {
+  /* background-color: antiquewhite; */
+  padding: 100px 10px 10px 10px;
+}
+
+.byl {
+  font-size: 24px;
+  font-weight: var(--bold);
+  color: var(--background-highlight);
+}
+
+.autitle {
+  font-size: 64px;
+  font-weight: var(--medium);
+  color: black;
+}

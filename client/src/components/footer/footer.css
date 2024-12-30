@@ -1,0 +1,58 @@
+:root {
+  --light-blue: #87d3f0;
+  --grayish-blue: #5ca7c3;
+  --dark-blue: #236078;
+  --dirty-white: #efefef;
+  --rough-black: #2e2e2e;
+}
+footer {
+  width: 100%;
+  background: var(--grayish-blue);
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+  padding: 20px 0;
+}
+footer hr {
+  width: 90%;
+}
+footer section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+}
+footer section .section-btns ul {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+}
+footer section .section-btns ul li {
+  font-size: 1.5rem;
+  color: var(--rough-black);
+}
+footer section h2 {
+  font-size: clamp(1.5rem, 3vw, 2.4rem);
+  color: var(--rough-black);
+}
+footer section .footer-icons img {
+  aspect-ratio: 1/1;
+  width: 30px;
+  cursor: pointer;
+  filter: grayscale(100%);
+  transition: 0.5s ease;
+}
+footer section .footer-icons .fb:hover {
+  filter: grayscale(0);
+  transition: 0.5s ease;
+}
+footer section .footer-icons .ig:hover {
+  filter: grayscale(0);
+  transition: 0.5s ease;
+}
+footer section .footer-icons .twitter:hover {
+  filter: grayscale(0);
+  transition: 0.5s ease;
+}

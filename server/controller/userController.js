@@ -5,10 +5,11 @@ import Patient from "../models/patientModel.js";
 import bcryptjs from "bcryptjs";
 import Clinic from "../models/clinicModel.js";
 import Appointment from "../models/appointmentModel.js";
+import Service from "../models/serviceModel.js";
 
 const userUpdate = async (req, res, next) => {
   const { id } = req.params;
-  const { username, email, password } = req.body;
+  const { username, email, password, available } = req.body;
   try {
     let user = await Admin.findById(req.user.id);
     if (!user) {
@@ -29,6 +30,7 @@ const userUpdate = async (req, res, next) => {
     const updatedData = {
       username,
       email,
+      available,
     };
 
     if (password) {
@@ -135,10 +137,64 @@ const cancelAppointment = async (req, res, next) => {
   }
 };
 
+const getDentists = async (req, res, next) => {
+  const { serviceId } = req.query;
+  try {
+    const user = await Patient.findById(req.user.user.id);
+    if (!user) {
+      return res.status(401).json({ message: "User not authenticated." });
+    }
+
+    const service = await Service.findById(serviceId)
+      .populate("dentist")
+      .exec();
+
+    res.status(200).json(service);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// For Content-based Filtering
+const interestedServices = async (req, res, next) => {
+  const { id, name } = req.body;
+  try {
+    const user = await Patient.findById(req.user.user.id);
+    if (!user) {
+      return res.status(401).json({ message: error.messagee });
+    }
+
+    const alreadyInterested = user.interested.some(
+      (item) => item.service === id
+    );
+
+    if (alreadyInterested) {
+      return res
+        .status(400)
+        .json({ message: "Service is already in interested list." });
+    }
+
+    const interestedData = {
+      service: id,
+      name,
+    };
+
+    user.interested.push(interestedData);
+
+    await user.save();
+
+    res.status(200).json({ message: "Added to interested." });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   userUpdate,
   deletePatient,
   deleteAdmin,
   viewAppointment,
   cancelAppointment,
+  interestedServices,
+  getDentists,
 };

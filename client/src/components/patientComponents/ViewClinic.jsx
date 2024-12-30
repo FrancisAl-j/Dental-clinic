@@ -11,6 +11,8 @@ import Recommendation from "./Recommendation.jsx";
 import "./viewClinic.css";
 import Header from "./header/Header.jsx";
 import MostVisitedServices from "./mostVisited/MostVisistedServices.jsx";
+import GetRecommendation from "./getRecommendation/GetRecommendation.jsx";
+import ClinicServices from "./clinicServices/ClinicServices.jsx";
 
 const ViewClinic = () => {
   const navigate = useNavigate();
@@ -46,6 +48,8 @@ const ViewClinic = () => {
     );
   }
 
+  // <Recommendation id={clinic.id} />
+
   return (
     <div className="container">
       {clinic && <Header clinic={clinic} />}
@@ -53,17 +57,19 @@ const ViewClinic = () => {
 
       <div className="container-background">
         <img src={clinic.background} alt="background" />
+        <div className="view-details">
+          <h3 className="clinic-details">{clinic.details}</h3>
+          <div className="important-details">
+            <h3 className="view-address">{clinic.location}</h3>
+            <span className="view-contact">{clinic.contact}</span>
+            <span className="view-email">{clinic.email}</span>
+          </div>
+        </div>
       </div>
+      <GetRecommendation id={clinic.id} />
       <MostVisitedServices id={clinic.id} />
-      <Recommendation id={clinic.id} />
 
-      <Link to={`/${clinic.id}/paginate/services`}>
-        <button>Services</button>
-      </Link>
-
-      <h3>{clinic.location}</h3>
-
-      <span>{clinic.email}</span>
+      <ClinicServices id={clinic.id} />
     </div>
   );
 };

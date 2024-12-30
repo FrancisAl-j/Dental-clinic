@@ -16,4 +16,8 @@ router.get("/appointments", verifyUser, controller.viewAppointment);
 // Patient cancelling Appointments
 router.delete("/cancel/:id", verifyUser, controller.cancelAppointment);
 
+router.post("/click/services", verifyUser, controller.interestedServices);
+
+router.get("/service/dentists", verifyUser, controller.getDentists);
+
 export default router;

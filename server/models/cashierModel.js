@@ -22,8 +22,13 @@ const cashierSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      default: "Cashier",
+      default: "Admin",
     },
+    active: {
+      type: Boolean,
+      default: true,
+    },
+    available: [Number],
   },
   {
     timestamps: true,

@@ -17,7 +17,8 @@
 }
 .patients-container {
   display: grid;
-  grid-template-columns: 1.4fr 0.5fr 1fr 1.4fr 1.4fr 0.5fr;
+  grid-template-columns: 1.2fr 0.5fr 1fr 1.4fr 1.4fr 0.5fr 0.5fr;
+  gap: 10px;
 }
 .patients-container .container-title {
   font-size: clamp(1rem, 2vw, 1.5rem);
@@ -42,4 +43,33 @@
   background: var(--light-blue);
   color: var(--rough-black);
   width: 100%;
+}
+.list-container .actions {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+.list-container .actions button {
+  padding: 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  background: var(--rough-black);
+  color: var(--dirty-white);
+}
+.list-container .actions button:hover {
+  color: var(--rough-black);
+  background: var(--dirty-white);
+}
+.list-container .actions input {
+  padding: 10px;
+  width: min(100% - 25px, 500px);
+  border-radius: 20px;
+}
+.patient-name {
+  text-decoration: underline;
+  cursor: pointer;
+}
+.patient-name:hover {
+  color: blue;
 }

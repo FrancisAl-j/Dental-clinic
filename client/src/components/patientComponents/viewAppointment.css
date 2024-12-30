@@ -15,3 +15,6 @@
   background-color: var(--light-blue);
   font-size: clamp(1rem, 2vw, 1.5rem);
 }
+.view-appointment-container {
+  height: 100svh;
+}

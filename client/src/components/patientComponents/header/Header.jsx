@@ -2,6 +2,12 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import "../viewClinic.css";
 
+/* 
+  <Link to={`/clinic/${clinic.id}/${clinic.clinicName}/appointment`}>
+        <button>Book an appointment</button>
+      </Link>
+*/
+
 const Header = ({ clinic }) => {
   // const clinic = useSelector((state) => state.patientClinic.clinic);
 
@@ -17,8 +23,8 @@ const Header = ({ clinic }) => {
         </section>
       </Link>
 
-      <Link to={`/clinic/${clinic.id}/${clinic.clinicName}/appointment`}>
-        <button>Book an appointment</button>
+      <Link to={`/${clinic.id}/${clinic.clinicName}/paginate/services`}>
+        <button>Services</button>
       </Link>
     </header>
   );

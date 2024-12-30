@@ -1,0 +1,56 @@
+.medical-container {
+  position: fixed;
+  height: 100svh;
+  width: 100%;
+  left: 0;
+  top: 0;
+  background: #00000090;
+  z-index: 999;
+  display: grid;
+  place-items: center;
+}
+.medical-container form {
+  background: #fff;
+  width: min(100% - 2px, 800px);
+  overflow-y: scroll;
+  height: 90svh;
+  padding: 20px 10px;
+}
+.medical-container form header {
+  background: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+.medical-container form header h3 {
+  color: red;
+  cursor: pointer;
+}
+.medical-container form .question-element {
+  display: flex;
+  justify-content: space-between;
+}
+.medical-container form .question-element span {
+  color: #000;
+}
+.medical-container form .question-element .radio-elements {
+  display: flex;
+  gap: 10px;
+}
+.medical-container form .questions-element span {
+  color: #000;
+}
+
+.medical-container form .questions {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.medical-container form .questions-element .array-container {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 20px;
+}

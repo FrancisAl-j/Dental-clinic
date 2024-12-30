@@ -18,11 +18,32 @@ import Home from "../assets/home.svg";
 import Clinics from "../assets/clinics.svg";
 import About from "../assets/about.svg";
 
-const Nav = () => {
+const Nav = ({ setMedical, setChart }) => {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
   const { currentClinic } = useSelector((state) => state.clinic);
+  const appointments = useSelector(
+    (state) => state.historyAppoinment.appointment
+  );
+
   const [show, setShow] = useState(false);
+
+  const notifOff = async () => {
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/clinic/notif",
+        { notif: false },
+        {
+          withCredentials: true,
+        }
+      );
+      if (res.status === 200) {
+        console.log("Successful");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleSignout = async () => {
     try {
@@ -46,7 +67,9 @@ const Nav = () => {
   return (
     <header>
       <nav>
-        <h1>Dental-Suite</h1>
+        <Link to="/">
+          <h1>Dental-Suite</h1>
+        </Link>
 
         <ul>
           <Link to="/">
@@ -102,8 +125,24 @@ const Nav = () => {
                   : currentUser.username}
               </h1> </Link>*/}
               <div className="profile-wrapper" onClick={handleShow}>
+                {currentUser && currentUser.role === "Admin" ? (
+                  <p>{currentUser.name}</p>
+                ) : (
+                  <p>{currentUser.username}</p>
+                )}
                 <img src={Profile} alt="" />
                 <img src={ArrowDown} alt="" className="arrow" />
+                {currentUser &&
+                  currentUser.role === "Patient" &&
+                  appointments &&
+                  appointments.map((appointment, index) => {
+                    return (
+                      <div
+                        className={appointment.notif ? "red-dot" : undefined}
+                        key={index}
+                      ></div>
+                    );
+                  })}
               </div>
 
               {show && (
@@ -131,6 +170,7 @@ const Nav = () => {
                             </li>
                           </Link>
                         )}
+
                         {currentUser &&
                           currentClinic &&
                           currentUser.clinicId &&
@@ -163,6 +203,7 @@ const Nav = () => {
                             </Link>
                           )}
                       </div>
+
                       <Link to="/profile">
                         <li>
                           <img src={Profile} alt="" />
@@ -176,12 +217,26 @@ const Nav = () => {
                       </li>
 
                       {currentUser && currentUser.role === "Patient" && (
-                        <Link to="/view-appointments">
+                        <Link to="/view-appointments" onClick={notifOff}>
                           <li>
                             <img src={Appointment} alt="" />
                             <p>Appointments</p>
                           </li>
                         </Link>
+                      )}
+
+                      {currentUser && currentUser.role === "Patient" && (
+                        <li onClick={() => setChart(true)}>
+                          <img src={Appointment} alt="" />
+                          <p>Chart</p>
+                        </li>
+                      )}
+
+                      {currentUser && currentUser.role === "Patient" && (
+                        <li onClick={() => setMedical(true)}>
+                          <img src={Appointment} alt="" />
+                          <p>Medical History</p>
+                        </li>
                       )}
                     </ul>
                   )}

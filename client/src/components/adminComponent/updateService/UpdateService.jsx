@@ -16,21 +16,65 @@ import {
   updateServiceStart,
   updateServiceSuccess,
 } from "../../../redux/clinic/services/serviceReducer.js";
+import {
+  getServiceSuccess,
+  clearService,
+} from "../../../redux/clinic/services/serviceReducer.js";
 
-const UpdateService = ({ setShow }) => {
+const UpdateService = ({ setShow, id, setServiceId }) => {
   const dispatch = useDispatch();
   const service = useSelector((state) => state.service.service);
   const [imageLogo, setImageLogo] = useState(undefined);
   const [bgImage, setBgImage] = useState(undefined);
   const [formData, setFormData] = useState({
-    name: service.name,
-    description: service.description,
-    imageLogo: service.imageLogo,
-    bgImage: service.bgImage,
+    name: "",
+    description: "",
+    imageLogo: "",
+    bgImage: "",
   });
+
+  useEffect(() => {
+    // Update formData when service data is fetched
+    if (service) {
+      setFormData({
+        name: service.name || "",
+        description: service.description || "",
+        imageLogo: service.imageLogo || "",
+        bgImage: service.bgImage || "",
+      });
+    }
+  }, [service]);
 
   const imageLogoRef = useRef(null);
   const bgImageRef = useRef(null);
+
+  useEffect(() => {
+    const fetchService = async () => {
+      try {
+        const res = await axios.get(`http://localhost:5000/service/get/${id}`, {
+          withCredentials: true,
+        });
+        if (res.status === 200) {
+          dispatch(getServiceSuccess(res.data));
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchService();
+
+    return () => {
+      dispatch(clearService());
+    };
+  }, [id, dispatch]);
+
+  const closeX = () => {
+    setShow(null);
+    setServiceId(null);
+  };
+
+  console.log(service);
 
   // Handles Image Logo
   useEffect(() => {
@@ -112,7 +156,7 @@ const UpdateService = ({ setShow }) => {
       <form onSubmit={handleUpdate}>
         <div className="form-header">
           <h1>Update Service</h1>
-          <img onClick={() => setShow(false)} src={Close} alt="close" />
+          <img onClick={closeX} src={Close} alt="close" />
         </div>
         <div className="image-logo-container">
           <p>Image Logo</p>

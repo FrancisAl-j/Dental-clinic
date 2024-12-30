@@ -1,0 +1,40 @@
+:root {
+  --light-blue: #87d3f0;
+  --grayish-blue: #5ca7c3;
+  --dark-blue: #236078;
+  --dirty-white: #efefef;
+  --rough-black: #2e2e2e;
+}
+
+.service-info-container {
+  display: flex;
+  width: 100%;
+  height: 100svh;
+  margin: 50px 0;
+  justify-content: space-evenly;
+  align-items: center;
+  color: var(--rough-black);
+}
+.service-info-container .service-info-content {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 30px;
+}
+.service-info-container .service-info-content h1 {
+  font-size: clamp(1.2rem, 3vw, 2rem);
+}
+.service-info-container .service-info-content button {
+  padding: 7px 10px;
+  font-size: 1rem;
+  border-radius: 20px;
+  background: var(--grayish-blue);
+  color: var(--dirty-white);
+  cursor: pointer;
+}
+.img-service img {
+  aspect-ratio: 2/4;
+  width: 320px;
+  object-fit: fill;
+  border-radius: 25px;
+}

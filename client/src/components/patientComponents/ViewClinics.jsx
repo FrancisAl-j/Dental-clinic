@@ -16,6 +16,12 @@ const ViewClinics = () => {
   const currentClinics = useSelector((state) => state.clinics.clinics);
   const [city, setCity] = useState(null); // City of user if allowed on website
 
+  console.log("Your address is: " + city);
+
+  if (!address || !address.city) {
+    console.log("Location access denied or unavailable. Showing all clinics.");
+  }
+
   useEffect(() => {
     const fetchClinics = async () => {
       try {
@@ -44,39 +50,41 @@ const ViewClinics = () => {
   }, [dispatch, city]);
 
   useEffect(() => {
+    console.log("Address received:", address);
     if (address && address.city) {
       setCity(address.city); // Set the city from geolocation data
     }
   }, [address]);
 
   return (
-    <div>
+    <div className="clinics-main">
       <SearchClinics />
       <div className="clinic-content">
         <h1>Available Clinics</h1>
 
         <div className="clinics-container">
-          {currentClinics.map((clinic) => (
-            <Link
-              key={clinic.id}
-              to={`/clinic/${clinic.id}/${clinic.clinicName}`}
-            >
-              <div className="clinic-view-wrapper">
-                <div className="image-wrapper">
-                  <img src={clinic.logo} alt="logo" />
-                  <h1>{clinic.clinicName}</h1>
+          {currentClinics &&
+            currentClinics.map((clinic) => (
+              <Link
+                key={clinic.id}
+                to={`/clinic/${clinic.id}/${clinic.clinicName}`}
+              >
+                <div className="clinic-view-wrapper">
+                  <div className="image-wrapper">
+                    <img src={clinic.logo} alt="logo" />
+                    <h1>{clinic.clinicName}</h1>
+                  </div>
+                  <div className="location-container">
+                    <img src={Location} alt="" />
+                    <p>{clinic.location}</p>
+                  </div>
+                  <div className="contact-container">
+                    <img src={Phone} alt="" />
+                    <p>{clinic.contact}</p>
+                  </div>
                 </div>
-                <div className="location-container">
-                  <img src={Location} alt="" />
-                  <p>{clinic.location}</p>
-                </div>
-                <div className="contact-container">
-                  <img src={Phone} alt="" />
-                  <p>{clinic.contact}</p>
-                </div>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            ))}
         </div>
       </div>
     </div>

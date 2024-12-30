@@ -40,4 +40,12 @@ router.get("/appointment/list", verifyUser, controller.appointmentLists);
 // Updating status
 router.put("/status/:id", verifyUser, controller.updateStatus);
 
+// Notification off
+router.post("/notif", verifyUser, controller.notifOff);
+
+// No cookies
+router.get("/patients/:id", controller.fetchPatientLists);
+router.get("/appointments/:id", controller.totalAppointments);
+router.get("/employees/:id", controller.totalEmployees);
+
 export default router;

@@ -21,10 +21,12 @@ const clinicSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    adminId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Admin",
+    },
     details: {
       type: String,
-      default:
-        "Here you can put anything that you want to introduce your clinic to the audiences/patients it can include details, phrase, proverb, and etc... ",
     },
     logo: {
       type: String,
@@ -35,6 +37,18 @@ const clinicSchema = new mongoose.Schema(
       type: String,
       default:
         "https://www.shutterstock.com/image-photo/white-healthy-tooth-different-tools-600nw-1069579256.jpg",
+    },
+    tin: {
+      type: String,
+      unique: true,
+    },
+    active: {
+      type: Boolean,
+      default: true,
+    },
+    service: {
+      type: Boolean,
+      default: false,
     },
   },
 

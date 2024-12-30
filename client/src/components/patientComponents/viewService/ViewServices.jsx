@@ -16,7 +16,7 @@ const ViewServices = () => {
   const [services, setServices] = useState([]);
   const [pageCount, setPageCount] = useState(1);
   const currentPage = useRef();
-  const { id } = useParams();
+  const { id, name } = useParams();
   const clinic = useSelector((state) => state.patientClinic.clinic);
 
   // Fetching clinic details
@@ -79,6 +79,23 @@ const ViewServices = () => {
     }
   };
 
+  const interestedService = async (id, name) => {
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/user/click/services",
+        {
+          id,
+          name,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="services-main">
       <Header clinic={clinic} />
@@ -87,7 +104,8 @@ const ViewServices = () => {
         {services.map((service, index) => {
           return (
             <Link
-              to={`/${id}/service/${service._id}/${service.name}`}
+              onClick={() => interestedService(service._id, service.name)}
+              to={`/clinic/${id}/${name}/appointment/${service.name}/${service._id}`}
               key={index}
             >
               <div key={service._id} className="service-wrapper">
@@ -114,28 +132,26 @@ const ViewServices = () => {
         })}
       </div>
 
-      {services.length === 10 && (
-        <div>
-          <ReactPaginate
-            breakLabel="..."
-            nextLabel="next >"
-            onPageChange={handlePageClick}
-            pageRangeDisplayed={5}
-            pageCount={pageCount}
-            previousLabel="< previous"
-            renderOnZeroPageCount={null}
-            marginPagesDisplayed={2}
-            containerClassName="pagination"
-            pageClassName="page-item"
-            pageLinkClassName="page-link"
-            previousClassName="page-item"
-            previousLinkClassName="page-link"
-            nextClassName="page-item"
-            nextLinkClassName="page-link"
-            activeClassName="active"
-          />
-        </div>
-      )}
+      <div>
+        <ReactPaginate
+          breakLabel="..."
+          nextLabel="next >"
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={5}
+          pageCount={pageCount}
+          previousLabel="< previous"
+          renderOnZeroPageCount={null}
+          marginPagesDisplayed={2}
+          containerClassName="pagination"
+          pageClassName="page-item"
+          pageLinkClassName="page-link"
+          previousClassName="page-item"
+          previousLinkClassName="page-link"
+          nextClassName="page-item"
+          nextLinkClassName="page-link"
+          activeClassName="active"
+        />
+      </div>
     </div>
   );
 };

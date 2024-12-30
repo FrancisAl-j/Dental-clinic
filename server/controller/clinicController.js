@@ -10,6 +10,7 @@ import Patient_List from "../models/patientListModel.js";
 import sendAppointmentsReminder, {
   transporter,
 } from "../sendingEmails/nodeMailer.js";
+import ActivityLogs from "../models/logsModel.js";
 
 const sendAppointmentStatus = async (userEmail, name) => {
   const mailOption = {
@@ -18,6 +19,19 @@ const sendAppointmentStatus = async (userEmail, name) => {
     subject: "Appointment status",
     html: `<h1>Hello ${name}</h1>
           <p>Your appointment has been confirmed!</p>
+    `,
+  };
+
+  transporter.sendMail(mailOption);
+};
+
+const sendAppointmentCompleted = async (userEmail, name) => {
+  const mailOption = {
+    from: "dental-suite@gmail.com",
+    to: userEmail,
+    subject: "Appointment status",
+    html: `<h1>Hello ${name}</h1>
+          <p>Your appointment has been completed.!</p>
     `,
   };
 
@@ -38,24 +52,46 @@ const cancelAppointmentNotif = async (userEmail, name) => {
 };
 
 const createClinic = async (req, res, next) => {
-  const { clinicName, location, email, phone, logo } = req.body;
+  const { clinicName, location, email, phone, logo, tin, details } = req.body;
+  if (!tin || tin.trim().length === 0) {
+    return res
+      .status(400)
+      .json({ message: "Tax Number Identification is required" });
+  }
+
+  if (tin.trim().lengh < 9) {
+    return res
+      .status(500)
+      .json({ message: "Tax Number Identification consists of 9 characters" });
+  }
   try {
     const admin = await Admin.findById(req.user.id);
     if (!admin) {
       return res.status(400).json("Unathenticated user!");
     }
 
-    const clinic = new Clinic({ clinicName, location, email, phone, logo });
+    const adminId = admin._id;
+
+    const clinic = new Clinic({
+      clinicName,
+      location,
+      email,
+      phone,
+      logo,
+      adminId,
+      tin,
+      details,
+    });
     await clinic.save();
 
-    console.log("Admin before:" + admin);
+    //console.log("Admin before:" + admin);
 
     admin.clinicId = clinic._id;
     await admin.save();
 
     const updatedAdmin = await Admin.findById(req.user.id);
 
-    console.log(`Admin After: ${updatedAdmin}`);
+    //console.log(`Admin After: ${updatedAdmin}`);
 
     res.status(200).json({ clinic, updatedAdmin });
   } catch (error) {
@@ -96,11 +132,12 @@ const getClinics = async (req, res, next) => {
 
     let clinics;
     if (!city || city.trim() === "") {
-      clinics = await Clinic.find();
+      clinics = await Clinic.find({ active: true });
       return res.status(200).json(clinics);
     } else {
       clinics = await Clinic.find({
         location: { $regex: city.trim(), $options: "i" },
+        active: true,
       });
 
       return res.status(200).json(clinics);
@@ -136,9 +173,12 @@ const updateClinic = async (req, res, next) => {
       email,
       phone,
     };
-    const user = await Admin.findById(req.user.id);
+    let user = await Admin.findById(req.user.id);
     if (!user) {
-      return res.status(400).json({ message: "You are not authenticated!" });
+      user = await Cashier.findById(req.user.id);
+      if (!user) {
+        return res.status(401).json({ message: "You are not authenticated!" });
+      }
     }
     const updatedClinic = await Clinic.findByIdAndUpdate(id, updatedData, {
       new: true,
@@ -160,7 +200,10 @@ const deleteClinic = async (req, res, next) => {
   try {
     const user = await Admin.findById(req.user.id);
     if (!user) {
-      return res.status(401).json({ message: "You are not authenticated!" });
+      user = await Cashier.findById(req.user.id);
+      if (!user) {
+        return res.status(401).json({ message: "You are not authenticated!" });
+      }
     }
 
     const clinic = await Clinic.findByIdAndDelete(id);
@@ -169,7 +212,7 @@ const deleteClinic = async (req, res, next) => {
 
     const admin = await Admin.findById(user._id);
 
-    console.log(`Admin after deleting: ${admin}`);
+    //console.log(`Admin after deleting: ${admin}`);
 
     await Assistant.deleteMany({
       clinicId: id,
@@ -204,15 +247,48 @@ const appointment = async (req, res, next) => {
       clinic,
       services,
       appointmentTime,
+      dentist,
     } = req.body;
+
+    if (patientContact.toString().length !== 11) {
+      return res.status(400).json({ message: "Invalid phone number" });
+    }
+
+    //console.log(dentist);
+
+    const Dentist = await Admin.findById(dentist);
 
     const today = new Date();
     // Remove the time part for comparison
     today.setHours(0, 0, 0, 0);
 
     // Convert appointmentDate to a Date object
+    const available = Dentist.available || []; // Default to an empty array if undefined
+    console.log("Dentist availability:", available); // Debug log
+
+    if (!Array.isArray(available) || available.length === 0) {
+      return res
+        .status(400)
+        .json({ message: "The dentist's availability is not set." });
+    }
+
+    // Ensure appointmentDate is valid
     const appointmentDateObj = new Date(appointmentDate);
-    appointmentDateObj.setHours(0, 0, 0, 0); // Reset the time to ensure a fair comparison
+    if (isNaN(appointmentDateObj)) {
+      return res
+        .status(400)
+        .json({ message: "Invalid appointment date format." });
+    }
+
+    appointmentDateObj.setHours(0, 0, 0, 0);
+    const day = appointmentDateObj.getDay(); // Get day of the week (0-6)
+    console.log("Appointment day:", day);
+
+    if (!available.includes(day)) {
+      return res.status(400).json({
+        message: "Please choose a day when the dentist is available.",
+      });
+    }
 
     if (appointmentDateObj < today) {
       return res.status(400).json({
@@ -245,9 +321,20 @@ const appointment = async (req, res, next) => {
       status: "Pending",
       services,
       appointmentTime,
+      dentist,
     });
 
     await newAppointment.save();
+
+    const activityLogs = new ActivityLogs({
+      clinic: clinicId,
+      role: "Patient",
+      details: `Created an appointment to ${clinic}`,
+      name: patientName,
+    });
+
+    await activityLogs.save();
+
     res.status(200).json(newAppointment);
   } catch (error) {
     next(error);
@@ -276,13 +363,14 @@ const updateStatus = async (req, res, next) => {
   const { id } = req.params;
   const { status } = req.body;
   try {
-    const user = await Admin.findById(req.user.id);
+    let user = await Admin.findById(req.user.id);
     if (!user) {
       return res.status(404).json({ message: "User not found!" });
     }
+    const clinicId = user.clinicId;
     const appointment = await Appointment.findByIdAndUpdate(
       id,
-      { status },
+      { status, notif: true },
       { new: true }
     );
 
@@ -299,7 +387,19 @@ const updateStatus = async (req, res, next) => {
     if (updatedAppointment.status === "Confirmed") {
       await sendAppointmentStatus(patient.email, newPatient.patientName);
       console.log("Send Successfully");
+    } else if (updatedAppointment.status === "Completed") {
+      await sendAppointmentCompleted(patient.email, newPatient.patientName);
+      console.log("Send Successfully");
     }
+
+    const activityLogs = new ActivityLogs({
+      name: user.name,
+      details: `${status} the appointment of ${appointment.patientName}`,
+      role: "Dentist",
+      clinic: clinicId,
+    });
+
+    await activityLogs.save();
 
     res.status(200).json(appointment);
   } catch (error) {
@@ -316,7 +416,7 @@ const deleteAppointment = async (req, res, next) => {
       return res.status(401).json({ message: "User unauthenticated" });
     }
 
-    console.log(id);
+    //console.log(id);
 
     const appointment = await Appointment.findById(id);
     const patientId = appointment.patientId; // Id for finding patient or user
@@ -355,6 +455,83 @@ const getPatients = async (req, res, next) => {
   }
 };
 
+const notifOff = async (req, res, next) => {
+  const { notif } = req.body;
+  try {
+    const user = await Patient.findById(req.user.user.id);
+    if (!user) {
+      return res.status(401).json({ message: "User not authenticated." });
+    }
+    const userId = user._id;
+    const appointment = await Appointment.find({ patientId: userId })
+      .sort({ createdAt: -1 }) // Sort by creation date, newest first
+      .exec();
+    if (appointment.length === 0) {
+      return res.status(404).json({ message: "No appointments found." });
+    }
+
+    // Use the first appointment or any specific one you want to update
+    const appointmentToUpdate = appointment[0];
+    //console.log(appointment);
+
+    //console.log(id);
+
+    const newAppointment = await Appointment.findByIdAndUpdate(
+      appointmentToUpdate._id,
+      { notif },
+      { new: true }
+    );
+
+    //console.log(appointment);
+
+    res.status(200).json(newAppointment);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const fetchPatientLists = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const patients = await Patient_List.find({ clinicId: id });
+
+    const total = patients.length;
+
+    res.status(200).json(total);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const totalAppointments = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const appointments = await Appointment.find({ clinicId: id });
+
+    const totalAppointments = appointments.length;
+
+    res.status(200).json(totalAppointments);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const totalEmployees = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const dentist = await Admin.find({ clinicId: id });
+    const assistant = await Assistant.find({ clinicId: id });
+
+    const total = dentist.length + assistant.length;
+
+    res.status(200).json(total);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Fetch Activity Logs
+
 export default {
   createClinic,
   getClinic,
@@ -367,4 +544,8 @@ export default {
   updateStatus,
   getPatients,
   deleteAppointment,
+  notifOff,
+  fetchPatientLists,
+  totalAppointments,
+  totalEmployees,
 };

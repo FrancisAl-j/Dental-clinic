@@ -4,16 +4,22 @@ import Cashier from "../models/cashierModel.js";
 import Service from "../models/serviceModel.js";
 import Patient from "../models/patientModel.js";
 import Appointment from "../models/appointmentModel.js";
+import Clinic from "../models/clinicModel.js";
+import ActivityLogs from "../models/logsModel.js";
 
 // Creating Services
 const createService = async (req, res, next) => {
-  const { name, description, category, features, imageLogo, bgImage } =
+  const { name, description, category, features, imageLogo, bgImage, dentist } =
     req.body;
+
   try {
     const admin = await Admin.findById(req.user.id);
     if (!admin) {
       return res.status(401).json({ message: "Admin Unauthenticated" });
     }
+
+    const clinic = await Clinic.findById(admin.clinicId);
+    const location = clinic.location;
 
     const newService = new Service({
       name,
@@ -23,9 +29,24 @@ const createService = async (req, res, next) => {
       imageLogo,
       bgImage,
       clinicId: admin.clinicId,
+      dentist,
+      address: location,
     });
 
     await newService.save();
+
+    clinic.service = true;
+
+    await clinic.save();
+
+    const activityLogs = new ActivityLogs({
+      name: admin.name,
+      role: "Dentist",
+      clinic: admin.clinicId,
+      details: `Added a new service: ${name}`,
+    });
+
+    await activityLogs.save();
 
     res.status(200).json({ message: "Service created" });
   } catch (error) {
@@ -98,6 +119,15 @@ const updateService = async (req, res, next) => {
       return res.status(404).json({ message: "Service not found!" });
     }
 
+    const activityLogs = new ActivityLogs({
+      name: admin.name,
+      role: "Dentist",
+      clinic: admin.clinicId,
+      details: `Update the service ${name}`,
+    });
+
+    await activityLogs.save();
+
     res.status(200).json({ message: "Service successfully updated" });
   } catch (error) {
     next(error);
@@ -128,10 +158,25 @@ const patientService = async (req, res, next) => {
     if (!user) {
       return res.status(401).json({ message: "User not authenticated!" });
     }
-    const service = await Service.findById(id);
+    const service = await Service.findById(id).populate("dentist");
     await Service.findByIdAndUpdate(id, { $inc: { visited: 0.5 } });
 
     res.status(200).json(service);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const clinicServices = async (req, res, next) => {
+  const { clinicId } = req.query;
+  try {
+    const user = await Patient.findById(req.user.user.id);
+    if (!user) {
+      return res.status(401).json({ message: "User not authenticated." });
+    }
+    const services = await Service.find({ clinicId });
+
+    res.status(200).json(services);
   } catch (error) {
     next(error);
   }
@@ -193,6 +238,52 @@ const patientGetServices = async (req, res, next) => {
   }
 };
 
+const fetchAllServices = async (req, res) => {
+  const { query, location } = req.query;
+  try {
+    const allServices = await Service.find({
+      name: { $regex: query, $options: "i" },
+      address: { $regex: location, $options: "i" },
+    }).populate("clinicId");
+
+    res.status(200).json(allServices);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const allServices = async (req, res, next) => {
+  try {
+    const services = await Service.find()
+      .sort({ visited: -1 })
+      .populate("clinicId")
+      .exec();
+
+    res.status(200).json(services);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const fetchDentists = async (req, res, next) => {
+  try {
+    const admin = await Admin.findById(req.user.id);
+    if (!admin) {
+      return res.status(401).json({ message: "Admin not authenticated." });
+    }
+
+    //console.log("Admin" + admin);
+
+    const clinicId = admin.clinicId;
+
+    const dentists = await Admin.find({ clinicId });
+
+    res.status(200).json(dentists);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   createService,
   getServices,
@@ -202,4 +293,8 @@ export default {
   patientService,
   paginatedServices,
   patientGetServices,
+  fetchAllServices,
+  fetchDentists,
+  allServices,
+  clinicServices,
 };

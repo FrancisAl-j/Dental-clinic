@@ -73,3 +73,45 @@ textarea {
   height: 400px;
   cursor: pointer;
 }
+/* Container styles */
+.containers-dentists {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  width: 300px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: auto;
+  width: min(100% - 20px, 600px);
+}
+
+/* Title styles */
+.containers-dentists > span {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 12px;
+  display: block;
+  text-align: center;
+}
+
+/* Checkbox-pair styles */
+.checkbox-pair {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/* Input (checkbox) styles */
+.checkbox-pair input[type="checkbox"] {
+  margin-right: 8px;
+  accent-color: #007bff; /* Blue checkbox color */
+  cursor: pointer;
+}
+
+/* Label styles */
+.checkbox-pair label {
+  font-size: 16px;
+  color: #555;
+  cursor: pointer;
+}

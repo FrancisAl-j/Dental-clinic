@@ -13,12 +13,15 @@ import {
   patientGetServiceSuccess,
   patientClearService,
 } from "../../../redux/clinic/services/serviceReducer.js";
+import { Link } from "react-router-dom";
 
 const ViewService = () => {
   const dispatch = useDispatch();
   const clinic = useSelector((state) => state.patientClinic.clinic);
   const service = useSelector((state) => state.service.service);
   const { clinicId, id, name } = useParams();
+
+  console.log(service);
 
   useEffect(() => {
     const loadData = async () => {
@@ -66,6 +69,18 @@ const ViewService = () => {
     <div>
       {clinic && <Header clinic={clinic} />}
       <hr />
+      <div className="service-headers">
+        <img src={service.bgImage} alt="" className="bg-headers" />
+        <div className="service-name-containers">
+          <div className="name-wrappers">
+            <img src={service.imageLogo} alt="" className="image-logo" />
+            <h3>{service.name}</h3>
+          </div>
+          <Link to={`/clinic/${clinicId}/${name}/appointment/${service.name}`}>
+            <button>Book an appointment</button>
+          </Link>
+        </div>
+      </div>
       <h1>{service.name}</h1>
     </div>
   );

@@ -1,0 +1,21 @@
+.tooth-wrapper {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+.tooth-wrapper img {
+  aspect-ratio: 1/1;
+  width: 40px;
+}
+.occlusal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.mesial,
+.distal,
+.buccal,
+.lingual {
+  position: absolute;
+}

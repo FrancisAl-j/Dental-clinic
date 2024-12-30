@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import Assistant from "../models/assistantModel.js";
 import Patient from "../models/patientModel.js";
 import { transporter } from "../sendingEmails/nodeMailer.js";
+import ActivityLogs from "../models/logsModel.js";
 
 const createToken = async (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET_KEY);
@@ -12,7 +13,16 @@ const createToken = async (id) => {
 
 // Admin registration
 const adminRegister = async (req, res, next) => {
-  const { fullname, email, password, Cpassword } = req.body;
+  const {
+    fullname,
+    email,
+    password,
+    Cpassword,
+    active,
+    available,
+    type,
+    speicalize,
+  } = req.body;
   if (Cpassword !== password) {
     return res.status(400).json("Password do not match");
   }
@@ -37,6 +47,10 @@ const adminRegister = async (req, res, next) => {
     name: fullname,
     email,
     password: hashedPassword,
+    active,
+    available,
+    type,
+    specialize,
     temporaryToken: jwt.sign(payload, process.env.JWT_SECRET_KEY, {
       expiresIn: 86400,
     }),
@@ -49,8 +63,8 @@ const adminRegister = async (req, res, next) => {
       from: "Dental Suite Admin, dental-suite@gmail.com",
       to: user.email,
       subject: "Account Activation",
-      text: `Hello ${user.fullname}, Activate your account by clinic the provided link`, // Plain text fallback
-      html: `Hello <strong>${user.fullname}</strong>,<br><br>Activate your account by clicking the link provided!<br><br>
+      text: `Hello ${user.name}, Activate your account by clinic the provided link`, // Plain text fallback
+      html: `Hello <strong>${user.name}</strong>,<br><br>Activate your account by clicking the link provided!<br><br>
   <a href="http://localhost:5173/verify/email/${user.temporaryToken}">Click here to log in</a>`,
     };
 
@@ -151,6 +165,16 @@ const assistantSignup = async (req, res, next) => {
     assistant.active = true;
 
     await assistant.save();
+
+    const activityLogs = new ActivityLogs({
+      name: admin.name,
+      clinic: admin.clinicId,
+      role: "Assistant",
+      details: `Created ${assistant.username} as assistant`,
+    });
+
+    await activityLogs.save();
+
     res.status(200).json({ message: "Assitant succesfully created." });
   } catch (error) {
     next(error);
@@ -159,7 +183,8 @@ const assistantSignup = async (req, res, next) => {
 
 // Sign up for cashier
 const cashierSignup = async (req, res, next) => {
-  const { username, email, password, Cpassword } = req.body;
+  const { name, email, password, Cpassword, available, specialize, type } =
+    req.body;
   if (password !== Cpassword) {
     return res.status(400).json({ message: "Password do not match!" });
   }
@@ -169,20 +194,33 @@ const cashierSignup = async (req, res, next) => {
   }
 
   const hashedPassword = bcryptjs.hashSync(password, 10);
-  const cashier = new Cashier({
-    username,
+  const dentist = new Admin({
+    name,
     email,
     password: hashedPassword,
+    available,
+    active: true,
+    specialize,
+    type,
   });
   try {
     const admin = await Admin.findById(req.user.id);
     if (!admin) {
-      return res.status(400).json({ message: "Unauthenticated User!" });
+      return res.status(401).json({ message: "Unauthenticated User!" });
     }
 
-    cashier.clinicId = admin.clinicId;
+    dentist.clinicId = admin.clinicId;
 
-    await cashier.save();
+    await dentist.save();
+
+    const activityLogs = new ActivityLogs({
+      name: admin.name,
+      role: "Denitist",
+      clinic: admin.clinicId,
+      details: `created ${dentist.name} as a dentist.`,
+    });
+
+    await activityLogs.save();
     res.status(200).json({ message: "Cashier created successfully" });
   } catch (error) {
     next(error);
@@ -191,7 +229,7 @@ const cashierSignup = async (req, res, next) => {
 
 // Sign up for patient
 const patientSignup = async (req, res, next) => {
-  const { username, email, password, Cpassword } = req.body;
+  const { username, email, password, Cpassword, gender } = req.body;
   if (password !== Cpassword) {
     return res.status(400).json({ message: "Password do not match!" });
   }
@@ -210,6 +248,7 @@ const patientSignup = async (req, res, next) => {
     const patient = new Patient({
       username,
       email,
+      gender,
       password: hashedPassword,
       temporaryToken: jwt.sign(payload, process.env.JWT_SECRET_KEY, {
         expiresIn: 86400, // Expires in a day

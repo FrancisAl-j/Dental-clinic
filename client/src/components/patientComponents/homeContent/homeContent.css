@@ -1,0 +1,293 @@
+@import url("https://fonts.googleapis.com/css2?family=Faculty+Glyphic&family=IM+Fell+DW+Pica:ital@0;1&family=IM+Fell+English:ital@0;1&family=Ibarra+Real+Nova:ital,wght@0,400;0,500;1,400&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Quattrocento&display=swap");
+
+/* 
+light 300
+regular 400
+medium 500
+semibold 600
+bold 700
+*/
+
+:root {
+  --light: 300;
+  --regular: 400;
+  --medium: 500;
+  --semibold: 600;
+  --bold: 700;
+
+  --font-prim: #122a35;
+  --primary: #00afff;
+}
+
+html,
+body {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+html,
+body,
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.beys,
+.faqs {
+  font-family: "Inter", serif;
+  font-optical-sizing: auto;
+  font-weight: var(--light);
+  font-style: normal;
+}
+
+.beys {
+  padding: 200px 100px 100px 100px;
+  gap: 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.beys a,
+.faqs a {
+  text-decoration: none;
+  color: black;
+}
+
+.beys section {
+  display: flex;
+  gap: 30px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.beys h1 {
+  font-size: 96px;
+  font-weight: var(--regular);
+  color: var(--font-prim);
+}
+
+.beys h1 span {
+  font-weight: var(--semibold);
+}
+
+.beys section article {
+  display: flex;
+  gap: 30px;
+  flex-direction: column;
+}
+
+.beys section article p {
+  font-size: 32px;
+}
+
+.wateber {
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  padding: 50px 100px;
+}
+
+.stack-parent {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  padding: 50px 100px;
+  border-radius: 25px;
+  text-align: center; /* Centers text inside each item */
+  color: white;
+}
+
+.han {
+  background-color: #aee5ff;
+}
+.dul {
+  background-color: #7dd6ff;
+}
+.set {
+  background-color: #58caff;
+}
+
+.title11 {
+  font-size: 36px;
+  font-weight: var(--semibold);
+}
+
+/* section 2 ---------------------------------------------------------*/
+
+div.links {
+  display: flex;
+  gap: 18px; /* Space between child elements */
+  align-items: stretch;
+}
+
+div.links a {
+  flex: 1; /* Ensures children grow equally */
+  padding: 25px;
+  background-color: #f8f8f8;
+  margin: 0;
+  border-radius: 25px;
+}
+
+div.links div {
+  gap: 10px;
+  border-radius: 25px;
+  display: flex; /* Ensures children can contain flex content */
+  flex-direction: column; /* Allows content inside to stack vertically */
+  height: auto; /* Ensures height adjusts dynamically */
+}
+
+div.links div article {
+  gap: 10px;
+}
+
+div.links div p {
+  font-size: 16px;
+  font-weight: var(--regular);
+}
+
+div.links div .basta {
+  font-size: 20px;
+  font-weight: var(--semibold);
+}
+
+.beys .button {
+  padding: 20px 50px;
+  background-color: var(--primary);
+  color: white;
+  border-radius: 10px;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+/* section 3 ---------------------------------------------------------*/
+
+section.wan {
+  display: flex;
+  gap: 100px;
+}
+
+.magulang {
+  display: flex;
+  flex-direction: row;
+  gap: 50px;
+  padding: 0 50px;
+}
+
+.ich {
+  flex: 1;
+  padding: 20px;
+}
+
+.ich p {
+  padding-top: 20px;
+  font-weight: var(--light);
+  font-size: 24px;
+}
+
+p.pamagat {
+  font-size: 36px;
+  font-weight: var(--semibold);
+}
+
+/* section 4 ---------------------------------------------------------*/
+
+.aywan {
+  display: flex;
+  flex-direction: row;
+  gap: 50px;
+  padding: 0 50px;
+  align-items: center;
+  justify-content: center;
+}
+
+.aywan > div {
+  flex: 1;
+}
+
+.kanan {
+  display: flex;
+  gap: 25px;
+  flex: 1;
+}
+
+.kanan .parent {
+  display: flex;
+  gap: 25px;
+  flex: 1;
+  flex-direction: column;
+}
+
+.kanan .each {
+  background-color: rgb(226, 226, 226);
+  flex: 1;
+  padding: 30px;
+  color: white;
+  background-color: var(--primary);
+  border-radius: 25px;
+}
+
+.kanan .each p {
+  padding-top: 15px;
+  font-size: 20px;
+  font-weight: var(--regular);
+}
+
+.kanan .each p.taytol {
+  font-size: 26px;
+  font-weight: var(--semibold);
+}
+
+section.faqs {
+  padding: 100px;
+  gap: 50px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary);
+  color: white;
+}
+
+.faqs article {
+  display: flex;
+  gap: 50px;
+}
+
+.faqs article h1 {
+  color: white;
+}
+
+.faqs article .tight {
+  gap: 0;
+  padding: 40px 0;
+  margin: 0;
+}
+
+section.faqs div.links {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+}
+
+section.faqs div.links a {
+  border-bottom: white solid 3px;
+}
+
+section.faqs div.links a,
+section.faqs div.links div {
+  display: flex;
+  flex-direction: row;
+  border-radius: 0;
+  color: white;
+  background-color: var(--primary);
+  width: 100%;
+  justify-content: space-between;
+}
+
+section.faqs div.links div p {
+  font-size: 26px;
+  font-weight: var(--medium);
+}

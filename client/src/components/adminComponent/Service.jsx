@@ -4,6 +4,8 @@ import "./service.css";
 import Sidebar from "../sidebar/Sidebar";
 import { useSelector } from "react-redux";
 import Close from "../../assets/close.svg";
+import { specialized_set } from "../../DataServices.jsx";
+import { specialized_data } from "../specialize.jsx";
 
 import {
   getDownloadURL,
@@ -18,8 +20,11 @@ import { toast } from "react-toastify";
 import ImageLogo from "../../assets/imageLogo.png";
 import BgImage from "../../assets/bgImage.jpg";
 
+import { data_set } from "../../DataServices.jsx";
+
 const Service = () => {
   const { currentClinic } = useSelector((state) => state.clinic);
+  const { currentUser } = useSelector((state) => state.user);
   const [addFeatures, setAddFeatures] = useState([]);
   const [newFeature, setNewFeature] = useState("");
   const [addImageLogo, setAddImageLogo] = useState(undefined);
@@ -33,6 +38,11 @@ const Service = () => {
     imageLogo: ImageLogo,
     bgImage: BgImage,
   });
+  const [dentists, setDentists] = useState([]);
+  const [checkedDentists, setCheckedDentists] = useState([]);
+  const [sameServices] = useState(specialized_set);
+  const [serviceData] = useState(specialized_data);
+  const [serviceSpecialize, setServiceSpecialize] = useState("");
 
   const imageLogoRef = useRef();
   const bgImageRef = useRef();
@@ -42,6 +52,25 @@ const Service = () => {
       handleImageLogo(addImageLogo);
     }
   }, [addImageLogo]);
+
+  useEffect(() => {
+    fetchDentists();
+  }, []);
+
+  // Handles the check
+  const handleCheck = (e) => {
+    const { value, checked } = e.target;
+
+    if (checked) {
+      // Add the selected day to the available array
+      setCheckedDentists((prev) => [...prev, value]);
+    } else {
+      // Remove the deselected day from the available array
+      setCheckedDentists((prev) => prev.filter((day) => day !== value));
+    }
+  };
+
+  //console.log(dentists);
 
   const handleImageLogo = async (addImageLogo) => {
     const storage = getStorage(app);
@@ -131,6 +160,7 @@ const Service = () => {
     e.preventDefault();
     const { name, description, category, imageLogo, bgImage } = formData;
     const features = addFeatures;
+    const dentist = checkedDentists;
     try {
       const res = await axios.post(
         "http://localhost:5000/service/create",
@@ -141,6 +171,7 @@ const Service = () => {
           features,
           imageLogo,
           bgImage,
+          dentist,
         },
         {
           withCredentials: true,
@@ -154,6 +185,7 @@ const Service = () => {
           category: "",
           imageLogo: ImageLogo,
           bgImage: BgImage,
+          dentist: "",
         });
         setAddFeatures([]);
       }
@@ -162,17 +194,56 @@ const Service = () => {
     }
   };
 
+  // FETCHING DENTISTS
+  const fetchDentists = async () => {
+    try {
+      const res = await axios.get(
+        "http://localhost:5000/service/fetch/dentist",
+        { withCredentials: true }
+      );
+
+      if (res.status === 200) {
+        setDentists(res.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //console.log(checkedDentists);
+  //console.log(dentists);
+
   return (
     <div className="service-container">
       <Sidebar />
 
       <form className="service-form" onSubmit={handleSubmit}>
         <div className="form-header">
-          <h1>Create Services</h1>
+          <h1>Create Service</h1>
           <img src={currentClinic.logo} alt="logo" />
         </div>
         <hr />
         <div className="form-elements">
+          <div>
+            <select
+              name=""
+              id=""
+              value={serviceSpecialize}
+              onChange={(e) => setServiceSpecialize(e.target.value)}
+            >
+              <option disabled value="">
+                Choose Specialization
+              </option>
+              {serviceData &&
+                serviceData.map((service, index) => {
+                  return (
+                    <option value={service} key={index}>
+                      {service}
+                    </option>
+                  );
+                })}
+            </select>
+          </div>
           <div className="imageLogo-container">
             <p>Image Logo</p>
             <input
@@ -207,13 +278,58 @@ const Service = () => {
             />
           </div>
 
-          <input
-            type="text"
+          {/*<input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Name"
+            /> */}
+
+          <div className="containers-dentists">
+            <span>Dentists</span>
+            {dentists &&
+              dentists.map((dentist, index) => {
+                if (serviceSpecialize === dentist.specialize) {
+                  return (
+                    <div className="checkbox-pair" key={index}>
+                      <input
+                        type="checkbox"
+                        id={dentist.name}
+                        value={dentist._id}
+                        onChange={handleCheck}
+                      />
+                      <label htmlFor={dentist.name}>{dentist.name}</label>
+                    </div>
+                  );
+                }
+              })}
+          </div>
+
+          <select
             name="name"
+            id=""
             value={formData.name}
             onChange={handleChange}
-            placeholder="Name"
-          />
+          >
+            <option disabled value="">
+              Select a Services
+            </option>
+            {/*data_set &&
+              data_set.map((data, index) => {
+                return (
+                  <option value={data.name} key={index}>
+                    {data.name}
+                  </option>
+                );
+              })*/}
+            {/* Display services based on selected specialization */}
+
+            {serviceSpecialize &&
+              specialized_set[serviceSpecialize].map((service, index) => {
+                return <option value={service}>{service}</option>;
+              })}
+          </select>
 
           <textarea
             name="description"
@@ -222,38 +338,6 @@ const Service = () => {
             placeholder="Description"
             rows="4"
           ></textarea>
-
-          <input
-            type="text"
-            name="category"
-            value={formData.category}
-            onChange={handleChange}
-            placeholder="Category"
-          />
-        </div>
-
-        <div className="features-wrapper">
-          <input
-            type="text"
-            value={newFeature}
-            onChange={handleFeatureChange}
-            placeholder="Add Features"
-          />
-          <button onClick={handleAddFeature}>Add Feature</button>
-          <div className="features-flex">
-            {addFeatures.map((feature, index) => {
-              return (
-                <div className="feature-container" key={index}>
-                  <p>{feature}</p>
-                  <img
-                    onClick={() => handleRemoveFeature(index)}
-                    src={Close}
-                    alt="close"
-                  />
-                </div>
-              );
-            })}
-          </div>
         </div>
 
         <button type="submit">Create</button>

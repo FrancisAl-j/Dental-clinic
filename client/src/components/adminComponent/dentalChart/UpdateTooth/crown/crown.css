@@ -1,0 +1,6 @@
+.crown-container {
+  display: flex;
+  align-items: center;
+  width: min(100% - 1px, 400px);
+  justify-content: space-between;
+}

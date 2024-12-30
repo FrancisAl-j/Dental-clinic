@@ -20,15 +20,28 @@ import dentalRecordRoute from "./router/dentalRecordRoute.js";
 import serviceRoute from "./router/serviceRoute.js";
 import recommendationRoute from "./router/recommendationRoute.js";
 import chartRoute from "./router/chartRoute.js";
+import paymentRoute from "./router/paymentRoute.js";
+import superAdminRoute from "./router/superAdminRoute.js";
+import logsRouter from "./router/logsRoute.js";
+import { planExpired } from "./controller/paymentController.js";
+import { autoUpdateStatus } from "./appointmentFunctions.js";
+import medHistoryRoute from "./router/medHistoryRoute.js";
 
 const app = express();
+const allowedOrigins = ["http://localhost:5173", "http://localhost:5174"];
 
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
@@ -39,6 +52,7 @@ app.use(
 cron.schedule("0 0 * * *", () => {
   console.log("Running the reminder email cron job...");
   sendAppointmentsReminder();
+  autoUpdateStatus();
 });
 
 // for Authentication
@@ -67,6 +81,18 @@ app.use("/api", recommendationRoute);
 
 // Debtal Chart
 app.use("/api/chart", chartRoute);
+
+// Payment Route
+app.use("/api/payment", paymentRoute);
+
+// Logs route
+app.use("/api/logs", logsRouter);
+
+// Super Admin Route
+app.use("/api/admin", superAdminRoute);
+
+// Medical History Route
+app.use("/api/medical", medHistoryRoute);
 
 app.use((err, req, res, next) => {
   if (res.headersSent) {

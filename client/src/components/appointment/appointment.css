@@ -5,17 +5,20 @@
   --dirty-white: #efefef;
   --rough-black: #2e2e2e;
 }
+.appointments-container {
+  padding: 20px 0;
+}
 .flex-container {
   display: flex;
   justify-content: space-between;
-
+  height: 100svh;
   gap: 10px;
 }
 .left-container {
   width: 100%;
   background: var(--dark-blue);
   border-radius: 25px;
-  padding: 10px;
+  padding: 15px;
 }
 .left-container-logo {
   display: flex;
@@ -23,11 +26,41 @@
   text-transform: capitalize;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 40px;
 }
 .left-container-logo img {
   aspect-ratio: 1/1;
   height: 100px;
   border-radius: 50%;
+}
+.left-content h1 {
+  color: #fff;
+  margin-bottom: 20px;
+}
+.left-content .days-available {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 20px;
+}
+.left-content .days-available h2 {
+  color: #fff;
+}
+.left-content span {
+  color: var(--dirty-white);
+}
+.left-content .days-available .day {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+.left-content .days-available h3 {
+  background: var(--rough-black);
+  padding: 10px 20px;
+  color: var(--dirty-white);
+}
+.left-details h3 {
+  color: var(--dirty-white);
 }
 .right-container {
   width: 100%;
@@ -40,4 +73,7 @@
 }
 .right-container .pair-elements input {
   width: 100%;
+}
+.form-input-container {
+  margin-top: 40px;
 }

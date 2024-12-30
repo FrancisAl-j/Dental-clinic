@@ -4,13 +4,17 @@ import "../css/clinic.css";
 
 const Sidebar = () => {
   const { currentUser } = useSelector((state) => state.user);
+  const { currentClinic } = useSelector((state) => state.clinic);
 
   return (
     <div className="clinic-nav">
       <ul>
-        <Link to="/clinic-delete">
-          <li>Update your clinic</li>
-        </Link>
+        {currentUser && currentUser.role === "Admin" && (
+          <Link to="/clinic-delete">
+            <li>Update your clinic</li>
+          </Link>
+        )}
+
         <Link to="/clinic/appointment-list">
           <li>Appointment List</li>
         </Link>
@@ -23,11 +27,11 @@ const Sidebar = () => {
           </Link>
         )}
 
-        {currentUser && currentUser.role === "Admin" && (
+        {/*currentUser && currentUser.role === "Admin" && (
           <Link to="/chart">
             <li>Dental Chart</li>
           </Link>
-        )}
+        )*/}
         {currentUser && currentUser.role === "Admin" && (
           <Link to="/service">
             <li>Add Services</li>

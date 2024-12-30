@@ -1,0 +1,118 @@
+:root {
+  --light-blue: #87d3f0;
+  --grayish-blue: #5ca7c3;
+  --dark-blue: #236078;
+  --dirty-white: #efefef;
+  --rough-black: #2e2e2e;
+}
+
+.payment-wrapper {
+  display: grid;
+  width: 100%;
+  height: 100svh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #00000090;
+  place-items: center;
+  z-index: 999;
+}
+.payment-wrapper .payment-container {
+  background: var(--dirty-white);
+  width: min(100% - 25px, 900px);
+  padding: 10px;
+  overflow-y: scroll;
+}
+.payment-container header {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background: transparent;
+}
+.payment-container header h1 {
+  color: var(--rough-black);
+}
+.payment-container header h2 {
+  cursor: pointer;
+  color: red;
+}
+.payment-container .payment-content {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px;
+}
+.payment-container .payment-content div,
+label {
+  width: 100%;
+  cursor: pointer;
+}
+.payment-container .payment-content div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px var(--rough-black) solid;
+  background: #fff;
+}
+.payment-container .payment-content label p {
+  font-size: clamp(1rem, 2vw, 1.5rem);
+}
+.payment-container .payment-content label header {
+  display: block;
+  border-bottom: 1px var(--grayish-blue) solid;
+}
+.payment-container .payment-content label h3 {
+  text-align: center;
+  font-size: 2.6rem;
+  margin: 40px 0;
+}
+.payment-container .payment-content label header h2 {
+  font-size: 2rem;
+  text-align: center;
+  color: var(--rough-black);
+}
+.payment-container .payment-content label .plan-header {
+  background: var(--light-blue);
+}
+.payment-wrapper .payment-container button {
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 20px;
+  background: var(--grayish-blue);
+  cursor: pointer;
+}
+.payment-content {
+  display: flex;
+  flex-direction: column;
+}
+.payment-content span {
+  color: var(--rough-black);
+  font-size: 1rem;
+}
+.checkboxs-element {
+  display: flex;
+  flex-direction: row;
+  align-self: flex-start;
+  gap: 10px;
+}
+
+/* For inclusion */
+.inclusion {
+  padding: 10px 0;
+}
+.inclusion-list {
+  list-style-type: none;
+}
+.inclusion-list li {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin: 5px 0;
+}
+.inclusion-list li img {
+  aspect-ratio: 1/1;
+  width: 30px;
+}
+.inclusion-list li span {
+  font-size: 1rem;
+}

@@ -114,7 +114,7 @@ const AppointmentList = () => {
         <div className="list">
           <h3>Name</h3>
           <h3>Age</h3>
-          <h3>Gender</h3>
+          <h3>Service</h3>
           <h3>Date</h3>
           <h3>Status</h3>
           <h3>Update</h3>
@@ -126,7 +126,7 @@ const AppointmentList = () => {
               <div className="list" key={appointment._id}>
                 <p className="list-content">{appointment.patientName}</p>
                 <p className="list-content">{appointment.patientAge}</p>
-                <p className="list-content">{appointment.patientGender}</p>
+                <p className="list-content">{appointment.services}</p>
                 <CheckDate appointment={appointment} />
                 {appointment.status === "Canceled" ? (
                   <p className="list-content">Canceled</p>

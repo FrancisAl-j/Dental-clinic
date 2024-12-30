@@ -1,16 +1,39 @@
 import axios from "axios";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import "../css/clinic.css";
+import { specialized_data } from "../specialize";
+import { toast } from "react-toastify";
 
 const CashierSignup = () => {
   const [formData, setFormData] = useState({
-    username: "",
+    fName: "",
+    mInitial: "",
+    lName: "",
     email: "",
     password: "",
     Cpassword: "",
+    specialize: "None",
+    type: "Dentist",
   });
+  const [available, setAvailable] = useState([]);
+  const [isCheck, setIsCheck] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+
+  //console.log(available);
+
+  const handleCheck = (e) => {
+    const { value, checked } = e.target;
+
+    if (checked) {
+      // Add the selected day to the available array
+      setAvailable((prev) => [...prev, parseInt(value)]);
+    } else {
+      // Remove the deselected day from the available array
+      setAvailable((prev) => prev.filter((day) => day !== parseInt(value)));
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,7 +46,17 @@ const CashierSignup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { username, email, password, Cpassword } = formData;
+    const {
+      fName,
+      lName,
+      mInitial,
+      email,
+      password,
+      Cpassword,
+      specialize,
+      type,
+    } = formData;
+    const name = `${fName} ${mInitial}. ${lName}`;
     if (password !== password) {
       setError("Password do not match!");
       return;
@@ -33,10 +66,13 @@ const CashierSignup = () => {
       const res = await axios.post(
         "http://localhost:5000/auth/cashier/signup",
         {
-          username,
+          name,
           email,
           password,
           Cpassword,
+          available,
+          specialize,
+          type,
         },
         {
           withCredentials: true,
@@ -44,6 +80,18 @@ const CashierSignup = () => {
       );
       if (res.status === 400) {
         setError("Not authenticated!");
+      } else {
+        toast.success("Dentist Created");
+        setFormData({
+          fName: "",
+          mInitial: "",
+          lName: "",
+          email: "",
+          password: "",
+          Cpassword: "",
+          specialize: "None",
+        });
+        setAvailable([]);
       }
     } catch (error) {
       setError("Something went wrong!");
@@ -52,17 +100,62 @@ const CashierSignup = () => {
 
   return (
     <div className="form-container">
-      <h1>Create a Cashier</h1>
+      <h1>Create account for Dentist</h1>
 
       <div className="form-wrapper">
         <form onSubmit={handleSubmit}>
           <div className="form-element">
-            <span>Username</span>
+            <span>Specialties</span>
+            <select
+              name="specialize"
+              id=""
+              value={formData.specialize}
+              onChange={handleChange}
+              required
+            >
+              <option disabled value="None">
+                Fill Specialties
+              </option>
+              {specialized_data &&
+                specialized_data.map((data, index) => {
+                  return (
+                    <option key={index} value={data}>
+                      {data}
+                    </option>
+                  );
+                })}
+            </select>
+          </div>
+          <div className="form-element">
+            <span>First name</span>
             <input
               type="text"
-              name="username"
-              value={formData.username}
+              name="fName"
+              value={formData.fName}
               onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="form-element">
+            <span>Last name</span>
+            <input
+              type="text"
+              name="lName"
+              value={formData.lName}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="form-element">
+            <span>Middle Initial</span>
+            <input
+              type="text"
+              name="mInitial"
+              value={formData.mInitial}
+              onChange={handleChange}
+              required
             />
           </div>
 
@@ -73,7 +166,33 @@ const CashierSignup = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
+              required
             />
+          </div>
+
+          <div className="form-element">
+            <span>Days Available</span>
+            <div className="days-container">
+              {[
+                { day: "Monday", value: 1 },
+                { day: "Tuesday", value: 2 },
+                { day: "Wednesday", value: 3 },
+                { day: "Thursday", value: 4 },
+                { day: "Friday", value: 5 },
+                { day: "Saturday", value: 6 },
+                { day: "Sunday", value: 0 },
+              ].map((data, index) => (
+                <div className="day-element" key={index}>
+                  <input
+                    type="checkbox"
+                    id={data.day.toLowerCase()}
+                    value={data.value} // Use day as the value
+                    onChange={handleCheck}
+                  />
+                  <label htmlFor={data.day.toLowerCase()}>{data.day}</label>
+                </div>
+              ))}
+            </div>
           </div>
 
           <div className="form-element">
@@ -83,6 +202,7 @@ const CashierSignup = () => {
               name="password"
               value={formData.password}
               onChange={handleChange}
+              required
             />
           </div>
 
@@ -93,16 +213,17 @@ const CashierSignup = () => {
               name="Cpassword"
               value={formData.Cpassword}
               onChange={handleChange}
+              required
             />
           </div>
 
-          <button>Create</button>
+          <button>Create Dentist</button>
         </form>
         {message && <p className="success">{message}</p>}
         {error && <p className="error">{error}</p>}
       </div>
       <Link to="/create-assistant">
-        <span>Create Assistant</span>
+        <button className="next-btn">Create Assistant</button>
       </Link>
     </div>
   );

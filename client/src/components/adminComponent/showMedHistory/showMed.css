@@ -1,0 +1,23 @@
+.show-med-container {
+  width: 100%;
+  height: 100svh;
+  display: grid;
+  place-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #00000090;
+  z-index: 1;
+}
+.show-med-container .show-med-wrapper {
+  width: min(100% - 20px, 500px);
+  background: var(--dirty-white);
+  padding: 10px;
+}
+.show-med-container .show-med-wrapper header {
+  display: flex;
+  background: none;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}

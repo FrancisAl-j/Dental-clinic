@@ -1,5 +1,15 @@
 import mongoose from "mongoose";
 
+const interestedSchema = mongoose.Schema({
+  service: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Service",
+  },
+  name: {
+    type: String,
+  },
+});
+
 const patientSchema = mongoose.Schema(
   {
     username: {
@@ -22,12 +32,20 @@ const patientSchema = mongoose.Schema(
     },
     active: {
       type: Boolean,
-      default: false,
+      default: true,
       required: true,
     },
     temporaryToken: {
       type: String,
       required: true,
+    },
+    interested: [interestedSchema],
+    medicalHistory: {
+      type: Boolean,
+      default: false,
+    },
+    gender: {
+      type: String,
     },
   },
   {

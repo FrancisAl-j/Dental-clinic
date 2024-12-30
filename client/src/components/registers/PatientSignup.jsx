@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import "../css/login.css";
 
 const PatientSignup = ({ token, setToken }) => {
   const [formData, setFormData] = useState({
@@ -9,6 +10,7 @@ const PatientSignup = ({ token, setToken }) => {
     email: "",
     password: "",
     Cpassword: "",
+    gender: "None",
   });
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
@@ -24,7 +26,7 @@ const PatientSignup = ({ token, setToken }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { username, email, password, Cpassword } = formData;
+    const { username, email, password, Cpassword, gender } = formData;
     if (password !== Cpassword) {
       setError("Password do not match!");
     }
@@ -36,6 +38,7 @@ const PatientSignup = ({ token, setToken }) => {
           email,
           password,
           Cpassword,
+          gender,
         },
         {
           withCredentials: true,
@@ -66,56 +69,75 @@ const PatientSignup = ({ token, setToken }) => {
   };
 
   return (
-    <div className="form-container">
-      <h1>Create an account</h1>
+    <div className="form-body">
+      <div className="form-container">
+        <h1>Create an account</h1>
 
-      <div className="form-wrapper">
-        <form onSubmit={handleSubmit}>
-          <div className="form-element">
-            <span>Username</span>
-            <input
-              type="text"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
-            />
-          </div>
+        <div className="form-wrapper">
+          <form onSubmit={handleSubmit}>
+            <div className="form-element">
+              <span>Name</span>
+              <input
+                type="text"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+              />
+            </div>
 
-          <div className="form-element">
-            <span>Email</span>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-            />
-          </div>
+            <div className="form-element">
+              <span>Gender</span>
+              <select
+                name="gender"
+                id=""
+                value={formData.gender}
+                onChange={handleChange}
+              >
+                <option disabled value="None">
+                  Choose a gender
+                </option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
 
-          <div className="form-element">
-            <span>Password</span>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-            />
-          </div>
+            <div className="form-element">
+              <span>Email</span>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+              />
+            </div>
 
-          <div className="form-element">
-            <span>Confirm Password</span>
-            <input
-              type="password"
-              name="Cpassword"
-              value={formData.Cpassword}
-              onChange={handleChange}
-            />
-          </div>
-          <button>Create</button>
-        </form>
-        {message && <p className="success">{message}</p>}
-        {error && <p className="error">{error}</p>}
+            <div className="form-element">
+              <span>Password</span>
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="form-element">
+              <span>Confirm Password</span>
+              <input
+                type="password"
+                name="Cpassword"
+                value={formData.Cpassword}
+                onChange={handleChange}
+              />
+            </div>
+            <button>Create</button>
+          </form>
+          {message && <p className="success">{message}</p>}
+          {error && <p className="error">{error}</p>}
+        </div>
         <Link to="/adminSignup">
-          <span>Register as Admin</span>
+          <button className="next-btn">Register as Admin</button>
         </Link>
       </div>
     </div>

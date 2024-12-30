@@ -36,16 +36,9 @@ const MostVisitedServices = ({ id }) => {
             {services.map((service, index) => {
               return (
                 <div key={index} className="most-service-container">
-                  <img src={service.imageLogo} alt="" />
+                  <img src={service.imageLogo} alt="" className="logo" />
                   <div>
-                    <p>{service.name}</p>
-                    {service.features.map((feature, index) => {
-                      return (
-                        <div key={index} className="most-feature-container">
-                          <span>{feature}</span>
-                        </div>
-                      );
-                    })}
+                    <span className="most-name">{service.name}</span>
                   </div>
                   <img src={Top} alt="" className="fire" />
                 </div>

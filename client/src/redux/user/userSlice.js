@@ -78,6 +78,11 @@ export const userSlice = createSlice({
       state.loading = false;
       state.error = null;
     },
+    updatePaid: (state, action) => {
+      state.loading = false;
+      state.error = null;
+      state.currentUser.payment.paid = action.payload;
+    },
   },
 });
 
@@ -96,4 +101,5 @@ export const {
   signout,
   setUpdatedUser,
   deleteUpdatedUser,
+  updatePaid,
 } = userSlice.actions;

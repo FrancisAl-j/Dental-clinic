@@ -17,19 +17,20 @@
 }
 .clinic-nav {
   background: var(--light-blue);
-  height: 100%;
-  width: 200px;
-  padding: 20px 10px;
+  height: 100svh;
+  width: 230px;
+  padding: 20px 0;
 }
 .clinic-nav ul {
   list-style: none;
-  display: flex;
-  flex-direction: column;
+  display: block;
   gap: 20px;
 }
 .clinic-nav ul li {
   color: var(--rough-black);
   padding: 8px 0;
+  border-bottom: 1px var(--rough-black) solid;
+  padding: 20px 10px;
 }
 .clinic-content {
   width: 100%;
@@ -54,4 +55,45 @@
 .clinic-content header button:hover {
   background: var(--dark-blue);
   color: var(--dirty-white);
+}
+
+.days-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px; /* Spacing between day elements */
+}
+
+.day-element {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Space between checkbox and label */
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.day-element input[type="checkbox"] {
+  accent-color: #007bff; /* Customize checkbox color */
+  cursor: pointer;
+}
+
+.day-element label {
+  font-size: 14px;
+  color: #555;
+  cursor: pointer; /* Matches cursor style with the checkbox */
+}
+
+.day-element:hover {
+  background-color: #eef4ff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.day-element input[type="checkbox"]:checked + label {
+  font-weight: bold;
+  color: #007bff;
+}
+.sidebar {
+  width: 600px;
 }

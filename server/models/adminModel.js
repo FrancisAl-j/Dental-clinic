@@ -25,12 +25,21 @@ const adminSchema = new mongoose.Schema(
     },
     active: {
       type: Boolean,
-      default: false,
-      required: true,
+      default: true, // Turn to false if the testing is done
     },
     temporaryToken: {
       type: String,
-      required: true,
+    },
+    payment: {
+      type: Boolean,
+      default: false,
+    },
+    available: [Number],
+    specialize: {
+      type: String,
+    },
+    type: {
+      type: String,
     },
   },
 

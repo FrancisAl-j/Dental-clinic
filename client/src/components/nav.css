@@ -9,7 +9,7 @@
 header {
   width: 100%;
   background: var(--grayish-blue);
-  line-height: 70px;
+  line-height: 50px;
 }
 nav {
   display: flex;
@@ -37,7 +37,7 @@ nav ul li {
 }
 .sign-container img {
   aspect-ratio: 1/1;
-  height: 50px;
+  height: 40px;
   display: block;
   cursor: pointer;
 }
@@ -49,7 +49,7 @@ nav ul li {
 }
 .icon-container img {
   aspect-ratio: 1/1;
-  height: 50px;
+  height: 40px;
   display: block;
 }
 .profile-container {
@@ -61,6 +61,8 @@ nav ul li {
 }
 .profile-wrapper {
   display: flex;
+  align-items: center;
+  gap: 5px;
 }
 .profile-wrapper .arrow {
   aspect-ratio: 1/1;
@@ -78,6 +80,7 @@ nav ul li {
 .hide-container ul {
   display: flex;
   flex-direction: column;
+  line-height: 70px;
 }
 .hide-container ul li {
   display: flex;
@@ -96,6 +99,13 @@ nav ul li {
 }
 .hide-container .small-screen {
   display: none;
+}
+.red-dot {
+  aspect-ratio: 1/1;
+  width: 15px;
+  height: 15px;
+  background: red;
+  border-radius: 50%;
 }
 
 @media (max-width: 600px) {

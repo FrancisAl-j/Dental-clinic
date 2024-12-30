@@ -1,0 +1,72 @@
+:root {
+  --light-blue: #87d3f0;
+  --grayish-blue: #5ca7c3;
+  --dark-blue: #236078;
+  --dirty-white: #efefef;
+  --rough-black: #2e2e2e;
+}
+.all-services-header {
+  width: 100%;
+  background-color: var(--background-highlight);
+  font-weight: var(--semi-bold);
+  padding: 150px 0;
+  color: white;
+  display: flex;
+  justify-content: center;
+  font-size: 98px;
+  margin-bottom: 100px;
+}
+.all-services-container .services-menu {
+  border-bottom: 2px #000 solid;
+  margin-bottom: 20px;
+}
+.all-services-container .grid {
+  display: grid;
+  grid-template-columns: 0.6fr 1fr 1fr;
+}
+.all-services-container .all-services-content .all-service-container {
+  outline: 2px #000 solid;
+  overflow: hidden;
+  border-radius: 20px;
+  padding: 10px;
+}
+.all-services-container
+  .all-services-content
+  .all-service-container
+  .services-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: start;
+}
+.all-services-container
+  .all-services-content
+  .all-service-container
+  .services-details
+  button {
+  padding: 10px;
+  background: var(--rough-black);
+  color: var(--dirty-white);
+  cursor: pointer;
+}
+.all-services-container
+  .all-services-content
+  .all-service-container
+  .services-details
+  button:hover {
+  background: var(--light-blue);
+  color: var(--rough-black);
+}
+.all-services-container .all-services-content .all-service-container img {
+  aspect-ratio: 1/1;
+  width: 100px;
+}
+.all-services-container .all-services-content .all-service-container .unable {
+  color: gray;
+}
+.all-services-container .all-services-content {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  margin: 50px 0;
+}

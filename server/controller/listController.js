@@ -4,12 +4,15 @@ import Clinic from "../models/clinicModel.js";
 import Patient_List from "../models/patientListModel.js";
 import Assistant from "../models/assistantModel.js";
 import Cashier from "../models/cashierModel.js";
+import Appointment from "../models/appointmentModel.js";
 // For image ocr
 import { createWorker } from "tesseract.js";
 import path from "path";
 import fs from "fs-extra";
 import { fileURLToPath } from "url";
 import sharp from "sharp";
+import ActivityLogs from "../models/logsModel.js";
+import MedicalHistory from "../models/medHistoryModel.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -52,7 +55,7 @@ const storePatient = async (req, res, next) => {
     }
 
     for (const patient of patients) {
-      console.log(`Processing patient ID: ${patient.patientId}`);
+      //console.log(`Processing patient ID: ${patient.patientId}`);
       const {
         patientId,
         patientName,
@@ -84,9 +87,7 @@ const storePatient = async (req, res, next) => {
       });
 
       if (existingPatient) {
-        console.log(
-          `Patient with ID ${patientId} already exists in this clinic ${clinicId}`
-        );
+        return res.json({ message: "Already exists" });
         // You could update the existing patient record if needed
       } else {
         // Create a new patient document if it doesn't exist
@@ -101,7 +102,15 @@ const storePatient = async (req, res, next) => {
         });
 
         await newPatient.save();
-        console.log(`Patient with ID ${patientId} successfully stored.`);
+
+        const medicalHistory = await MedicalHistory.updateMany(
+          {
+            patient: patientId,
+          },
+          { $set: { patientId: newPatient._id } }
+        );
+
+        //console.log(`Patient with ID ${patientId} successfully stored.`);
       }
     }
     res.status(200).json({ message: "Patients successfully stored" });
@@ -173,6 +182,15 @@ const addPatient = async (req, res, next) => {
     });
 
     await newPatient.save();
+
+    const activityLogs = new ActivityLogs({
+      name: user.name,
+      clinic: user.clinicId,
+      details: `recently added ${patientName} on patient list.`,
+      role: "Dentist",
+    });
+
+    await activityLogs.save();
 
     res.status(200).json({ message: "Patient successfully created" });
   } catch (error) {
@@ -321,7 +339,20 @@ const deletePatient = async (req, res, next) => {
       return res.status(401).json({ message: "Admin not authenticated" });
     }
 
-    const patient = await Patient_List.findByIdAndDelete(id);
+    const patient = await Patient_List.findById(id);
+    const patientId = patient.patientId;
+    await Appointment.deleteMany({ patientId });
+
+    await Patient_List.findByIdAndDelete(id);
+
+    const activityLogs = new ActivityLogs({
+      name: admin.name,
+      role: "Dentist",
+      clinic: admin.clinicId,
+      details: `Deleted a patient.`,
+    });
+
+    await activityLogs.save();
 
     res.status(200).json({ message: "Patient deleted successfully" });
   } catch (error) {

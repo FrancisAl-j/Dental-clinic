@@ -1,0 +1,8 @@
+.ocr-container {
+  display: flex;
+}
+.image-ocr-content {
+  width: 100%;
+  display: grid;
+  place-items: center;
+}

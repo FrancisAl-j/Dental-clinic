@@ -10,18 +10,23 @@ import axios from "axios";
 
 import "./patientList.css";
 import { Link } from "react-router-dom";
+import { teeth_data } from "../../TeethData.jsx";
+import { toast } from "react-toastify";
+import ShowMedicalHistory from "./showMedHistory/ShowMedicalHistory.jsx";
 
-const PatientList = () => {
+const PatientList = ({ setPopUp }) => {
   const dispatch = useDispatch();
   const patients = useSelector((state) => state.patients.patients);
   const [error, setError] = useState(null);
   const [query, setQuery] = useState("");
   const [patientId, setPatientId] = useState(null);
+  const [teeth] = useState(teeth_data);
+  const [patientID, setPatientID] = useState(null);
 
   // This useEffect get all the data from patientList to display in the web
   useEffect(() => {
     displayPatients();
-  }, []);
+  }, [query]);
 
   const displayPatients = async () => {
     try {
@@ -72,17 +77,48 @@ const PatientList = () => {
 
   //console.log(patients);
 
+  // Creating chart for patient
+  const createDentalChart = async (e, id) => {
+    e.preventDefault();
+    const patientId = id;
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/chart/create",
+        {
+          patientId,
+          teeth,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (res.status === 200) {
+        toast.success(
+          `Dental chart created for patient: ${patient.patientName}`
+        );
+        setPatient(undefined);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="list-container">
       <Sidebar />
 
       <div className="list-content">
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search for Patient"
-        />
+        <div className="actions">
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search for Patient"
+          />
+          <button onClick={() => setPopUp(true)}>Add Patient</button>
+        </div>
+
         <div className="patients-container">
           <p className="container-title">Name</p>
           <p className="container-title">Age</p>
@@ -90,16 +126,31 @@ const PatientList = () => {
           <p className="container-title">Email Adress</p>
           <p className="container-title">Contact Number</p>
           <p className="container-title">Actions</p>
+          <p className="container-title">Chart</p>
         </div>
         <hr />
         <div>
           {patients.map((patient, index) => (
             <div className="patients-container" key={index}>
-              <p>{patient.patientName}</p>
+              <p
+                className="patient-name"
+                onClick={() => setPatientID(patient._id)}
+              >
+                {patient.patientName}
+              </p>
+              {patientID === patient._id && (
+                <ShowMedicalHistory
+                  id={patient._id}
+                  name={patient.patientName}
+                  setPatientID={setPatientID}
+                  gender={patient.patientGender}
+                />
+              )}
+
               <p>{patient.patientAge}</p>
               <p>{patient.patientGender}</p>
               <p>{patient.patientEmail}</p>
-              <p>{patient.patientContact}</p>
+              <p>+ 63 {patient.patientContact}</p>
               <div className="btns">
                 <button
                   onClick={() =>
@@ -109,14 +160,13 @@ const PatientList = () => {
                 >
                   Delete
                 </button>
-                <Link
-                  to={`/chart/${
-                    patient.patientId ? patient.patientId : patient._id
-                  }`}
-                >
+                <Link to={`/chart/${patient._id}`}>
                   <button className="chart-btn">Chart</button>
                 </Link>
               </div>
+              <button onClick={(e) => createDentalChart(e, patient._id)}>
+                Create Chart
+              </button>
             </div>
           ))}
         </div>

@@ -1,4 +1,116 @@
+:root {
+  --light-blue: #87d3f0;
+  --grayish-blue: #5ca7c3;
+  --dark-blue: #236078;
+  --dirty-white: #efefef;
+  --rough-black: #2e2e2e;
+}
+.dental-chart-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 50px;
+  height: auto;
+  padding: 40px 0;
+}
+.dental-chart-container .tooth-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 80px;
+  width: 100%;
+}
 .top-jaw {
   display: flex;
   gap: 20px;
+}
+.top-jaw .tooth-flex {
+  display: flex;
+  flex-direction: column-reverse;
+}
+.bottom-jaw {
+  display: flex;
+  gap: 20px;
+}
+.tooth {
+  cursor: pointer;
+}
+.top-jaw .tooth {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 5px;
+}
+.bottom-jaw .tooth-flex {
+  display: flex;
+  flex-direction: column;
+}
+.bottom-jaw .tooth {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+.adult-teeth {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+.upper-jaw {
+  display: flex;
+  gap: 20px;
+}
+.upper-jaw .tooth-flex {
+  display: flex;
+  flex-direction: column;
+}
+.upper-jaw .tooth {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+.bot-jaw {
+  display: flex;
+  gap: 20px;
+}
+.bot-jaw .tooth-flex {
+  display: flex;
+  flex-direction: column-reverse;
+}
+.bot-jaw .tooth {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 5px;
+}
+.img-status {
+  aspect-ratio: 1/1;
+  width: 20px;
+}
+.dental-chart-container .patient-info {
+  display: flex;
+  align-self: flex-start;
+  gap: 50px;
+}
+.tooth-content-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.bridge {
+  cursor: pointer;
+  text-align: center;
+  margin: 10px 0;
+  background: var(--grayish-blue);
+  padding: 8xp 9px;
+  border-radius: 10px;
+}
+.unbridge {
+  cursor: pointer;
+  text-align: center;
+  margin: 10px 0;
+
+  padding: 8xp 9px;
+  border-radius: 10px;
 }

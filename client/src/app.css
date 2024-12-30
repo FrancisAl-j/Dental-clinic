@@ -11,10 +11,14 @@
   box-sizing: border-box;
   text-decoration: none;
 }
+/*
+
+*/
 main {
-  width: min(100% - 30px, 1400px);
+  width: min(100% - 1px, 1600px);
   margin: auto;
   position: relative;
+  max-width: 100%;
 }
 body {
   background: var(--dirty-white);

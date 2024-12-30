@@ -10,10 +10,13 @@ import {
 import Header from "../patientComponents/header/Header.jsx";
 import "./appointment.css";
 import { toast } from "react-toastify";
+import { days_data } from "../DaysData.jsx";
+import ServiceInfo from "../serviceDetails/serviceInfo/ServiceInfo.jsx";
+import WhoNeeds from "../serviceDetails/whoNeeds/WhoNeeds.jsx";
 
 const Appointment = () => {
   const dispatch = useDispatch();
-  const { id, name } = useParams();
+  const { id, name, service, serviceId } = useParams();
   const { currentUser } = useSelector((state) => state.user);
   const clinic = useSelector((state) => state.patientClinic.clinic);
   const [formData, setFormData] = useState({
@@ -27,12 +30,22 @@ const Appointment = () => {
     clinicId: id,
     appointmentDate: "",
     clinic: name,
-    services: "Appointment",
+    services: service,
     appointmentTime: "",
+    dentist: "None",
   });
+  const [dentists, setDentists] = useState([]);
   const [error, setError] = useState(null);
   const [message, setMessage] = useState(false);
   const [services, setServices] = useState([]);
+  const [isService, setService] = useState({});
+
+  let dentistId;
+  let available;
+  if (isService.dentist) {
+    available = isService.dentist.available;
+    dentistId = isService.dentist._id;
+  }
 
   //Fetching services for appointment
   useEffect(() => {
@@ -108,6 +121,7 @@ const Appointment = () => {
         clinic,
         services,
         appointmentTime,
+        dentist,
       } = formData;
 
       const patientName = `${lName}, ${fName} ${midInitial}.`;
@@ -125,6 +139,7 @@ const Appointment = () => {
           patientContact,
           services,
           appointmentTime,
+          dentist,
         },
         {
           withCredentials: true,
@@ -157,61 +172,177 @@ const Appointment = () => {
     }
   };
 
+  // FETCHING SERVICE
+  useEffect(() => {
+    if (serviceId) {
+      fetchService();
+    }
+  }, [serviceId]);
+  const fetchService = async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:5000/service/fetch/${serviceId}`,
+        {
+          params: { serviceId },
+          withCredentials: true,
+        }
+      );
+
+      if (res.status === 200) {
+        setService(res.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Fetch Dentist
+
+  /* 
+    {isService && (
+              <div className="left-content">
+                <h1>Dr. {isService.dentist.username}</h1>
+                <div className="days-available">
+                  <h1>Days Available</h1>
+                  {days_data.map((data, index) => {
+                    // Check if the current day's value exists in the available days
+                    const isAvailable = isService.dentist.available.includes(
+                      data.value
+                    );
+                    if (isAvailable) {
+                      return (
+                        <div key={index} className="day">
+                          <h3>{data.day}</h3>
+                        </div>
+                      );
+                    }
+                    return null; // Return null for days that are not available
+                  })}
+                </div>
+                <div className="left-discription">
+                  <h4>{isService.description}</h4>
+                </div>
+              </div>
+            )}
+
+            {isService.dentist && (
+              <div className="left-content">
+                <h1>Dr. {isService.dentist.username}</h1>
+                <div className="days-available">
+                  <h2>Schedule:</h2>
+                  <div className="day">
+                    
+                  </div>
+                </div>
+                
+              </div>
+            )}
+
+            {days_data.map((data, index) => {
+                      // Check if the current day's value exists in the available days
+                      const isAvailable = isService.dentist.available.includes(
+                        data.value
+                      );
+                      if (isAvailable) {
+                        return (
+                          <div key={index}>
+                            <h3>{data.day}</h3>
+                          </div>
+                        );
+                      }
+                      return null; // Return null for days that are not available
+                    })}
+  */
+
   return (
-    <div>
-      {clinic && <Header clinic={clinic} />}
-      <div className="flex-container">
-        {clinic && (
-          <div className="left-container">
-            <div className="left-container-logo">
-              <img src={clinic.logo} alt="" />
-              <h1>{clinic.clinicName}</h1>
+    <>
+      <div className="appointments-container">
+        {clinic && <Header clinic={clinic} />}
+        <div className="flex-container">
+          {isService && (
+            <div className="left-container">
+              <div className="left-container-logo">
+                <img src={isService.imageLogo} alt="" />
+                <h1>{isService.name}</h1>
+              </div>
+
+              <div className="dentists-container">
+                {isService.dentist &&
+                  isService.dentist.map((dentist, index) => {
+                    return (
+                      <div key={index}>
+                        <h1>Dr. {dentist.name}</h1>
+
+                        <div>
+                          {dentist.available &&
+                            days_data.map((data, index) => {
+                              const isAvailable = dentist.available.includes(
+                                data.value
+                              );
+                              if (isAvailable) {
+                                return (
+                                  <div key={index}>
+                                    <h3>{data.day}</h3>
+                                  </div>
+                                );
+                              }
+                            })}
+                        </div>
+                      </div>
+                    );
+                  })}
+              </div>
+
+              <div className="left-details">
+                <span>What is this service?</span>
+                <h3>{isService.name}</h3>
+                <span>{isService.description}</span>
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        <div className="right-container">
-          <form onSubmit={handleSubmit} className="appointment-form">
-            <h2 className="form-title">Book an Appointment</h2>
+          <div className="right-container">
+            <form onSubmit={handleSubmit} className="appointment-form">
+              <h2 className="form-title">Book an Appointment</h2>
 
-            <div className="form-input-container">
-              <div className="form-elements">
-                <input
-                  required
-                  type="text"
-                  name="fName"
-                  placeholder="Fist name"
-                  value={formData.fName}
-                  onChange={handleChange}
-                />
+              <div className="form-input-container">
+                <div className="form-elements">
+                  <input
+                    required
+                    type="text"
+                    name="fName"
+                    placeholder="Fist name"
+                    value={formData.fName}
+                    onChange={handleChange}
+                  />
 
-                <input
-                  required
-                  type="text"
-                  name="lName"
-                  placeholder="Last name"
-                  value={formData.lName}
-                  onChange={handleChange}
-                />
+                  <input
+                    required
+                    type="text"
+                    name="lName"
+                    placeholder="Last name"
+                    value={formData.lName}
+                    onChange={handleChange}
+                  />
 
-                <input
-                  required
-                  type="text"
-                  name="midInitial"
-                  placeholder="Middle Initial"
-                  value={formData.midInitial}
-                  onChange={handleChange}
-                />
+                  <input
+                    required
+                    type="text"
+                    name="midInitial"
+                    placeholder="Middle Initial"
+                    value={formData.midInitial}
+                    onChange={handleChange}
+                  />
 
-                <input
-                  required
-                  type="email"
-                  name="patientEmail"
-                  value={formData.patientEmail}
-                  onChange={handleChange}
-                />
+                  <input
+                    required
+                    type="email"
+                    name="patientEmail"
+                    value={formData.patientEmail}
+                    onChange={handleChange}
+                  />
 
-                <select
+                  {/*<select
                   required
                   name="services"
                   value={formData.services}
@@ -225,61 +356,92 @@ const Appointment = () => {
                       </option>
                     );
                   })}
-                </select>
+                </select>*/}
 
-                <input
-                  required
-                  type="number"
-                  name="patientContact"
-                  placeholder="Phone number"
-                  value={formData.patientContact}
-                  onChange={handleChange}
-                />
-
-                <input
-                  required
-                  type="number"
-                  name="patientAge"
-                  placeholder="Age"
-                  value={formData.patientAge}
-                  onChange={handleChange}
-                />
-
-                <select
-                  required
-                  name="patientGender"
-                  value={formData.patientGender}
-                  onChange={handleChange}
-                >
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                  <option value="Other">Other</option>
-                </select>
-
-                <div className="pair-elements">
                   <input
                     required
-                    type="date"
-                    name="appointmentDate"
-                    value={formData.appointmentDate}
+                    type="number"
+                    name="patientContact"
+                    placeholder="Phone number"
+                    value={formData.patientContact}
                     onChange={handleChange}
                   />
 
                   <input
                     required
-                    type="time"
-                    name="appointmentTime"
-                    value={formData.appointmentTime}
+                    type="number"
+                    name="patientAge"
+                    placeholder="Age"
+                    value={formData.patientAge}
                     onChange={handleChange}
                   />
+
+                  <select
+                    required
+                    name="patientGender"
+                    value={formData.patientGender}
+                    onChange={handleChange}
+                  >
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+
+                  <select
+                    name="dentist"
+                    id=""
+                    value={formData.dentist}
+                    onChange={handleChange}
+                  >
+                    <option disabled value="None">
+                      Select Dentist
+                    </option>
+                    {isService &&
+                      isService.dentist &&
+                      isService.dentist.map((dentist, index) => {
+                        return (
+                          <option key={index} value={dentist._id}>
+                            Dr. {dentist.name}
+                          </option>
+                        );
+                      })}
+                  </select>
+
+                  <div className="pair-elements">
+                    <input
+                      required
+                      type="date"
+                      name="appointmentDate"
+                      value={formData.appointmentDate}
+                      onChange={handleChange}
+                    />
+
+                    <input
+                      required
+                      type="time"
+                      name="appointmentTime"
+                      value={formData.appointmentTime}
+                      onChange={handleChange}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-            <button>Book Appointment</button>
-          </form>
+              <button>Book Appointment</button>
+            </form>
+          </div>
         </div>
+
+        {isService && clinic && (
+          <ServiceInfo
+            service={service}
+            description={isService.description}
+            contact={clinic.contact}
+          />
+        )}
+
+        <WhoNeeds service={service} />
       </div>
-    </div>
+    </>
   );
 };
 

@@ -8,4 +8,12 @@ const router = express.Router();
 router.get("/recommendation/:id", verifyUser, controller.getRecommendation);
 router.get("/top/services", verifyUser, controller.topServices);
 
+router.get(
+  "/recommended-services/:clinicId",
+  verifyUser,
+  controller.getRecommendedServices
+);
+
+router.get("/sorted/services", verifyUser, controller.getSortedServices);
+
 export default router;

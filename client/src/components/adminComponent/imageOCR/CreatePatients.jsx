@@ -26,25 +26,28 @@ const CreatePatients = () => {
 
   const fileRef = useRef(null);
   return (
-    <div>
+    <div className="ocr-container">
       <Sidebar />
       <section className="image-ocr-content">
-        <h1>Upload an image to create a patients</h1>
-        <form onSubmit={handleImageOcr}>
-          <input
-            type="file"
-            value=""
-            accept="image/*"
-            ref={fileRef}
-            onChange={(e) => setImage(e.target.files[0])}
-          />
-          <img
-            src={image ? URL.createObjectURL(image) : UploadImage}
-            alt=""
-            onClick={() => fileRef.current.click()}
-          />
-          <button>Extract</button>
-        </form>
+        <div>
+          <h1>Upload an image to create a patients</h1>
+          <form onSubmit={handleImageOcr}>
+            <input
+              type="file"
+              value=""
+              accept="image/*"
+              ref={fileRef}
+              onChange={(e) => setImage(e.target.files[0])}
+              hidden
+            />
+            <img
+              src={image ? URL.createObjectURL(image) : UploadImage}
+              alt=""
+              onClick={() => fileRef.current.click()}
+            />
+            <button>Extract</button>
+          </form>
+        </div>
       </section>
     </div>
   );

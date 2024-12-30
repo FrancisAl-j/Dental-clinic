@@ -30,6 +30,13 @@ const serviceSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  address: {
+    type: String,
+  },
+  dentist: [{ type: mongoose.Schema.Types.ObjectId, ref: "Admin" }],
+  address: {
+    type: String,
+  },
 });
 
 const Service = mongoose.model("Service", serviceSchema);
