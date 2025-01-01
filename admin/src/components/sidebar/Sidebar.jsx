@@ -7,7 +7,7 @@ const Sidebar = () => {
     <div className="sidebar">
       <div className="sidebar-options">
         <NavLink to="/admins" className="sidebar-option">
-          <p>Admins</p>
+          <p>Dentists</p>
         </NavLink>
 
         <NavLink to="/clinics" className="sidebar-option">

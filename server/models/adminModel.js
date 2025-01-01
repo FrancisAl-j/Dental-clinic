@@ -35,6 +35,7 @@ const adminSchema = new mongoose.Schema(
       default: false,
     },
     available: [Number],
+    availableTime: [String],
     specialize: {
       type: String,
     },

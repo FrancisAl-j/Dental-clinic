@@ -19,7 +19,8 @@ const Signin = () => {
     email: "",
     password: "",
   });
-  const { currentUser, loading, error } = useSelector((state) => state.user);
+  const { currentUser, loading } = useSelector((state) => state.user);
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -83,32 +84,9 @@ const Signin = () => {
         navigate("/clinic");
       }
     } catch (error) {
-      if (error.response) {
-        const status = error.response.status;
-        if (status === 404) {
-          dispatch(
-            signInFailure({
-              message: "User not found. Please check your email and password.",
-            })
-          );
-        } else if (status === 400) {
-          dispatch(
-            signInFailure({
-              message:
-                "Invalid credentials. Please check your email and password.",
-            })
-          );
-        } else {
-          dispatch(
-            signInFailure({
-              message: "An unexpected error occurred. Please try again.",
-            })
-          );
-        }
-      } else {
-        dispatch(
-          signInFailure({ message: "Network error. Please try again." })
-        );
+      if (error.response && error.response.data) {
+        const { message } = error.response.data;
+        setError(message);
       }
     }
   };
@@ -140,12 +118,10 @@ const Signin = () => {
               />
             </div>
 
-            <button disabled={loading}>
-              {loading ? "Loading..." : "Sign in"}
-            </button>
+            <button>Sign in</button>
           </form>
           {error && (
-            <p className="error">{error.message || "Something went wrong!"}</p>
+            <div className="error">{error || "Something went wrong!"}</div>
           )}
         </div>
         <Link to="/patient-signin">

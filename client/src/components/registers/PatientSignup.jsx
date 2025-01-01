@@ -12,8 +12,11 @@ const PatientSignup = ({ token, setToken }) => {
     Cpassword: "",
     gender: "None",
   });
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
   const [message, setMessage] = useState("");
+  const [emptyFields, setEmptyFields] = useState([]);
+
+  console.log(`empty fields ${emptyFields}`);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -47,13 +50,27 @@ const PatientSignup = ({ token, setToken }) => {
       if (res.status === 200) {
         setMessage("Account created successfully");
         toast.success("Email activation sent!");
+        setEmptyFields([]);
         setToken(res.data.token);
         console.log(token);
 
         localStorage.getItem("token", res.data.token);
       }
-    } catch (error) {
-      if (error.response) {
+    } catch (err) {
+      if (err.response && err.response.data) {
+        // Handle backend error response
+        const { error, emptyFields } = err.response.data;
+        setError(error || "An error occurred");
+        setEmptyFields(emptyFields || []);
+      } else {
+        // Handle network or unexpected errors
+        setError("Something went wrong. Please try again.");
+      }
+    }
+  };
+
+  /* 
+    if (error.response) {
         const status = error.response.status;
         if (status === 404) {
           setError("User not found, please check your Email or password");
@@ -66,10 +83,10 @@ const PatientSignup = ({ token, setToken }) => {
         setError("Network error please check your connection");
       }
     }
-  };
+  */
 
   return (
-    <div className="form-body">
+    <div>
       <div className="form-container">
         <h1>Create an account</h1>
 
@@ -82,6 +99,9 @@ const PatientSignup = ({ token, setToken }) => {
                 name="username"
                 value={formData.username}
                 onChange={handleChange}
+                className={
+                  emptyFields.includes("username") ? "input-error" : ""
+                }
               />
             </div>
 
@@ -109,6 +129,7 @@ const PatientSignup = ({ token, setToken }) => {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
+                className={emptyFields.includes("email") ? "input-error" : ""}
               />
             </div>
 
@@ -119,6 +140,9 @@ const PatientSignup = ({ token, setToken }) => {
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
+                className={
+                  emptyFields.includes("password") ? "input-error" : ""
+                }
               />
             </div>
 
@@ -129,12 +153,15 @@ const PatientSignup = ({ token, setToken }) => {
                 name="Cpassword"
                 value={formData.Cpassword}
                 onChange={handleChange}
+                className={
+                  emptyFields.includes("Cpassword") ? "input-error" : ""
+                }
               />
             </div>
             <button>Create</button>
           </form>
           {message && <p className="success">{message}</p>}
-          {error && <p className="error">{error}</p>}
+          {error && <div className="error">{error}</div>}
         </div>
         <Link to="/adminSignup">
           <button className="next-btn">Register as Admin</button>

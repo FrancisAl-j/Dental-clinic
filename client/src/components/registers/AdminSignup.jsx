@@ -5,10 +5,12 @@ import { toast } from "react-toastify";
 import "../css/login.css";
 import "../css/clinic.css";
 import { specialized_data } from "../specialize";
+import { time_data } from "../DaysData";
 
 const AdminSignUp = () => {
   const navigate = useNavigate();
   const [available, setAvailable] = useState([]);
+  const [availableTime, setAvailableTime] = useState([]);
   const [formData, setFormData] = useState({
     fName: "",
     mInitial: "",
@@ -30,6 +32,16 @@ const AdminSignUp = () => {
     } else {
       // Remove the deselected day from the available array
       setAvailable((prev) => prev.filter((day) => day !== parseInt(value)));
+    }
+  };
+
+  const handleTime = (e) => {
+    const { value, checked } = e.target;
+
+    if (checked) {
+      setAvailableTime((prev) => [...prev, value]);
+    } else {
+      setAvailableTime((prev) => prev.filter((time) => time !== value));
     }
   };
 
@@ -56,10 +68,7 @@ const AdminSignUp = () => {
     } = formData;
 
     const fullname = `${fName} ${mInitial}. ${lName}`;
-    if (password !== Cpassword) {
-      setError("Passwords do not match");
-      return;
-    }
+
     try {
       const res = await axios.post("http://localhost:5000/auth/admin/signup", {
         fullname,
@@ -69,15 +78,25 @@ const AdminSignUp = () => {
         available,
         type,
         specialize,
+        availableTime,
       });
-      navigate("/signin");
-      if (res.status === 400) {
-        setError(true);
-      } else {
+
+      if (res.status === 200) {
         toast.success("Activation of account sent");
+        setError(null);
       }
     } catch (error) {
-      if (error.response) {
+      if (error.response && error.response.data) {
+        const { message } = error.response.data;
+        setError(message);
+      } else {
+        setError("Something went wrong. Please try again.");
+      }
+    }
+  };
+
+  /* 
+    if (error.response) {
         const status = error.response.status;
         if (status === 404) {
           setError("User not found, please check your Email or password");
@@ -90,7 +109,7 @@ const AdminSignUp = () => {
         setError("Network error please check your connection");
       }
     }
-  };
+  */
 
   return (
     <div className="form-container">
@@ -185,6 +204,25 @@ const AdminSignUp = () => {
           </div>
 
           <div className="form-element">
+            <span>Time Available: </span>
+            <div className="days-container">
+              {time_data.map((time, index) => {
+                return (
+                  <div className="day-element" key={index}>
+                    <input
+                      type="checkbox"
+                      id={time}
+                      value={time}
+                      onChange={handleTime}
+                    />
+                    <label htmlFor={time}>{time}</label>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="form-element">
             <span>Password</span>
             <input
               type="password"
@@ -205,7 +243,7 @@ const AdminSignUp = () => {
           </div>
           <button type="submit">Register</button>
         </form>
-        <p>{error}</p>
+        {error && <div className="error">{error}</div>}
       </div>
       <Link to="/patient-signup">
         <button className="next-btn">Sign up as Patient</button>

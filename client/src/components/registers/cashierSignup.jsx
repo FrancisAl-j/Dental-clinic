@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import "../css/clinic.css";
 import { specialized_data } from "../specialize";
 import { toast } from "react-toastify";
+import { time_data } from "../DaysData";
 
 const CashierSignup = () => {
   const [formData, setFormData] = useState({
@@ -20,8 +21,19 @@ const CashierSignup = () => {
   const [isCheck, setIsCheck] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [availableTime, setAvailableTime] = useState([]);
 
   //console.log(available);
+
+  const handleTime = (e) => {
+    const { value, checked } = e.target;
+
+    if (checked) {
+      setAvailableTime((prev) => [...prev, value]);
+    } else {
+      setAvailableTime((prev) => prev.filter((time) => time !== value));
+    }
+  };
 
   const handleCheck = (e) => {
     const { value, checked } = e.target;
@@ -61,7 +73,7 @@ const CashierSignup = () => {
       setError("Password do not match!");
       return;
     }
-
+    // ! Ended here What I need to fix tommorow is tha payment verification
     try {
       const res = await axios.post(
         "http://localhost:5000/auth/cashier/signup",
@@ -73,6 +85,7 @@ const CashierSignup = () => {
           available,
           specialize,
           type,
+          availableTime,
         },
         {
           withCredentials: true,
@@ -192,6 +205,25 @@ const CashierSignup = () => {
                   <label htmlFor={data.day.toLowerCase()}>{data.day}</label>
                 </div>
               ))}
+            </div>
+          </div>
+
+          <div className="form-element">
+            <span>Time Available: </span>
+            <div className="days-container">
+              {time_data.map((time, index) => {
+                return (
+                  <div className="day-element" key={index}>
+                    <input
+                      type="checkbox"
+                      id={time}
+                      value={time}
+                      onChange={handleTime}
+                    />
+                    <label htmlFor={time}>{time}</label>
+                  </div>
+                );
+              })}
             </div>
           </div>
 

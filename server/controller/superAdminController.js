@@ -35,12 +35,18 @@ const deleteAdmins = async (req, res) => {
 
     const { clinicId } = admin;
 
-    await Cashier.deleteMany({ clinicId: id });
-    await Assistant.deleteMany({ clinicId: id });
-    await Service.deleteMany({ clinicId: id });
-    await Clinic.deleteMany({ clinicId: id });
+    const type = admin.type;
 
-    await Admin.findByIdAndDelete(id);
+    if (type === "Owner") {
+      await Admin.deleteMany({ clinicId: id });
+      await Assistant.deleteMany({ clinicId: id });
+      await Service.deleteMany({ clinicId: id });
+      await Clinic.deleteMany({ clinicId: id });
+
+      await Admin.findByIdAndDelete(id);
+    } else {
+      await Admin.findByIdAndDelete(id);
+    }
 
     res.status(200).json({ messag: "Deleted." });
   } catch (error) {
@@ -81,6 +87,7 @@ const deleteClinic = async (req, res) => {
     const admin = await Admin.findOne({ clinicId });
 
     const adminId = admin._id;
+
     await Admin.findByIdAndUpdate(adminId, { clinicId: null });
 
     await Cashier.deleteMany({ clinicId: id });

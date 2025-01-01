@@ -164,11 +164,18 @@ const Appointment = () => {
           services: "Appointment",
           appointmentTime: "",
         });
+        setError(null);
       }
     } catch (error) {
       //setError("Something went wrong!");
 
-      toast.error("An error occured!");
+      if (error.response && error.response.data) {
+        const { message } = error.response.data;
+        setError(message || "an error occured.");
+      } else {
+        // Handle network or unexpected errors
+        setError("Something went wrong. Please try again.");
+      }
     }
   };
 
@@ -270,33 +277,35 @@ const Appointment = () => {
                 {isService.dentist &&
                   isService.dentist.map((dentist, index) => {
                     return (
-                      <div key={index}>
-                        <h1>Dr. {dentist.name}</h1>
-
-                        <div>
-                          {dentist.available &&
-                            days_data.map((data, index) => {
-                              const isAvailable = dentist.available.includes(
-                                data.value
-                              );
-                              if (isAvailable) {
-                                return (
-                                  <div key={index}>
-                                    <h3>{data.day}</h3>
-                                  </div>
+                      <div className="dentist-card" key={index}>
+                        <div className="dentist-header">
+                          <h1 className="dentist-name">Dr. {dentist.name}</h1>
+                          <span className="dentist-icon">🦷</span>
+                        </div>
+                        <div className="availability-section">
+                          <h2>Available Days:</h2>
+                          <div className="availability-container">
+                            {dentist.available &&
+                              days_data.map((data, index) => {
+                                const isAvailable = dentist.available.includes(
+                                  data.value
                                 );
-                              }
-                            })}
+                                if (isAvailable) {
+                                  return (
+                                    <div
+                                      className="availability-day"
+                                      key={index}
+                                    >
+                                      <h3>{data.day}</h3>
+                                    </div>
+                                  );
+                                }
+                              })}
+                          </div>
                         </div>
                       </div>
                     );
                   })}
-              </div>
-
-              <div className="left-details">
-                <span>What is this service?</span>
-                <h3>{isService.name}</h3>
-                <span>{isService.description}</span>
               </div>
             </div>
           )}
@@ -428,6 +437,7 @@ const Appointment = () => {
               </div>
               <button>Book Appointment</button>
             </form>
+            {error && <div className="error">{error}</div>}
           </div>
         </div>
 

@@ -29,7 +29,7 @@ const PaymentGuidelines = ({ setShow }) => {
 
   return (
     <div className="payment-wrapper">
-      <form action="" className="payment-container">
+      <form action="" className="payment-container" onSubmit={handlePayment}>
         <header>
           <h1>Payment</h1>
           <h2 onClick={() => setShow(false)}>X</h2>
@@ -138,7 +138,7 @@ const PaymentGuidelines = ({ setShow }) => {
             agreement
           </label>
         </div>
-        <button onClick={handlePayment}>Proceed to Payment</button>
+        <button>Proceed to Payment</button>
       </form>
     </div>
   );

@@ -97,3 +97,11 @@
 .sidebar {
   width: 600px;
 }
+
+.message {
+  width: 100%;
+  background: #b22222;
+  margin: 10px 0;
+  padding: 5px;
+  border-right: red 3px solid;
+}

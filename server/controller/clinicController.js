@@ -53,6 +53,9 @@ const cancelAppointmentNotif = async (userEmail, name) => {
 
 const createClinic = async (req, res, next) => {
   const { clinicName, location, email, phone, logo, tin, details } = req.body;
+  if (!clinicName || !location || !email || !phone || !logo || !details) {
+    return res.status(400).json({ message: "Please fill in all fields" });
+  }
   if (!tin || tin.trim().length === 0) {
     return res
       .status(400)
@@ -249,6 +252,27 @@ const appointment = async (req, res, next) => {
       appointmentTime,
       dentist,
     } = req.body;
+
+    const emptyFields = [];
+
+    if (!patientName) {
+      emptyFields.push("name");
+    }
+    if (!patientAge) {
+      emptyFields.push("age");
+    }
+    if (!patientGender) {
+      emptyFields.push("gender");
+    }
+    if (!patientEmail) {
+      emptyFields.push("email");
+    }
+    if (!appointmentDate) {
+      emptyFields.push("date");
+    }
+    if (!patientContact) {
+      emptyFields.push("contact");
+    }
 
     if (patientContact.toString().length !== 11) {
       return res.status(400).json({ message: "Invalid phone number" });

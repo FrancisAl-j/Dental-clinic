@@ -26,6 +26,9 @@ const MostVisitedServices = ({ id }) => {
       console.log(error);
     }
   };
+
+  console.log(services);
+
   return (
     <>
       {services.length !== 0 && (

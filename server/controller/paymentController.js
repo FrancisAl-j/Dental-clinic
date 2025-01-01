@@ -124,13 +124,6 @@ const verifyPayment = async (req, res, next) => {
 
     if (success === "true") {
       admin.payment = true;
-      const clinicId = admin.clinicId;
-
-      if (admin.clinicId) {
-        await Clinic.findByIdAndUpdate(clinicId, { active: true });
-      } else {
-        return res.json({ message: "Clinic not found" });
-      }
 
       await admin.save();
 

@@ -67,7 +67,7 @@ const topServices = async (req, res, next) => {
     if (!user) {
       return res.status(401).json({ message: "User not authenticated!" });
     }
-    const services = await Service.find({ clinicId }).sort({ visited: -1 });
+    const services = await Service.find({}).sort({ visited: -1 });
     const mostVisited = services.filter((service) => {
       return service.visited > 10;
     });

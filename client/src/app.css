@@ -28,7 +28,7 @@ body {
 /* Form CSS */
 .form-container {
   background: var(--dark-blue);
-  width: min(100% - 30px, 800px);
+  width: min(100% - 30px, 600px);
   margin: 20px auto;
   border-radius: 20px;
   padding: 20px 30px;
@@ -55,7 +55,7 @@ form span {
   color: var(--dirty-white);
 }
 form input {
-  padding: 8px 20px;
+  padding: 5px 10px;
   font-size: clamp(0.8rem, 1.6vw, 1.2rem);
   border-radius: 40px;
 }

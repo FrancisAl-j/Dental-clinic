@@ -44,6 +44,7 @@ const CreateClinic = () => {
       "https://www.shutterstock.com/image-photo/white-healthy-tooth-different-tools-600nw-1069579256.jpg",
     tin: "",
   });
+  const [error, setError] = useState(null);
 
   //console.log(currentUser.payment.paid);
 
@@ -206,18 +207,9 @@ const CreateClinic = () => {
         dispatch(failClinic({ message: "Something went wrong!" }));
       }
     } catch (error) {
-      if (error.response) {
-        console.error("Error Response Data:", error.response.data); // Log error data
-        dispatch(
-          failClinic({
-            message:
-              error.response.data.message || "An unexpected error occurred.",
-            code: error.response.status,
-          })
-        );
-      } else {
-        console.error("Network Error:", error);
-        dispatch(failClinic({ message: "Network error. Please try again." }));
+      if (error.response && error.response.data) {
+        const { message } = error.response.data;
+        setError(message);
       }
     }
   };
@@ -409,6 +401,7 @@ const CreateClinic = () => {
                 </form>
               )}
             </div>
+            {error && <div className="error">{error}</div>}
           </div>
         )}
       </>

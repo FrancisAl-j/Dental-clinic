@@ -21,42 +21,48 @@ const adminRegister = async (req, res, next) => {
     active,
     available,
     type,
-    speicalize,
-  } = req.body;
-  if (Cpassword !== password) {
-    return res.status(400).json("Password do not match");
-  }
-
-  if (!password || password.trim().length === 0) {
-    return res.status(400).json({ message: "Password is required" });
-  }
-
-  if (password.trim().length < 8) {
-    return res
-      .status(400)
-      .json({ message: "Password should be more than 8 characters" });
-  }
-
-  const payload = {
-    name: fullname,
-    email: email,
-  };
-
-  const hashedPassword = bcryptjs.hashSync(password, 10);
-  const newAdmin = new Admin({
-    name: fullname,
-    email,
-    password: hashedPassword,
-    active,
-    available,
-    type,
     specialize,
-    temporaryToken: jwt.sign(payload, process.env.JWT_SECRET_KEY, {
-      expiresIn: 86400,
-    }),
-  });
+    availableTime,
+  } = req.body;
 
   try {
+    if (!fullname || !email || !available || !specialize || !availableTime) {
+      return res.status(400).json({ message: "Please fill in all fields" });
+    }
+
+    if (!password || password.trim().length === 0) {
+      return res.status(400).json({ message: "Password is required" });
+    }
+
+    if (password.trim().length < 8) {
+      return res
+        .status(400)
+        .json({ message: "Password should be more than 8 characters" });
+    }
+
+    if (Cpassword !== password) {
+      return res.status(400).json({ message: "Password do not match" });
+    }
+
+    const payload = {
+      name: fullname,
+      email: email,
+    };
+
+    const hashedPassword = bcryptjs.hashSync(password, 10);
+    const newAdmin = new Admin({
+      name: fullname,
+      email,
+      password: hashedPassword,
+      active,
+      available,
+      type,
+      specialize,
+      availableTime,
+      temporaryToken: jwt.sign(payload, process.env.JWT_SECRET_KEY, {
+        expiresIn: 86400,
+      }),
+    });
     const user = await newAdmin.save();
 
     const activateEmail = {
@@ -76,7 +82,7 @@ const adminRegister = async (req, res, next) => {
       }
     });
 
-    res.status(201).json(user);
+    res.status(200).json(user);
   } catch (error) {
     next(error);
   }
@@ -230,15 +236,36 @@ const cashierSignup = async (req, res, next) => {
 // Sign up for patient
 const patientSignup = async (req, res, next) => {
   const { username, email, password, Cpassword, gender } = req.body;
-  if (password !== Cpassword) {
-    return res.status(400).json({ message: "Password do not match!" });
-  }
-
-  if (!password || password.trim().length === 0) {
-    return res.status(400).json({ message: "Password is required" });
-  }
 
   try {
+    const emptyFields = [];
+
+    if (!username) {
+      emptyFields.push("username");
+    }
+    if (!email) {
+      emptyFields.push("email");
+    }
+    if (!password) {
+      emptyFields.push("password");
+    }
+    if (!Cpassword) {
+      emptyFields.push("Cpassword");
+    }
+    if (emptyFields.length > 0) {
+      return res
+        .status(400)
+        .json({ error: "Pleasse fill in all the fields.", emptyFields });
+    }
+
+    if (password !== Cpassword) {
+      return res.status(400).json({ message: "Password do not match!" });
+    }
+
+    if (!password || password.trim().length === 0) {
+      return res.status(400).json({ message: "Password is required" });
+    }
+
     const payload = {
       username: username,
       email: email,
@@ -341,12 +368,18 @@ const patientSignin = async (req, res, next) => {
   try {
     const user = await Patient.findOne({ email });
     if (!user) {
-      return res.status(400).json({ message: "Invalid Credentials!" });
+      return res.status(400).json({
+        message: "Invalid Credentials, Please check your email and password",
+      });
     }
 
     const isMatch = bcryptjs.compareSync(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: "Invalid Credentials" });
+      return res
+        .status(400)
+        .json({
+          message: "Invalid Credentials, Please check your email and password",
+        });
     }
 
     const payload = {
