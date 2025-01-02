@@ -80,7 +80,7 @@ const Clinics = () => {
                 </div>
                 {clinicId === clinic._id && (
                   <DeleteClinic
-                    id={clinicId}
+                    id={clinic._id}
                     setClinicId={setClinicId}
                     name={clinic.clinicName}
                     fetchClinics={fetchClinics}

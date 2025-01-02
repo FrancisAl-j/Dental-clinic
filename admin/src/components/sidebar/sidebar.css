@@ -11,6 +11,8 @@
   border: 1.5px solid #a9a9a9;
   font-size: clamp(0.9rem, 2vw, 1.2rem);
   background: var(--rough-black);
+  position: sticky;
+  top: 0;
 }
 .sidebar-options {
   padding-top: 50px;

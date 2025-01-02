@@ -113,7 +113,7 @@ const ViewServices = () => {
                   <img src={service.imageLogo} alt="" />
                   <h1>{service.name}</h1>
                 </div>
-                <p>{service.description}</p>
+
                 <div className="features-container">
                   {service.features.map((feature, index) => {
                     return <span key={index}>{feature}</span>;

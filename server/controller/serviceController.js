@@ -12,6 +12,22 @@ const createService = async (req, res, next) => {
   const { name, description, category, features, imageLogo, bgImage, dentist } =
     req.body;
 
+  const emptyFields = [];
+
+  if (!name) {
+    emptyFields.push("name");
+  }
+  if (!description) {
+    emptyFields.push("description");
+  }
+  if (!dentist) {
+    emptyFields.push("dentist");
+  }
+
+  if (emptyFields.length > 0) {
+    return res.status({ message: "Please fill in all fields.", emptyFields });
+  }
+
   try {
     const admin = await Admin.findById(req.user.id);
     if (!admin) {

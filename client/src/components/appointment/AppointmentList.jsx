@@ -92,14 +92,16 @@ const AppointmentList = () => {
   // Canceling apointments means deleting it
   const handleDelete = async (id) => {
     try {
-      const res = await axios.delete(
-        `http://localhost:5000/clinic/appointment/delete/${id}`,
-        {
-          withCredentials: true,
+      if (window.confirm("Are you sure you want to delete this appointment?")) {
+        const res = await axios.delete(
+          `http://localhost:5000/clinic/appointment/delete/${id}`,
+          {
+            withCredentials: true,
+          }
+        );
+        if (res.status === 200) {
+          await fetchAppointment();
         }
-      );
-      if (res.status === 200) {
-        await fetchAppointment();
       }
     } catch (error) {
       console.log(error);
@@ -143,7 +145,7 @@ const AppointmentList = () => {
                 )}
 
                 <button onClick={() => handleDelete(appointment._id)}>
-                  Cancel Appointment
+                  Delete Appointment
                 </button>
               </div>
             );

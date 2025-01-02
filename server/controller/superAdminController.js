@@ -38,17 +38,20 @@ const deleteAdmins = async (req, res) => {
     const type = admin.type;
 
     if (type === "Owner") {
-      await Admin.deleteMany({ clinicId: id });
-      await Assistant.deleteMany({ clinicId: id });
-      await Service.deleteMany({ clinicId: id });
-      await Clinic.deleteMany({ clinicId: id });
+      await Admin.deleteMany({ clinicId });
+      await Assistant.deleteMany({ clinicId });
+      await Service.deleteMany({ clinicId });
+      await Clinic.deleteMany({ clinicId });
 
-      await Admin.findByIdAndDelete(id);
-    } else {
       await Admin.findByIdAndDelete(id);
     }
+    if (type === "Dentist") {
+      await Admin.findByIdAndDelete(id);
+    } else {
+      return res.status(400).json({ message: "Failed to delete dentist." });
+    }
 
-    res.status(200).json({ messag: "Deleted." });
+    res.status(200).json({ message: "Deleted." });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -84,13 +87,31 @@ const deleteClinic = async (req, res) => {
 
     const clinicId = clinic._id;
 
-    const admin = await Admin.findOne({ clinicId });
+    const admins = await Admin.find({ clinicId });
 
-    const adminId = admin._id;
+    //console.log(admins);
 
-    await Admin.findByIdAndUpdate(adminId, { clinicId: null });
+    for (const admin of admins) {
+      let adminId = admin._id;
 
-    await Cashier.deleteMany({ clinicId: id });
+      console.log(adminId);
+
+      const dentist = await Admin.findById(adminId);
+      let type = dentist.type;
+
+      if (type === "Owner") {
+        console.log(`${dentist.name} is the owner`);
+        dentist.clinicId = null;
+
+        await dentist.save();
+      }
+
+      if (type === "Dentist") {
+        console.log(`${dentist.name} is not the owner`);
+        await Admin.findByIdAndDelete(adminId);
+      }
+    }
+
     await Service.deleteMany({ clinicId: id });
     await Assistant.deleteMany({ clinicId: id });
 

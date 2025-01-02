@@ -11,6 +11,7 @@ import sendAppointmentsReminder, {
   transporter,
 } from "../sendingEmails/nodeMailer.js";
 import ActivityLogs from "../models/logsModel.js";
+import { updateAppointment } from "../../client/src/redux/clinic/appointmentReducer.js";
 
 const sendAppointmentStatus = async (userEmail, name) => {
   const mailOption = {
@@ -288,6 +289,7 @@ const appointment = async (req, res, next) => {
 
     // Convert appointmentDate to a Date object
     const available = Dentist.available || []; // Default to an empty array if undefined
+    const availableTime = Dentist.availableTime || [];
     console.log("Dentist availability:", available); // Debug log
 
     if (!Array.isArray(available) || available.length === 0) {
@@ -324,6 +326,7 @@ const appointment = async (req, res, next) => {
       clinicId,
       appointmentDate,
       appointmentTime,
+      dentist,
     });
 
     if (existingAppointment) {
@@ -411,9 +414,17 @@ const updateStatus = async (req, res, next) => {
     if (updatedAppointment.status === "Confirmed") {
       await sendAppointmentStatus(patient.email, newPatient.patientName);
       console.log("Send Successfully");
-    } else if (updatedAppointment.status === "Completed") {
+    }
+    if (updatedAppointment.status === "Completed") {
       await sendAppointmentCompleted(patient.email, newPatient.patientName);
       console.log("Send Successfully");
+    }
+
+    if (updateAppointment.status === "Canceled") {
+      await cancelAppointmentNotif(patient.email, newPatient.patientName);
+      console.log("Send Successfully");
+    } else {
+      return res.json({ message: "Unavailable status value." });
     }
 
     const activityLogs = new ActivityLogs({

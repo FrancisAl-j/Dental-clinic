@@ -191,6 +191,12 @@ const assistantSignup = async (req, res, next) => {
 const cashierSignup = async (req, res, next) => {
   const { name, email, password, Cpassword, available, specialize, type } =
     req.body;
+
+  if (specialize === "None") {
+    return res
+      .status(400)
+      .json({ message: "Please fill the specialization of the dentist." });
+  }
   if (password !== Cpassword) {
     return res.status(400).json({ message: "Password do not match!" });
   }
@@ -375,11 +381,9 @@ const patientSignin = async (req, res, next) => {
 
     const isMatch = bcryptjs.compareSync(password, user.password);
     if (!isMatch) {
-      return res
-        .status(400)
-        .json({
-          message: "Invalid Credentials, Please check your email and password",
-        });
+      return res.status(400).json({
+        message: "Invalid Credentials, Please check your email and password",
+      });
     }
 
     const payload = {

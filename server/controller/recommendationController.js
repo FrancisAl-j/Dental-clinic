@@ -61,13 +61,14 @@ const getRecommendation = async (req, res, next) => {
 
 // Recommend most visits services on clinics
 const topServices = async (req, res, next) => {
-  const { clinicId } = req.params;
+  const { clinicId } = req.query;
   try {
     const user = Patient.findById(req.user.user.id);
     if (!user) {
       return res.status(401).json({ message: "User not authenticated!" });
     }
-    const services = await Service.find({}).sort({ visited: -1 });
+
+    const services = await Service.find({ clinicId }).sort({ visited: -1 });
     const mostVisited = services.filter((service) => {
       return service.visited > 10;
     });

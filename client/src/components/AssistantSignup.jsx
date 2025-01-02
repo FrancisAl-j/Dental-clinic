@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import "../components/css/clinic.css";
 
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -12,7 +13,7 @@ const AssistantSignup = () => {
     password: "",
     Cpassword: "",
   });
-  const [error, setError] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -56,64 +57,71 @@ const AssistantSignup = () => {
         });
       }
     } catch (error) {
-      setError(true);
+      if (error.response && error.response.data) {
+        const { message } = error.response.data;
+        setError(message);
+      }
     }
   };
 
   return (
-    <div className="form-container">
-      <ToastContainer />
-      <h1>Create Account for assistant</h1>
+    <div className="form-body">
+      <div className="form-container">
+        <ToastContainer />
+        <h1>Create Account for assistant</h1>
 
-      <div className="form-wrapper">
-        <form onSubmit={handleSubmit}>
-          <div className="form-element">
-            <span>Username</span>
-            <input
-              type="text"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
-            />
-          </div>
+        <div className="form-wrapper">
+          <form onSubmit={handleSubmit}>
+            <div className="form-element">
+              <span>Username</span>
+              <input
+                type="text"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+              />
+            </div>
 
-          <div className="form-element">
-            <span>Email</span>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-            />
-          </div>
+            <div className="form-element">
+              <span>Email</span>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+              />
+            </div>
 
-          <div className="form-element">
-            <span>Password</span>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-            />
-          </div>
+            <div className="form-element">
+              <span>Password</span>
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+              />
+            </div>
 
-          <div className="form-element">
-            <span>Confirm Password</span>
-            <input
-              type="password"
-              name="Cpassword"
-              value={formData.Cpassword}
-              onChange={handleChange}
-            />
-          </div>
+            <div className="form-element">
+              <span>Confirm Password</span>
+              <input
+                type="password"
+                name="Cpassword"
+                value={formData.Cpassword}
+                onChange={handleChange}
+              />
+            </div>
 
-          <button>Create</button>
-        </form>
-        <p>{error && "Something went wrong"}</p>
+            <button>Create</button>
+          </form>
+          {error && (
+            <div className="error">{error && "Something went wrong"}</div>
+          )}
+        </div>
+        <Link to="/create-cashier">
+          <button className="next-btn">Create Dentist</button>
+        </Link>
       </div>
-      <Link to="/create-cashier">
-        <button className="next-btn">Create Dentist</button>
-      </Link>
     </div>
   );
 };

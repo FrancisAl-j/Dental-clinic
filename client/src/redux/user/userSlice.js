@@ -81,7 +81,7 @@ export const userSlice = createSlice({
     updatePaid: (state, action) => {
       state.loading = false;
       state.error = null;
-      state.currentUser.payment.paid = action.payload;
+      state.currentUser.payment = action.payload;
     },
   },
 });

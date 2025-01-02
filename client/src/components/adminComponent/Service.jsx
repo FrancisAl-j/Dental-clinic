@@ -43,6 +43,8 @@ const Service = () => {
   const [sameServices] = useState(specialized_set);
   const [serviceData] = useState(specialized_data);
   const [serviceSpecialize, setServiceSpecialize] = useState("");
+  const [emptyFields, setEmptyFields] = useState([]);
+  const [error, setError] = useState(null);
 
   const imageLogoRef = useRef();
   const bgImageRef = useRef();
@@ -178,7 +180,11 @@ const Service = () => {
         }
       );
       if (res.status === 200) {
-        toast.success("Service created successfully!");
+        setAddFeatures([]);
+        setCheckedDentists([]);
+        setError(null);
+        setEmptyFields([]);
+        setServiceSpecialize("");
         setFormData({
           name: "",
           description: "",
@@ -187,10 +193,15 @@ const Service = () => {
           bgImage: BgImage,
           dentist: "",
         });
-        setAddFeatures([]);
+
+        toast.success("Service created successfully!");
       }
     } catch (error) {
-      console.log(error);
+      if (error.response && error.response.data) {
+        const { message, emptyFields } = error.response.data;
+        setError(message);
+        setEmptyFields(emptyFields);
+      }
     }
   };
 

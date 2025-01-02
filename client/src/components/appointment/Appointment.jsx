@@ -31,9 +31,10 @@ const Appointment = () => {
     appointmentDate: "",
     clinic: name,
     services: service,
-    appointmentTime: "",
+
     dentist: "None",
   });
+  const [appointmentTime, setAppointmentTime] = useState("");
   const [dentists, setDentists] = useState([]);
   const [error, setError] = useState(null);
   const [message, setMessage] = useState(false);
@@ -96,6 +97,8 @@ const Appointment = () => {
     };
   }, [id, dispatch]);
 
+  // ! Designing the time radio buttons tommorow
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -120,7 +123,7 @@ const Appointment = () => {
         appointmentDate,
         clinic,
         services,
-        appointmentTime,
+
         dentist,
       } = formData;
 
@@ -260,6 +263,7 @@ const Appointment = () => {
                       return null; // Return null for days that are not available
                     })}
   */
+  console.log(appointmentTime);
 
   return (
     <>
@@ -425,13 +429,32 @@ const Appointment = () => {
                       onChange={handleChange}
                     />
 
-                    <input
-                      required
-                      type="time"
-                      name="appointmentTime"
-                      value={formData.appointmentTime}
-                      onChange={handleChange}
-                    />
+                    {isService.dentist &&
+                      isService.dentist.map((dentist, index) => {
+                        return (
+                          <div key={index}>
+                            {dentist.availableTime &&
+                              dentist.availableTime.map((time, index) => {
+                                return (
+                                  <div key={index}>
+                                    <input
+                                      type="radio"
+                                      id={time}
+                                      value={time}
+                                      checked={
+                                        appointmentTime === time || false
+                                      }
+                                      onChange={(e) =>
+                                        setAppointmentTime(e.target.value)
+                                      }
+                                    />
+                                    <label htmlFor={time}>{time}</label>
+                                  </div>
+                                );
+                              })}
+                          </div>
+                        );
+                      })}
                   </div>
                 </div>
               </div>

@@ -281,7 +281,7 @@ const Profile = () => {
             <span onClick={adminDelete}>Delete Account</span>
           )}
         </div>
-        <p className="error">{error && "Something went wrong"}</p>
+        {error && <p className="error">{error && "Something went wrong"}</p>}
       </div>
     </div>
   );

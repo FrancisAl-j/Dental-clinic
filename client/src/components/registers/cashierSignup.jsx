@@ -20,7 +20,7 @@ const CashierSignup = () => {
   const [available, setAvailable] = useState([]);
   const [isCheck, setIsCheck] = useState(false);
   const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
   const [availableTime, setAvailableTime] = useState([]);
 
   //console.log(available);
@@ -73,7 +73,7 @@ const CashierSignup = () => {
       setError("Password do not match!");
       return;
     }
-    // ! Ended here What I need to fix tommorow is tha payment verification
+    // ! Ended here What I need to fix tommorow is the payment verification
     try {
       const res = await axios.post(
         "http://localhost:5000/auth/cashier/signup",
@@ -107,7 +107,10 @@ const CashierSignup = () => {
         setAvailable([]);
       }
     } catch (error) {
-      setError("Something went wrong!");
+      if (error.response && error.response.data) {
+        const { message } = error.response.data;
+        setError(message);
+      }
     }
   };
 
@@ -252,7 +255,7 @@ const CashierSignup = () => {
           <button>Create Dentist</button>
         </form>
         {message && <p className="success">{message}</p>}
-        {error && <p className="error">{error}</p>}
+        {error && <div className="error">{error}</div>}
       </div>
       <Link to="/create-assistant">
         <button className="next-btn">Create Assistant</button>
