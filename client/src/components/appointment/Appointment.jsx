@@ -263,7 +263,6 @@ const Appointment = () => {
                       return null; // Return null for days that are not available
                     })}
   */
-  console.log(appointmentTime);
 
   return (
     <>
@@ -432,11 +431,11 @@ const Appointment = () => {
                     {isService.dentist &&
                       isService.dentist.map((dentist, index) => {
                         return (
-                          <div key={index}>
+                          <div key={index} className="time-container">
                             {dentist.availableTime &&
                               dentist.availableTime.map((time, index) => {
                                 return (
-                                  <div key={index}>
+                                  <div key={index} className="time-wrapper">
                                     <input
                                       type="radio"
                                       id={time}

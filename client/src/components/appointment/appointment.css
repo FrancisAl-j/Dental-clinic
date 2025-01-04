@@ -69,14 +69,27 @@
 }
 .right-container .pair-elements {
   display: flex;
-  justify-content: start;
+  justify-content: space-around;
+  align-items: start;
   margin: 10px 0;
-}
-.right-container .pair-elements input {
+  gap: 50px;
   width: 100%;
 }
+
 .form-input-container {
   margin-top: 40px;
+}
+.time-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.time-container .time-wrapper {
+  display: flex;
+  align-items: start;
+  justify-content: start;
+  gap: 8px;
 }
 
 /* Main container for all dentist cards */

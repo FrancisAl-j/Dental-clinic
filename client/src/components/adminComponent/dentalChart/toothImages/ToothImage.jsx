@@ -29,6 +29,12 @@ const ToothImage = ({ occlusal, mesial, distal, buccal, lingual, crown }) => {
             ? data_images.AmalgamOcclusal
             : occlusal === "Recurrent Caries"
             ? data_images.RecurrentCariesOcclusal
+            : occlusal === "Gold Inlay/Onlay"
+            ? data_images.GoldInlayOcclusal
+            : occlusal === "Ceramic Inlay/Onlay"
+            ? data_images.CeramicInlayOcclusal
+            : occlusal === "Metal Inlay/Onlay"
+            ? data_images.MetalInlayOcclusal
             : data_images.tooth
         }
         alt=""
@@ -44,6 +50,12 @@ const ToothImage = ({ occlusal, mesial, distal, buccal, lingual, crown }) => {
             ? data_images.AmalgamMesial
             : mesial === "Recurrent Caries"
             ? data_images.RecurrentCariesMesial
+            : mesial === "Gold Inlay/Onlay"
+            ? data_images.GoldInlayMesial
+            : mesial === "Ceramic Inlay/Onlay"
+            ? data_images.CeramicInlayMesial
+            : mesial === "Metal Inlay/Onlay"
+            ? data_images.MetalInlayMesial
             : data_images.tooth
         }
         alt=""
@@ -60,6 +72,12 @@ const ToothImage = ({ occlusal, mesial, distal, buccal, lingual, crown }) => {
             ? data_images.AmalgamDistal
             : distal === "Recurrent Caries"
             ? data_images.RecurrentCariesDistal
+            : distal === "Gold Inlay/Onlay"
+            ? data_images.GoldInlayDistal
+            : distal === "Ceramic Inlay/Onlay"
+            ? data_images.CeramicInlayDistal
+            : distal === "Metal Inlay/Onlay"
+            ? data_images.MetalInlayDistal
             : data_images.tooth
         }
         alt=""
@@ -76,6 +94,12 @@ const ToothImage = ({ occlusal, mesial, distal, buccal, lingual, crown }) => {
             ? data_images.AmalgamBuccal
             : buccal === "Recurrent Caries"
             ? data_images.RecurrentCariesBuccal
+            : buccal === "Gold Inlay/Onlay"
+            ? data_images.GoldInlayBuccal
+            : buccal === "Ceramic Inlay/Onlay"
+            ? data_images.CeramicInlayBuccal
+            : buccal === "Metal Inlay/Onlay"
+            ? data_images.MetalInlayBuccal
             : data_images.tooth
         }
         alt=""
@@ -92,6 +116,12 @@ const ToothImage = ({ occlusal, mesial, distal, buccal, lingual, crown }) => {
             ? data_images.AmalgamLingual
             : lingual === "Recurrent Caries"
             ? data_images.RecurrentCariesLingual
+            : lingual === "Gold Inlay/Onlay"
+            ? data_images.GoldInlayLingual
+            : lingual === "Ceramic Inlay/Onlay"
+            ? data_images.CeramicInlayLingual
+            : lingual === "Metal Inlay/Onlay"
+            ? data_images.MetalInlayLingual
             : data_images.tooth
         }
         alt=""

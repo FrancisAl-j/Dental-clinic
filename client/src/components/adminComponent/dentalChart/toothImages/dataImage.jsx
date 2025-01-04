@@ -25,6 +25,23 @@ import PFMCrown from "../../../../assets/sample/Porcelain-Fused-Metal-Crown.png"
 import CeramicCrown from "../../../../assets/sample/Ceramic-Crown.png";
 import MetalCrown from "../../../../assets/sample/Metal-Crown.png";
 import GoldCrown from "../../../../assets/sample/Gold-Crown.png";
+import GoldInlayDistal from "../../../../assets/sample/gold-inlay-distal.png";
+import GoldInlayOcclusal from "../../../../assets/sample/gold-inlay-occlusal.png";
+import GoldInlayMesial from "../../../../assets/sample/gold-inlay-mesial.png";
+import GoldInlayBuccal from "../../../../assets/sample/gold-inlay-buccal.png";
+import GoldInlayLingual from "../../../../assets/sample/gold-inlay-lingual.png";
+import MetalInlayOcclusal from "../../../../assets/sample/metal-inlay-occlusal.png";
+import MetalInlayBuccal from "../../../../assets/sample/metal-inlay-buccal.png";
+import MetalInlayLingual from "../../../../assets/sample/metal-inlay-lingual.png";
+import MetalInlayMesial from "../../../../assets/sample/metal-inlay-mesial.png";
+import MetalInlayDistal from "../../../../assets/sample/metal-inlay-distal.png";
+import CeramicInlayDistal from "../../../../assets/sample/ceramic-inlay-distal.png";
+import CeramicInlayMesial from "../../../../assets/sample/ceramic-inlay-mesial.png";
+import CeramicInlayOcclusal from "../../../../assets/sample/ceramic-inlay-occlusal.png";
+import CeramicInlayBuccal from "../../../../assets/sample/ceramic-inlay-buccal.png";
+import CeramicInlayLingual from "../../../../assets/sample/ceramic-inlay-Lingual.png";
+
+// ! This is where I ended.
 
 export const data_images = {
   tooth: Tooth,
@@ -66,4 +83,23 @@ export const data_images = {
   MetalCrown,
   GoldCrown,
   CeramicCrown,
+
+  //! Gold inlay/onlay
+  GoldInlayDistal,
+  GoldInlayBuccal,
+  GoldInlayLingual,
+  GoldInlayMesial,
+  GoldInlayOcclusal,
+
+  MetalInlayDistal,
+  MetalInlayBuccal,
+  MetalInlayLingual,
+  MetalInlayMesial,
+  MetalInlayOcclusal,
+
+  CeramicInlayDistal,
+  CeramicInlayBuccal,
+  CeramicInlayLingual,
+  CeramicInlayMesial,
+  CeramicInlayOcclusal,
 };
