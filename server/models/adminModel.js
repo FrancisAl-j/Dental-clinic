@@ -42,6 +42,7 @@ const adminSchema = new mongoose.Schema(
     type: {
       type: String,
     },
+    //! Adding a license number
   },
 
   {

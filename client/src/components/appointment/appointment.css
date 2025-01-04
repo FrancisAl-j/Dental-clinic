@@ -81,13 +81,13 @@
 }
 .time-container {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 20px;
 }
 
 .time-container .time-wrapper {
   display: flex;
-  align-items: start;
+  align-items: center;
   justify-content: start;
   gap: 8px;
 }

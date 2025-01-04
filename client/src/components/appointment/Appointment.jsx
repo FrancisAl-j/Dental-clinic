@@ -430,29 +430,31 @@ const Appointment = () => {
 
                     {isService.dentist &&
                       isService.dentist.map((dentist, index) => {
-                        return (
-                          <div key={index} className="time-container">
-                            {dentist.availableTime &&
-                              dentist.availableTime.map((time, index) => {
-                                return (
-                                  <div key={index} className="time-wrapper">
-                                    <input
-                                      type="radio"
-                                      id={time}
-                                      value={time}
-                                      checked={
-                                        appointmentTime === time || false
-                                      }
-                                      onChange={(e) =>
-                                        setAppointmentTime(e.target.value)
-                                      }
-                                    />
-                                    <label htmlFor={time}>{time}</label>
-                                  </div>
-                                );
-                              })}
-                          </div>
-                        );
+                        if (formData.dentist === dentist._id) {
+                          return (
+                            <div key={index} className="time-container">
+                              {dentist.availableTime &&
+                                dentist.availableTime.map((time, index) => {
+                                  return (
+                                    <div key={index} className="time-wrapper">
+                                      <input
+                                        type="radio"
+                                        id={time}
+                                        value={time}
+                                        checked={
+                                          appointmentTime === time || false
+                                        }
+                                        onChange={(e) =>
+                                          setAppointmentTime(e.target.value)
+                                        }
+                                      />
+                                      <label htmlFor={time}>{time}</label>
+                                    </div>
+                                  );
+                                })}
+                            </div>
+                          );
+                        }
                       })}
                   </div>
                 </div>

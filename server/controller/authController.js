@@ -189,8 +189,16 @@ const assistantSignup = async (req, res, next) => {
 
 // Sign up for cashier
 const cashierSignup = async (req, res, next) => {
-  const { name, email, password, Cpassword, available, specialize, type } =
-    req.body;
+  const {
+    name,
+    email,
+    password,
+    Cpassword,
+    available,
+    specialize,
+    type,
+    availableTime,
+  } = req.body;
 
   if (specialize === "None") {
     return res
@@ -214,6 +222,7 @@ const cashierSignup = async (req, res, next) => {
     active: true,
     specialize,
     type,
+    availableTime,
   });
   try {
     const admin = await Admin.findById(req.user.id);
