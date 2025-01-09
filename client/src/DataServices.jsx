@@ -68,9 +68,25 @@ export const specialized_set = {
     "Tooth Pasta",
     "Teeth Cleanings",
     "Tooth Extractions",
+    "Dental Fillings",
   ],
 
   "Dental Cosmetics": ["Dental Veneers", "Diastema Closure", "Teeth Whitening"],
 
   "Oral Surgery": ["Root Canal Therapy"],
+
+  Periodontics: [
+    "Scaling and Root Planing",
+    "Gum Grafting",
+    "Periodontal Surgery",
+  ],
+
+  Endodontics: ["Root Canal Therapy", "Apicoectomy"],
+
+  // ? For children
+  "Pediatric Dentistry": [
+    "Stainless Steel Crowns",
+    "Space Maintaner",
+    "Habitt-breaking Appliances",
+  ],
 };

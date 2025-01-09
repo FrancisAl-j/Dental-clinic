@@ -4,6 +4,7 @@ import Assistant from "../models/assistantModel.js";
 import Cashier from "../models/cashierModel.js";
 import Service from "../models/serviceModel.js";
 import Patient from "../models/patientModel.js";
+import ActivityLogs from "../models/logsModel.js";
 
 // Admins
 const fetchAllAdmins = async (req, res) => {
@@ -157,6 +158,92 @@ const deletePatient = async (req, res) => {
   }
 };
 
+// TODO: Clinic api
+const fetchEmployees = async (req, res, next) => {
+  try {
+    const owner = await Admin.findById(req.user.id);
+    if (!owner) {
+      return res.status(401).json({ message: "Dentist not authenticated." });
+    }
+    const clinicId = owner.clinicId;
+
+    const dentist = await Admin.find({ clinicId, type: "Dentist" });
+    const assistant = await Assistant.find({ clinicId });
+
+    res.status(200).json({ dentists: dentist, assistants: assistant });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const deleteEmployees = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const owner = await Admin.findById(req.user.id);
+    if (!owner) {
+      return res.status(401).json({ message: "Owner is not authenticated." });
+    }
+
+    if (id !== undefined) {
+      await Admin.findByIdAndDelete(id);
+    }
+    if (id !== undefined) {
+      await Assistant.findByIdAndDelete(id);
+    }
+
+    const activityLogs = new ActivityLogs({
+      clinic: owner.clinicId,
+      details: `Deleted employee: ${id}`,
+      name: owner.name,
+      role: "Owner",
+    });
+
+    await activityLogs.save();
+
+    res.status(200).json({ message: "Employee Deleted." });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateEmployees = async (req, res, next) => {
+  const { id } = req.params;
+  const { active } = req.body;
+  try {
+    const owner = await Admin.findById(req.user.id);
+    if (!owner) {
+      return res.status(401).json({ message: "Owner is not authenticated." });
+    }
+
+    if (id !== undefined) {
+      await Admin.findByIdAndUpdate(id, { active });
+    }
+    if (id !== undefined) {
+      await Assistant.findByIdAndUpdate(id, { active });
+    }
+
+    let action;
+    if (active) {
+      action = "Activate";
+    } else {
+      action = "Inactive";
+    }
+
+    const activityLogs = new ActivityLogs({
+      clinic: owner.clinicId,
+      details: `${action} the account of employee: ${id}`,
+      name: owner.name,
+      role: "Owner",
+    });
+
+    await activityLogs.save();
+
+    res.status(200).json({ message: "Updated Successfully." });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   fetchAllAdmins,
   fetchAllClinics,
@@ -167,4 +254,7 @@ export default {
   fetchPatients,
   updateActiveStatus,
   deletePatient,
+  fetchEmployees,
+  deleteEmployees,
+  updateEmployees,
 };

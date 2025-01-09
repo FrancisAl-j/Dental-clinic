@@ -7,7 +7,7 @@
 }
 .side-legend {
   position: relative;
-  width: 230px;
+  width: 270px;
   overflow: hidden;
 }
 .side-legend .dropdown {
@@ -30,10 +30,11 @@
 .side-legend ul {
   list-style: none;
   background: #fff;
-  position: absolute;
+
   width: 230px;
   left: 0;
 }
+
 .side-legend ul li {
   display: flex;
   padding: 10px;
@@ -69,4 +70,13 @@
 }
 .pfm {
   background: #f5dcb1;
+}
+.gold-inlay {
+  background: #d86b06;
+}
+.ceramic-inlay {
+  background: #5e2e01;
+}
+.metal-inlay {
+  background: #3d3d3c;
 }

@@ -9,6 +9,7 @@ import { data_images } from "../toothImages/dataImage";
 import Legend from "../legend/Legend";
 import CreateChart from "../createChart/CreateChart";
 import Note from "../note/Note";
+import NoChart from "./NoChart";
 
 const FetchChart = () => {
   const [chart, setChart] = useState([]);
@@ -18,8 +19,10 @@ const FetchChart = () => {
 
   const checkBoxRef = useRef({});
 
+  //console.log(chart);
+
   const { id } = useParams();
-  console.log(chart);
+  //console.log(chart);
 
   useEffect(() => {
     if (id) {
@@ -69,16 +72,42 @@ const FetchChart = () => {
     setBridgeId((prev) => (prev === toothId ? null : toothId));
   };
 
+  // ! Updating chart
+  const updateChart = async (e, teethId) => {
+    const { name, value } = e.target;
+    try {
+      const res = await axios.put(
+        `http://localhost:5000/api/chart/update/chart/${teethId}`,
+        {
+          [name]: value,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (res.status === 200) {
+        await fetchChartInfo(id);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="dental-chart-container">
-      {chart.length === 0 && <CreateChart />}
-      {chart &&
+      {chart && chart.length === 0 ? (
+        <NoChart fetchChartInfo={fetchChartInfo} />
+      ) : (
         chart.map((data, index) => {
           return (
             <div key={index} className="patient-info">
               <h3>Patient Name: {data.patientId.patientName}</h3>
               <h3>Age: {data.patientId.patientAge}</h3>
-              <button onClick={() => setNote(true)}>Note</button>
+              <h3>Gender: {data.patientId.patientGender}</h3>
+              <button onClick={() => setNote(true)} className="note">
+                Note
+              </button>
               {note && (
                 <Note
                   setNote={setNote}
@@ -89,9 +118,10 @@ const FetchChart = () => {
               )}
             </div>
           );
-        })}
+        })
+      )}
       <div className="tooth-content-container">
-        <Legend />
+        {chart.length === 0 ? <></> : <Legend />}
         <div className="tooth-content">
           <div className="child-teeth">
             {chart &&
@@ -497,6 +527,183 @@ const FetchChart = () => {
           </div>
         </div>
       </div>
+
+      {chart &&
+        chart.map((data, index) => {
+          return (
+            <div className="other-data" key={index}>
+              <div className="ps-container">
+                <h3>Periodical Screening</h3>
+                <div className="radio-wrapper">
+                  <input
+                    type="radio"
+                    id="Gingivitis"
+                    name="ps"
+                    value="Gingivitis"
+                    checked={data.ps === "Gingivitis" || false}
+                    onChange={(e) => updateChart(e, data._id)}
+                  />
+                  <label htmlFor="Gingivitis">Gingivitis</label>
+                </div>
+
+                <div className="radio-wrapper">
+                  <input
+                    type="radio"
+                    id="Early Periodontics"
+                    name="ps"
+                    value="Early Periodontics"
+                    checked={data.ps === "Early Periodontics" || false}
+                    onChange={(e) => updateChart(e, data._id)}
+                  />
+                  <label htmlFor="Early Periodontics">Early Periodontics</label>
+                </div>
+
+                <div className="radio-wrapper">
+                  <input
+                    type="radio"
+                    id="Moderate Periodontics"
+                    name="ps"
+                    value="Moderate Periodontics"
+                    checked={data.ps === "Moderate Periodontics" || false}
+                    onChange={(e) => updateChart(e, data._id)}
+                  />
+                  <label htmlFor="Moderate Periodontics">
+                    Moderate Periodontics
+                  </label>
+                </div>
+
+                <div className="radio-wrapper">
+                  <input
+                    type="radio"
+                    id="Advanced Periodontics"
+                    name="ps"
+                    value="Advanced Periodontics"
+                    checked={data.ps === "Advanced Periodontics" || false}
+                    onChange={(e) => updateChart(e, data._id)}
+                  />
+                  <label htmlFor="Advanced Periodontics">
+                    Advanced Periodontics
+                  </label>
+                </div>
+              </div>
+              <div className="occlusion-container">
+                <h3>Occlusion:</h3>
+                <div className="radio-wrapper">
+                  <input
+                    type="radio"
+                    id="1"
+                    name="occlusion"
+                    value="Class (Molar)"
+                    checked={data.occlusion === "Class (Molar)" || false}
+                    onChange={(e) => updateChart(e, data._id)}
+                  />
+                  <label htmlFor="1">Class (Molar)</label>
+                </div>
+
+                <div className="radio-wrapper">
+                  <input
+                    type="radio"
+                    id="2"
+                    name="occlusion"
+                    value="Overjet"
+                    checked={data.occlusion === "Overjet" || false}
+                    onChange={(e) => updateChart(e, data._id)}
+                  />
+                  <label htmlFor="2">Overjet</label>
+                </div>
+
+                <div className="radio-wrapper">
+                  <input
+                    type="radio"
+                    id="3"
+                    name="occlusion"
+                    value="Overbite"
+                    checked={data.occlusion === "Overbite" || false}
+                    onChange={(e) => updateChart(e, data._id)}
+                  />
+                  <label htmlFor="3">Overbite</label>
+                </div>
+
+                <div className="radio-wrapper">
+                  <input
+                    type="radio"
+                    id="4"
+                    name="occlusion"
+                    value="Midline Deviation"
+                    checked={data.occlusion === "Midline Deviation" || false}
+                    onChange={(e) => updateChart(e, data._id)}
+                  />
+                  <label htmlFor="4">Midline Deviation</label>
+                </div>
+
+                <div className="radio-wrapper">
+                  <input
+                    type="radio"
+                    id="5"
+                    name="occlusion"
+                    value="Crossbite"
+                    checked={data.occlusion === "Crossbite" || false}
+                    onChange={(e) => updateChart(e, data._id)}
+                  />
+                  <label htmlFor="5">Crossbite</label>
+                </div>
+              </div>
+
+              <div className="tmd-container">
+                <h3>TMD:</h3>
+                <div className="radio-wrapper">
+                  <input
+                    type="radio"
+                    id="Clenching"
+                    name="tmd"
+                    value="Clenching"
+                    checked={data.tmd === "Clenching" || false}
+                    onChange={(e) => updateChart(e, data._id)}
+                  />
+                  <label htmlFor="Clenching">Clenching</label>
+                </div>
+
+                <div className="radio-wrapper">
+                  <input
+                    type="radio"
+                    id="Clicking"
+                    name="tmd"
+                    value="Clicking"
+                    checked={data.tmd === "Clicking" || false}
+                    onChange={(e) => updateChart(e, data._id)}
+                  />
+                  <label htmlFor="Clicking">Clicking</label>
+                </div>
+
+                <div className="radio-wrapper">
+                  <input
+                    type="radio"
+                    id="Trimus"
+                    name="tmd"
+                    value="Trimus"
+                    checked={data.tmd === "Trimus" || false}
+                    onChange={(e) => updateChart(e, data._id)}
+                  />
+                  <label htmlFor="Trimus">Trimus</label>
+                </div>
+
+                <div className="radio-wrapper">
+                  <input
+                    type="radio"
+                    id="Muscle Spasm"
+                    name="tmd"
+                    value="Muscle Spasm"
+                    checked={data.tmd === "Muscle Spasm" || false}
+                    onChange={(e) => updateChart(e, data._id)}
+                  />
+                  <label htmlFor="Muscle Spasm">Muscle Spasm</label>
+                </div>
+              </div>
+
+              {/* this is the last */}
+            </div>
+          );
+        })}
     </div>
   );
 };

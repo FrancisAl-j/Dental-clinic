@@ -113,6 +113,94 @@ const WhoNeeds = ({ service }) => {
                 );
               })}
             </div>
+          ) : service === "Clear Aligners" ? (
+            <div className="needs-content">
+              {clear_aligners.map((data, index) => {
+                return (
+                  <div key={index} className="needs-wrapper">
+                    <h2>{data.need}</h2>
+                    <span>{data.reason}</span>
+                  </div>
+                );
+              })}
+            </div>
+          ) : service === "Bridgework" ? (
+            <div className="needs-content">
+              {dental_bridges.map((data, index) => {
+                return (
+                  <div key={index} className="needs-wrapper">
+                    <h2>{data.need}</h2>
+                    <span>{data.reason}</span>
+                  </div>
+                );
+              })}
+            </div>
+          ) : service === "Dental Veneers" ? (
+            <div className="needs-content">
+              {dental_veeners.map((data, index) => {
+                return (
+                  <div key={index} className="needs-wrapper">
+                    <h2>{data.need}</h2>
+                    <span>{data.reason}</span>
+                  </div>
+                );
+              })}
+            </div>
+          ) : service === "Dental Implant" ? (
+            <div className="needs-content">
+              {dental_implant.map((data, index) => {
+                return (
+                  <div key={index} className="needs-wrapper">
+                    <h2>{data.need}</h2>
+                    <span>{data.reason}</span>
+                  </div>
+                );
+              })}
+            </div>
+          ) : service === "Root Canal Therapy" ? (
+            <div className="needs-content">
+              {root_canal.map((data, index) => {
+                return (
+                  <div key={index} className="needs-wrapper">
+                    <h2>{data.need}</h2>
+                    <span>{data.reason}</span>
+                  </div>
+                );
+              })}
+            </div>
+          ) : service === "Tooth Extractions" ? (
+            <div className="needs-content">
+              {tooth_extraction.map((data, index) => {
+                return (
+                  <div key={index} className="needs-wrapper">
+                    <h2>{data.need}</h2>
+                    <span>{data.reason}</span>
+                  </div>
+                );
+              })}
+            </div>
+          ) : service === "Metallic Braces" ? (
+            <div className="needs-content">
+              {metallic_braces.map((data, index) => {
+                return (
+                  <div key={index} className="needs-wrapper">
+                    <h2>{data.need}</h2>
+                    <span>{data.reason}</span>
+                  </div>
+                );
+              })}
+            </div>
+          ) : service === "Self-Ligating Braces" ? (
+            <div className="needs-content">
+              {self_ligating_brace.map((data, index) => {
+                return (
+                  <div key={index} className="needs-wrapper">
+                    <h2>{data.need}</h2>
+                    <span>{data.reason}</span>
+                  </div>
+                );
+              })}
+            </div>
           ) : (
             <></>
           )}

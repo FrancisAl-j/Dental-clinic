@@ -1,0 +1,17 @@
+.log-container {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 5px;
+  position: relative;
+}
+.log-container .clear-btn {
+  background: red;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
+}

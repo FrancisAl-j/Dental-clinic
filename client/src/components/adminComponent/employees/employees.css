@@ -1,0 +1,102 @@
+.employees-wrapper {
+  display: flex;
+}
+
+.employees-wrapper .employees-container {
+  width: 100%;
+  padding: 5px;
+}
+.employees-wrapper .employees-container .layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr 0.5fr 0.5fr;
+  align-items: center;
+}
+.employees-wrapper .employees-container .layout {
+  margin-bottom: 10px;
+  border-bottom: 2px solid var(--dark-blue);
+}
+.employees-wrapper .employees-container .employees-header {
+  background: var(--light-blue);
+}
+.employees-wrapper
+  .employees-container
+  .employees-content
+  .layout
+  .btns
+  button {
+  background: red;
+  padding: 7px 20px;
+  color: #fff;
+  border-radius: 20px;
+}
+.employees-wrapper .employees-container .employees-content .layout .btns {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+/* Pop up window CSS */
+.popup-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100svh;
+  width: 100%;
+  background: #00000090;
+  display: grid;
+  place-items: center;
+}
+.popup-container .popup-wrapper {
+  background: var(--dirty-white);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: min(100% - 10px, 700px);
+  border-radius: 20px;
+  padding: 20px 10px;
+}
+
+.popup-container .popup-wrapper .close {
+  color: red;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1.5rem;
+  align-self: flex-end;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.popup-container .popup-wrapper .warning-box {
+  background: #ff000060;
+  padding: 10px;
+  border-left: 4px red solid;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.popup-container .popup-wrapper .warning-box h3 {
+  color: #8b0000;
+}
+.popup-container .popup-wrapper .warning-box p {
+  color: #b22222;
+}
+.popup-container .popup-wrapper .btnss {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+.popup-container .popup-wrapper .btnss .cancel {
+  padding: 10px 30px;
+  background: var(--grayish-blue);
+  cursor: pointer;
+  color: var(--rough-black);
+  font-size: 1.3rem;
+  border-radius: 40px;
+}
+.popup-container .popup-wrapper .btnss .delete {
+  padding: 10px 30px;
+  background: #8b0000;
+  cursor: pointer;
+  color: var(--dirty-white);
+  font-size: 1.3rem;
+  border-radius: 40px;
+}

@@ -59,6 +59,18 @@ const chartSchema = new mongoose.Schema(
     },
     teeth: [teethSchema],
     notes: [String],
+    occlusion: {
+      type: String,
+      default: "None",
+    },
+    tmd: {
+      type: String,
+      default: "None",
+    },
+    ps: {
+      type: String,
+      default: "None",
+    },
   },
 
   {

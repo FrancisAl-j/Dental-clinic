@@ -163,6 +163,10 @@ const Home = () => {
                 <Link to="/clinics">
                   <button>View Clinics</button>
                 </Link>
+
+                <Link to="/all/services">
+                  <button>View Services</button>
+                </Link>
               </div>
             ) : (
               <></>

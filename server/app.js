@@ -114,3 +114,24 @@ app.listen(PORT, () => {
   console.log(`Listening to port ${PORT}`);
   connectDB();
 });
+
+/*const time = ["6:30pm", "4:00am", "9:00am", "10:00am", "8:30am"];
+const newTime = time.sort();
+
+const sortedTime = time.sort((a, b) => {
+  const parseTime = (t) => {
+    // Create a date object based on the time string
+    const [hour, minutePart] = t.split(":");
+    const minute = parseInt(minutePart.slice(0, 2));
+    const period = minutePart.slice(-2).toLowerCase(); // "am" or "pm"
+
+    let hour24 = parseInt(hour);
+    if (period === "pm" && hour24 !== 12) hour24 += 12;
+    if (period === "am" && hour24 === 12) hour24 = 0;
+
+    return hour24 * 60 + minute; // Convert to minutes since midnight
+  };
+
+  return parseTime(a) - parseTime(b);
+});
+*/

@@ -48,9 +48,10 @@ const fetchDentalChart = async (req, res, next) => {
 
     const clinicId = admin.clinicId;
 
-    const chart = await Chart.find({ patientId: id, clinicId }).populate(
-      "patientId"
-    );
+    const chart = await Chart.find({ patientId: id, clinicId })
+      .populate("patientId")
+      .sort({ createdAt: -1 })
+      .exec();
     //console.log(chart);
 
     res.status(200).json(chart);
@@ -235,6 +236,39 @@ const fetchPatientNotes = async (req, res, next) => {
   }
 };
 
+//! Updating the chart not the tooth but as a whole
+const updateChart = async (req, res, next) => {
+  const { id } = req.params;
+  const { occlusion, tmd, ps } = req.body;
+
+  try {
+    const admin = await Admin.findById(req.user.id);
+    if (!admin) {
+      return res.status(401).json({ message: "Admin not authenticated." });
+    }
+    const chart = await Chart.findById(id);
+    // console.log(chart);
+
+    if (occlusion !== undefined) {
+      chart.occlusion = occlusion;
+    }
+
+    if (tmd !== undefined) {
+      chart.tmd = tmd;
+    }
+
+    if (ps !== undefined) {
+      chart.ps = ps;
+    }
+
+    await chart.save();
+
+    res.status(200).json({ message: "Updated Successfully" });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   createDentalChart,
   fetchDentalChart,
@@ -243,4 +277,5 @@ export default {
   createNotes,
   fetchNotes,
   fetchPatientNotes,
+  updateChart,
 };

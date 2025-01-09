@@ -44,6 +44,12 @@ const Sidebar = () => {
           </Link>
         )}
 
+        {currentUser && currentUser.type === "Owner" && (
+          <Link to="/employees">
+            <li>Employees</li>
+          </Link>
+        )}
+
         <Link to="/services">
           <li>Services</li>
         </Link>

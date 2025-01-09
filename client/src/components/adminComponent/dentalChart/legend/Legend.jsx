@@ -79,6 +79,41 @@ const Legend = () => {
             <div className="pfm box"></div>
             <span>Porcelain Fused to Metal Crown</span>
           </li>
+
+          <li>
+            <div className="gold-inlay box"></div>
+            <span>Gold inlay/onlay</span>
+          </li>
+
+          <li>
+            <div className="ceramic-inlay box"></div>
+            <span>Ceramic inlay/onlay</span>
+          </li>
+
+          <li>
+            <div className="metal-inlay box"></div>
+            <span>Metal inlay/onlay</span>
+          </li>
+
+          <li>
+            <span>X</span>
+            <span>Extraction due to Caries</span>
+          </li>
+
+          <li>
+            <span>XO</span>
+            <span>Extraction due to other causes</span>
+          </li>
+
+          <li>
+            <span>Cm</span>
+            <span>Congenitally Missing</span>
+          </li>
+
+          <li>
+            <span>Sp</span>
+            <span>Supernumerary</span>
+          </li>
         </ul>
       )}
     </div>

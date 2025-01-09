@@ -41,6 +41,7 @@
   pointer-events: none;
   cursor: default;
 }
+
 .services-wrapper {
   display: flex;
   flex-wrap: wrap;
@@ -115,6 +116,7 @@
 }
 .services-main {
   padding: 20px 0;
+  height: 100svh;
 }
 .features-container {
   display: flex;

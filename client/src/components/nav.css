@@ -76,6 +76,7 @@ nav ul li {
   background: #fff;
   border-radius: 10px;
   width: 250px;
+  z-index: 999;
 }
 .hide-container ul {
   display: flex;

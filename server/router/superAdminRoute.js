@@ -1,7 +1,13 @@
 import express from "express";
 import controller from "../controller/superAdminController.js";
+import { verifyUser } from "../utils/verifyUser.js";
 
 const router = express.Router();
+
+// Clinic
+router.get("/get/employees", verifyUser, controller.fetchEmployees);
+router.delete("/delete/employees/:id", verifyUser, controller.deleteEmployees);
+router.put("/update/employees/:id", verifyUser, controller.updateEmployees);
 
 router.get("/get/admins", controller.fetchAllAdmins);
 router.put("/update/admin/:id", controller.updateActiveAdmin);

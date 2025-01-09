@@ -23,4 +23,19 @@ const fetchActivityLogs = async (req, res, next) => {
   }
 };
 
-export default { fetchActivityLogs };
+const deleteAllLogs = async (req, res, next) => {
+  try {
+    const admin = await Admin.findById(req.user.id);
+    if (!admin) {
+      return res.status(401).json({ message: "Admin not authenticated." });
+    }
+    const clinic = admin.clinicId;
+    await ActivityLogs.deleteMany({ clinic });
+
+    res.status(200).json({ message: "Deleted." });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default { fetchActivityLogs, deleteAllLogs };

@@ -35,6 +35,7 @@ import VerifyPayment from "./components/verifyPayment/VerifyPayment";
 import Dashboard from "./components/adminComponent/dashboard/Dashboard";
 import AllServices from "./components/allServices/AllServices";
 import ChartSummary from "./components/patientComponents/chartSummary/ChartSummary";
+import Employees from "./components/adminComponent/employees/Employees";
 
 import "./app.css";
 import { useState, useEffect } from "react";
@@ -49,7 +50,7 @@ import axios from "axios";
 
 const App = () => {
   const { currentUser } = useSelector((state) => state.user);
-  const [popUp, setPopUp] = useState(false);
+
   const [show, setShow] = useState(false);
   const [notif, setNotif] = useState(false);
   const [token, setToken] = useState("");
@@ -82,7 +83,6 @@ const App = () => {
   return (
     <>
       <BrowserRouter>
-        {popUp && <AddPatient setPopUp={setPopUp} />}
         {show && (
           <UpdateService
             setShow={setShow}
@@ -122,7 +122,7 @@ const App = () => {
 
             <Route element={<PrivateRoute />}>
               <Route path="/create-clinic" element={<CreateClinic />} />
-              <Route path="/clinic" element={<Clinic setPopUp={setPopUp} />} />
+              <Route path="/clinic" element={<Clinic />} />
               <Route path="/create-assistant" element={<AssistantSignup />} />
               <Route path="/create-cashier" element={<CashierSignup />} />
               <Route path="/clinics" element={<ViewClinics />} />
@@ -141,10 +141,7 @@ const App = () => {
                 element={<ViewAppointment notif={notif} setNotif={setNotif} />}
               />
               <Route path="/profile" element={<Profile />} />
-              <Route
-                path="/patients"
-                element={<PatientList setPopUp={setPopUp} />}
-              />
+              <Route path="/patients" element={<PatientList />} />
               <Route path="/chart" element={<DentalChart />} />
               <Route path="/service" element={<Service />} />
               <Route
@@ -162,6 +159,7 @@ const App = () => {
                 element={<ViewService />}
               />
               <Route path="/dashboard/:id" element={<Dashboard />} />
+              <Route path="/employees" element={<Employees />} />
 
               <Route
                 path="/:id/:name/paginate/services"

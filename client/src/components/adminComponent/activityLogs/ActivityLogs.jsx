@@ -26,10 +26,26 @@ const ActivityLogs = () => {
     }
   };
 
-  console.log(logs);
+  // ! Deleting All logs
+  const deleteAllLogs = async () => {
+    try {
+      const res = await axios.delete(`http://localhost:5000/api/logs/delete`, {
+        withCredentials: true,
+      });
+
+      if (res.status === 200) {
+        await fetchLogs();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
-    <div>
+    <div className="log-container">
+      <button className="clear-btn" onClick={deleteAllLogs}>
+        Clear All
+      </button>
       {logs &&
         logs.map((log, index) => {
           return (

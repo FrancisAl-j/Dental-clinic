@@ -13,15 +13,18 @@ import { Link } from "react-router-dom";
 import { teeth_data } from "../../TeethData.jsx";
 import { toast } from "react-toastify";
 import ShowMedicalHistory from "./showMedHistory/ShowMedicalHistory.jsx";
+import AddPatient from "../popUp/AddPatient.jsx";
 
-const PatientList = ({ setPopUp }) => {
+const PatientList = () => {
   const dispatch = useDispatch();
-  const patients = useSelector((state) => state.patients.patients);
+  //const patients = useSelector((state) => state.patients.patients);
+  const [patients, setPatients] = useState([]);
   const [error, setError] = useState(null);
   const [query, setQuery] = useState("");
   const [patientId, setPatientId] = useState(null);
   const [teeth] = useState(teeth_data);
   const [patientID, setPatientID] = useState(null);
+  const [popUp, setPopUp] = useState(false);
 
   // This useEffect get all the data from patientList to display in the web
   useEffect(() => {
@@ -30,13 +33,12 @@ const PatientList = ({ setPopUp }) => {
 
   const displayPatients = async () => {
     try {
-      dispatch(getPatientStart());
       const res = await axios.get("http://localhost:5000/list/patient-list", {
         params: { query },
         withCredentials: true,
       });
       if (res.status === 200) {
-        dispatch(getPatientSuccess(res.data));
+        setPatients(res.data);
       } else {
         console.error("Unexpected status:", res.status);
         setError("There was a problem fetching patients.");
@@ -107,6 +109,9 @@ const PatientList = ({ setPopUp }) => {
   return (
     <div className="list-container">
       <Sidebar />
+      {popUp && (
+        <AddPatient setPopUp={setPopUp} displayPatients={displayPatients} />
+      )}
 
       <div className="list-content">
         <div className="actions">

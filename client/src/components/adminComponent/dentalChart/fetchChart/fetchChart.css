@@ -114,3 +114,46 @@
   padding: 8xp 9px;
   border-radius: 10px;
 }
+.note {
+  padding: 7px 16px;
+  cursor: pointer;
+  background: var(--rough-black);
+  color: var(--dirty-white);
+  border-radius: 10px;
+}
+
+.no-chart-container {
+  height: 90svh;
+  display: grid;
+  place-items: center;
+}
+.no-chart-container .no-chart-content h1 {
+  font-size: 12rem;
+}
+.no-chart-container .no-chart-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+.no-chart-container .no-chart-content h5 {
+  text-decoration: underline;
+  cursor: pointer;
+  color: var(--rough-black);
+}
+.no-chart-container .no-chart-content .error-404 {
+  color: var(--dark-blue);
+}
+.no-chart-container .no-chart-content button {
+  padding: 10px 25px;
+  cursor: pointer;
+  background: var(--light-blue);
+  font-size: 1.3rem;
+  border-radius: 25px;
+}
+.other-data {
+  display: flex;
+  gap: 20px;
+  justify-content: space-evenly;
+  width: 100%;
+}

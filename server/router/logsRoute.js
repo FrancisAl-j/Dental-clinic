@@ -6,5 +6,6 @@ const router = express.Router();
 
 // Fetch clinic's Activity Logs
 router.get("/activity-logs", verifyUser, controller.fetchActivityLogs);
+router.delete("/delete", verifyUser, controller.deleteAllLogs);
 
 export default router;

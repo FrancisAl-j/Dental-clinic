@@ -434,27 +434,45 @@ const Appointment = () => {
                           return (
                             <div key={index} className="time-container">
                               {dentist.availableTime &&
-                                dentist.availableTime.map((time, index) => {
-                                  return (
-                                    <div key={index} className="time-wrapper">
-                                      <input
-                                        type="radio"
-                                        id={time}
-                                        value={time}
-                                        checked={
-                                          appointmentTime === time || false
-                                        }
-                                        onChange={(e) =>
-                                          setAppointmentTime(e.target.value)
-                                        }
-                                      />
-                                      <label htmlFor={time}>{time}</label>
-                                    </div>
-                                  );
-                                })}
+                                dentist.availableTime
+                                  .slice() // Make a shallow copy to avoid mutating the original array
+                                  .sort((a, b) => {
+                                    // Parse the time strings into comparable values
+                                    const parseTime = (time) => {
+                                      const [hourMinute, meridian] =
+                                        time.split(" ");
+                                      const [hour, minute] = hourMinute
+                                        .split(":")
+                                        .map(Number);
+                                      let parsedHour = hour % 12; // Handle 12-hour format (12 becomes 0 in modulo)
+                                      if (meridian === "PM") parsedHour += 12; // Add 12 for PM hours
+                                      return parsedHour * 60 + minute; // Convert to total minutes
+                                    };
+
+                                    return parseTime(a) - parseTime(b); // Sort by total minutes
+                                  })
+                                  .map((time, index) => {
+                                    return (
+                                      <div key={index} className="time-wrapper">
+                                        <input
+                                          type="radio"
+                                          id={time}
+                                          value={time}
+                                          checked={
+                                            appointmentTime === time || false
+                                          }
+                                          onChange={(e) =>
+                                            setAppointmentTime(e.target.value)
+                                          }
+                                        />
+                                        <label htmlFor={time}>{time}</label>
+                                      </div>
+                                    );
+                                  })}
                             </div>
                           );
                         }
+                        return null; // Avoid returning undefined
                       })}
                   </div>
                 </div>

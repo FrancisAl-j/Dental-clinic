@@ -85,7 +85,7 @@ const HomeContent = () => {
           Our <span>Dental Care</span> Services
         </h1>
         <div className="links">
-          <a href="#">
+          <a>
             <div>
               <img src={GeneralDentistry} alt="" />
               <article>
@@ -100,7 +100,7 @@ const HomeContent = () => {
               </article>
             </div>
           </a>
-          <a href="#">
+          <a>
             <div>
               <img src={DentalCosmetics} alt="" />
               <article>
@@ -115,7 +115,7 @@ const HomeContent = () => {
               </article>
             </div>
           </a>
-          <a href="#">
+          <a>
             <div>
               <img src={Prosthodontics} alt="" />
               <article>
@@ -130,7 +130,7 @@ const HomeContent = () => {
               </article>
             </div>
           </a>
-          <a href="#">
+          <a>
             <div>
               <img src={Orthodontics} alt="" />
               <article>
@@ -145,7 +145,7 @@ const HomeContent = () => {
               </article>
             </div>
           </a>
-          <a href="#">
+          <a>
             <div>
               <img src={OralSurgery} alt="" />
               <article>

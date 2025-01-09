@@ -136,12 +136,13 @@ const getClinics = async (req, res, next) => {
 
     let clinics;
     if (!city || city.trim() === "") {
-      clinics = await Clinic.find({ active: true });
+      clinics = await Clinic.find({ active: true, service: true });
       return res.status(200).json(clinics);
     } else {
       clinics = await Clinic.find({
         location: { $regex: city.trim(), $options: "i" },
         active: true,
+        service: true,
       });
 
       return res.status(200).json(clinics);

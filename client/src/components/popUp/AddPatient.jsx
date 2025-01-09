@@ -8,7 +8,7 @@ import {
 } from "../../redux/clinic/patientListReducer.js";
 import axios from "axios";
 
-const AddPatient = ({ setPopUp }) => {
+const AddPatient = ({ setPopUp, displayPatients }) => {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     patientName: "",
@@ -38,7 +38,6 @@ const AddPatient = ({ setPopUp }) => {
       patientContact,
     } = formData;
     try {
-      dispatch(addPatientStart());
       const res = await axios.post(
         "http://localhost:5000/list/create-patient",
         {
@@ -60,7 +59,7 @@ const AddPatient = ({ setPopUp }) => {
           patientGender: "Male",
           patientContact: "",
         });
-        dispatch(addPatientSuccess(res.data));
+        await displayPatients();
       }
     } catch (error) {
       setError("There was a problem creating a patient");
@@ -68,8 +67,8 @@ const AddPatient = ({ setPopUp }) => {
   };
 
   return (
-    <div className="popup">
-      <div className="popup-container">
+    <div className="popups">
+      <div className="popups-container">
         <div className="logo-header">
           <h1>Add a patient</h1>
           <img onClick={() => setPopUp(false)} src={Close} alt="Close" />

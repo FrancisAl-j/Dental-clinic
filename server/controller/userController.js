@@ -9,7 +9,7 @@ import Service from "../models/serviceModel.js";
 
 const userUpdate = async (req, res, next) => {
   const { id } = req.params;
-  const { username, email, password, available } = req.body;
+  const { username, email, password, available, availableTime } = req.body;
   try {
     let user = await Admin.findById(req.user.id);
     if (!user) {
@@ -31,6 +31,7 @@ const userUpdate = async (req, res, next) => {
       username,
       email,
       available,
+      availableTime,
     };
 
     if (password) {

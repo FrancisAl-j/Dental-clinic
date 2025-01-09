@@ -12,6 +12,7 @@ import { clearClinic } from "../../redux/clinic/clinicReducer.js";
 import axios from "axios";
 import "../css/home.css";
 import { days_data } from "../DaysData.jsx";
+import { time_data } from "../DaysData.jsx";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -23,10 +24,12 @@ const Profile = () => {
     password: currentUser.password,
   });
   const [available, setAvailable] = useState([]);
+  const [availableTime, setAvailableTime] = useState([]);
 
   useEffect(() => {
-    if (currentUser && currentUser.available) {
+    if (currentUser && currentUser.available && currentUser.availableTime) {
       setAvailable(currentUser.available);
+      setAvailableTime(currentUser.availableTime);
     }
   }, [currentUser]);
 
@@ -39,6 +42,16 @@ const Profile = () => {
     } else {
       // Remove the deselected day from the available array
       setAvailable((prev) => prev.filter((day) => day !== parseInt(value)));
+    }
+  };
+
+  const handleTime = (e) => {
+    const { value, checked } = e.target;
+
+    if (checked) {
+      setAvailableTime((prev) => [...prev, value]);
+    } else {
+      setAvailableTime((prev) => prev.filter((time) => time !== value));
     }
   };
 
@@ -58,7 +71,7 @@ const Profile = () => {
       dispatch(updateUserStart());
       const res = await axios.put(
         `http://localhost:5000/user/update/${currentUser._id}`,
-        { formData, available },
+        { formData, available, availableTime },
         {
           withCredentials: true,
         }
@@ -207,7 +220,13 @@ const Profile = () => {
   };
 
   return (
-    <div className="profiles-container">
+    <div
+      className={
+        currentUser && currentUser.role === "Patient"
+          ? "profiles-container"
+          : ""
+      }
+    >
       <div className="form-container">
         <h1>Profile</h1>
 
@@ -234,31 +253,55 @@ const Profile = () => {
             </div>
 
             {currentUser && currentUser.role === "Admin" && (
-              <div className="form-element">
-                <span>Days Available</span>
-                <div className="days-container">
-                  {[
-                    { day: "Monday", value: 1 },
-                    { day: "Tuesday", value: 2 },
-                    { day: "Wednesday", value: 3 },
-                    { day: "Thursday", value: 4 },
-                    { day: "Friday", value: 5 },
-                    { day: "Saturday", value: 6 },
-                    { day: "Sunday", value: 0 },
-                  ].map((data, index) => (
-                    <div className="day-element" key={index}>
-                      <input
-                        type="checkbox"
-                        id={data.day.toLowerCase()}
-                        value={data.value} // Use day as the value
-                        checked={available.includes(data.value) || false}
-                        onChange={handleCheck}
-                      />
-                      <label htmlFor={data.day.toLowerCase()}>{data.day}</label>
-                    </div>
-                  ))}
+              <>
+                <div className="form-element">
+                  <span>Days Available</span>
+                  <div className="days-container">
+                    {[
+                      { day: "Monday", value: 1 },
+                      { day: "Tuesday", value: 2 },
+                      { day: "Wednesday", value: 3 },
+                      { day: "Thursday", value: 4 },
+                      { day: "Friday", value: 5 },
+                      { day: "Saturday", value: 6 },
+                      { day: "Sunday", value: 0 },
+                    ].map((data, index) => (
+                      <div className="day-element" key={index}>
+                        <input
+                          type="checkbox"
+                          id={data.day.toLowerCase()}
+                          value={data.value} // Use day as the value
+                          checked={available.includes(data.value) || false}
+                          onChange={handleCheck}
+                        />
+                        <label htmlFor={data.day.toLowerCase()}>
+                          {data.day}
+                        </label>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
+
+                <div className="form-element">
+                  <span>Available Time:</span>
+                  <div className="days-container">
+                    {time_data.map((time, index) => {
+                      return (
+                        <div key={index} className="day-element">
+                          <input
+                            type="checkbox"
+                            id={time}
+                            value={time}
+                            checked={availableTime.includes(time) || false}
+                            onChange={handleTime}
+                          />
+                          <label htmlFor={time}>{time}</label>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </>
             )}
 
             <div className="form-element">
