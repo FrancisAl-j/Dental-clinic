@@ -68,6 +68,10 @@ const createClinic = async (req, res, next) => {
       .status(500)
       .json({ message: "Tax Number Identification consists of 9 characters" });
   }
+
+  if (phone.toString().length !== 11) {
+    return res.status(400).json({ message: "Invalid phone number" });
+  }
   try {
     const admin = await Admin.findById(req.user.id);
     if (!admin) {

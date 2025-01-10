@@ -11,6 +11,8 @@ const SearchClinics = () => {
     getSearchClinics();
   }, [query]);
 
+  console.log(searchData);
+
   const getSearchClinics = async () => {
     try {
       const res = await axios.get("http://localhost:5000/search/clinics", {

@@ -169,7 +169,10 @@ const PatientList = () => {
                   <button className="chart-btn">Chart</button>
                 </Link>
               </div>
-              <button onClick={(e) => createDentalChart(e, patient._id)}>
+              <button
+                onClick={(e) => createDentalChart(e, patient._id)}
+                className="chart-btns"
+              >
                 Create Chart
               </button>
             </div>

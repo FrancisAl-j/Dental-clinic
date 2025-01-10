@@ -73,3 +73,9 @@
 .patient-name:hover {
   color: blue;
 }
+.chart-btns {
+  background: var(--grayish-blue);
+  cursor: pointer;
+  margin: 5px 0;
+  border-radius: 20px;
+}

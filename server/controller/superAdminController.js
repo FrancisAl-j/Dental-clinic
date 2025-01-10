@@ -223,9 +223,10 @@ const updateEmployees = async (req, res, next) => {
     }
 
     let action;
-    if (active) {
+    if (active === "true") {
       action = "Activate";
-    } else {
+    }
+    if (active === "false") {
       action = "Inactive";
     }
 

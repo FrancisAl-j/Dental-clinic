@@ -16,8 +16,6 @@ const ViewClinics = () => {
   const currentClinics = useSelector((state) => state.clinics.clinics);
   const [city, setCity] = useState(null); // City of user if allowed on website
 
-  console.log("Your address is: " + city);
-
   if (!address || !address.city) {
     console.log("Location access denied or unavailable. Showing all clinics.");
   }

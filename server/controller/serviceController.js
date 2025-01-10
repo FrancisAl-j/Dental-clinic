@@ -238,6 +238,7 @@ const paginatedServices = async (req, res, next) => {
 };
 
 // Get services for patients
+// TODO: Create a query so that patient can search a service
 const patientGetServices = async (req, res, next) => {
   const { clinicId } = req.query;
   try {

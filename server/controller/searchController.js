@@ -46,6 +46,8 @@ const searchClinics = async (req, res, next) => {
         $regex: query,
         $options: "i",
       },
+      service: true,
+      active: true,
     });
 
     res.status(200).json(clinics);
