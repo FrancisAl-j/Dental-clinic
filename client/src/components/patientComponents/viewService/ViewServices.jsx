@@ -9,6 +9,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import Header from "../header/Header";
+import Search from "../../../assets/search.svg";
 
 const ViewServices = () => {
   const dispatch = useDispatch();
@@ -18,6 +19,18 @@ const ViewServices = () => {
   const currentPage = useRef();
   const { id, name } = useParams();
   const clinic = useSelector((state) => state.patientClinic.clinic);
+  const [query, setQuery] = useState("");
+  const [search, setSearch] = useState(false);
+  const inputRef = useRef(null);
+
+  const handleSearch = () => {
+    inputRef.current.focus();
+    setSearch(true);
+  };
+
+  const Unfocus = () => {
+    setSearch(false);
+  };
 
   // Fetching clinic details
   useEffect(() => {
@@ -50,6 +63,10 @@ const ViewServices = () => {
     };
   }, []);
 
+  useEffect(() => {
+    getPaginateServices();
+  }, [query]);
+
   const handlePageClick = async (e) => {
     console.log(e);
 
@@ -65,6 +82,7 @@ const ViewServices = () => {
           // You use this for finding the id I don't know about the others
           params: {
             clinicId: id,
+            query,
           },
           withCredentials: true,
         }
@@ -72,7 +90,6 @@ const ViewServices = () => {
       if (res.status === 200) {
         setServices(res.data.result);
         setPageCount(res.data.results.pageCount);
-        console.log(res.data);
       }
     } catch (error) {
       console.log(error);
@@ -100,6 +117,19 @@ const ViewServices = () => {
     <div className="services-main">
       <Header clinic={clinic} />
       <h1>Services we can offer</h1>
+      <div className="search-container">
+        <input
+          type="text"
+          ref={inputRef}
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className={search ? "open" : "close"}
+          placeholder={search ? "Search" : ""}
+          onBlur={Unfocus}
+        />
+        <img src={Search} alt="" onClick={handleSearch} />
+      </div>
+
       <div className="services-wrapper">
         {services.map((service, index) => {
           return (

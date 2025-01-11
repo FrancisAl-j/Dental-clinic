@@ -55,7 +55,7 @@ const appointmentSchema = mongoose.Schema(
     },
     notif: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     dentist: {
       type: mongoose.Schema.Types.ObjectId,

@@ -415,31 +415,46 @@ const updateStatus = async (req, res, next) => {
 
     const updatedAppointment = await Appointment.findById(id);
     const newPatient = await Patient_List.findOne({ patientId: patient._id });
-    console.log(newPatient);
+
+    let activityLogs;
     if (updatedAppointment.status === "Confirmed") {
       await sendAppointmentStatus(patient.email, newPatient.patientName);
+      activityLogs = new ActivityLogs({
+        name: user.name,
+        details: `${status} the appointment of ${appointment.patientName}`,
+        role: "Dentist",
+        clinic: clinicId,
+      });
+      await activityLogs.save();
       console.log("Send Successfully");
     }
     if (updatedAppointment.status === "Completed") {
       await sendAppointmentCompleted(patient.email, newPatient.patientName);
+      activityLogs = new ActivityLogs({
+        name: user.name,
+        details: `${status} the appointment of ${appointment.patientName}`,
+        role: "Dentist",
+        clinic: clinicId,
+      });
+      await activityLogs.save();
       console.log("Send Successfully");
     }
 
     if (updateAppointment.status === "Canceled") {
       await cancelAppointmentNotif(patient.email, newPatient.patientName);
+      activityLogs = new ActivityLogs({
+        name: user.name,
+        details: `${status} the appointment of ${appointment.patientName}`,
+        role: "Dentist",
+        clinic: clinicId,
+      });
+      await activityLogs.save();
       console.log("Send Successfully");
     } else {
       return res.json({ message: "Unavailable status value." });
     }
 
-    const activityLogs = new ActivityLogs({
-      name: user.name,
-      details: `${status} the appointment of ${appointment.patientName}`,
-      role: "Dentist",
-      clinic: clinicId,
-    });
-
-    await activityLogs.save();
+    console.log("Activtiy Logs ADDED: " + activityLogs);
 
     res.status(200).json(appointment);
   } catch (error) {

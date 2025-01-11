@@ -128,3 +128,33 @@
   padding: 5px;
   border-radius: 25px;
 }
+
+.search-container {
+  position: relative;
+}
+.search-container .close {
+  height: 35px;
+
+  border-radius: 20px;
+  width: 35px;
+  transition: 0.3s ease-in;
+}
+.search-container input {
+  padding: 5px 10px;
+  font-size: 1.2rem;
+  border-radius: 20px;
+}
+.search-container .open {
+  height: 35px;
+  width: 350px;
+  border-radius: 20px;
+  transition: 0.3s ease-out;
+}
+.search-container img {
+  aspect-ratio: 1/1;
+  width: 30px;
+  position: absolute;
+  top: 5%;
+  margin-right: 3px;
+  cursor: pointer;
+}

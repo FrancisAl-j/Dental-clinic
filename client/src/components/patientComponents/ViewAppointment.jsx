@@ -63,8 +63,9 @@ const ViewAppointment = ({ notif, setNotif }) => {
   const cancelAppointment = async (id) => {
     try {
       if (window.confirm("Are you sure you want to cancel your appointment?")) {
-        const res = await axios.delete(
+        const res = await axios.put(
           `http://localhost:5000/user/cancel/${id}`,
+          {},
           {
             withCredentials: true,
           }

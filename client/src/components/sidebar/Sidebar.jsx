@@ -6,6 +6,11 @@ const Sidebar = () => {
   const { currentUser } = useSelector((state) => state.user);
   const { currentClinic } = useSelector((state) => state.clinic);
 
+  /* 
+    <Link to="/image-ocr">
+          <li>Add Patients</li>
+        </Link>
+  */
   return (
     <div className="clinic-nav">
       <ul>
@@ -52,10 +57,6 @@ const Sidebar = () => {
 
         <Link to="/services">
           <li>Services</li>
-        </Link>
-
-        <Link to="/image-ocr">
-          <li>Add Patients</li>
         </Link>
       </ul>
     </div>

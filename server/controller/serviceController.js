@@ -200,14 +200,28 @@ const clinicServices = async (req, res, next) => {
 
 // Patient see this paginated services of clinics
 const paginatedServices = async (req, res, next) => {
-  const { clinicId } = req.query;
+  const { clinicId, query } = req.query;
+  const searchQuery = query ? String(query) : "";
   try {
     const user = await Patient.findById(req.user.user.id);
     if (!user) {
       return res.status(401).json({ message: "User not authenthicated" });
     }
 
-    const services = await Service.find({ clinicId });
+    let services;
+
+    if (searchQuery) {
+      services = await Service.find({
+        clinicId,
+        name: {
+          $regex: query,
+          $options: "i",
+        },
+      });
+    } else {
+      services = await Service.find({ clinicId });
+    }
+
     const page = parseInt(req.query.page);
     const limit = parseInt(req.query.limit);
 

@@ -6,6 +6,8 @@ const router = express.Router();
 
 router.put("/update/:id", verifyUser, controller.userUpdate);
 
+router.put("/cancel/:id", verifyUser, controller.cancelAppointment);
+
 router.delete("/patient/:id", verifyUser, controller.deletePatient);
 
 router.delete("/admin/:id", verifyUser, controller.deleteAdmin);
@@ -14,7 +16,6 @@ router.delete("/admin/:id", verifyUser, controller.deleteAdmin);
 router.get("/appointments", verifyUser, controller.viewAppointment);
 
 // Patient cancelling Appointments
-router.delete("/cancel/:id", verifyUser, controller.cancelAppointment);
 
 router.post("/click/services", verifyUser, controller.interestedServices);
 

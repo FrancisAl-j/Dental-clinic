@@ -319,6 +319,7 @@ const getRecommendedServices = async (req, res, next) => {
 
 // Patient clicks on services it will add on their visited services on content-based filtering
 const getSortedServices = async (req, res) => {
+  const { query } = req.query;
   try {
     // Fetch the patient's interested services
     const patient = await Patient.findById(req.user.user.id);
@@ -332,7 +333,14 @@ const getSortedServices = async (req, res) => {
     //console.log(interestedServiceIds);
 
     // Fetch all services
-    const allServices = await Service.find().populate("clinicId").exec();
+    const allServices = await Service.find({
+      name: {
+        $regex: query,
+        $options: "i",
+      },
+    })
+      .populate("clinicId")
+      .exec();
 
     // Sort services: Interested services first
     const sortedServices = allServices.sort((a, b) => {
