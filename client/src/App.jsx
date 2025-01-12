@@ -80,6 +80,23 @@ const App = () => {
     }
   };
 
+  // !! Refresh cookies
+  const refreshCookies = async () => {
+    try {
+      if (currentUser) {
+        await axios.get(`http://localhost:5000/user/refresh/cookies`, {
+          withCredentials: true,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  setInterval(() => {
+    refreshCookies();
+  }, 50 * 60 * 1000);
+
   return (
     <>
       <BrowserRouter>

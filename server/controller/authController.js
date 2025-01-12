@@ -248,6 +248,8 @@ const cashierSignup = async (req, res, next) => {
   }
 };
 
+// TODO: Fix the cookies, when the currentUser is still available it will make another cookies for the user.
+
 // Sign up for patient
 const patientSignup = async (req, res, next) => {
   const { username, email, password, Cpassword, gender } = req.body;

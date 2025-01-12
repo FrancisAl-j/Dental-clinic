@@ -518,7 +518,7 @@ const notifOff = async (req, res, next) => {
       return res.status(401).json({ message: "User not authenticated." });
     }
     const userId = user._id;
-    const appointment = await Appointment.find({ patientId: userId })
+    const appointments = await Appointment.find({ patientId: userId })
       .sort({ createdAt: -1 }) // Sort by creation date, newest first
       .exec();
     if (appointment.length === 0) {
@@ -526,20 +526,19 @@ const notifOff = async (req, res, next) => {
     }
 
     // Use the first appointment or any specific one you want to update
-    const appointmentToUpdate = appointment[0];
-    //console.log(appointment);
+
+    //console.log(appointments);
+    for (const appointment of appointments) {
+      const id = appointment._id;
+
+      await Appointment.findByIdAndUpdate(id, { notif }, { new: true });
+    }
 
     //console.log(id);
 
-    const newAppointment = await Appointment.findByIdAndUpdate(
-      appointmentToUpdate._id,
-      { notif },
-      { new: true }
-    );
-
     //console.log(appointment);
 
-    res.status(200).json(newAppointment);
+    res.status(200).json({ message: "Updated." });
   } catch (error) {
     next(error);
   }

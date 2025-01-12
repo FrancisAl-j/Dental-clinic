@@ -21,4 +21,6 @@ router.post("/click/services", verifyUser, controller.interestedServices);
 
 router.get("/service/dentists", verifyUser, controller.getDentists);
 
+router.get("/refresh-cookies", controller.refreshCookies);
+
 export default router;

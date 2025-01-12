@@ -52,9 +52,9 @@ const About = () => {
             <img src={Au2} alt="" />
           </div>
           <div className="art1 div">
-            <p class="byl">Our Story</p>
-            <p class="autitle">A Journey of Innovation and Growth</p>
-            <p class="story">
+            <p className="byl">Our Story</p>
+            <p className="autitle">A Journey of Innovation and Growth</p>
+            <p className="story">
               In 2023, a group of BS Information Technology students from EARIST
               came together with a shared vision: to develop innovative
               solutions that could impact the community. Initially, we were just
@@ -85,11 +85,11 @@ const About = () => {
           </div>
         </div>
 
-        <div class="split div">
-          <div class="art div">
-            <p class="byl">Our Story</p>
-            <p class="autitle">A Journey of Innovation and Growth</p>
-            <p class="story">
+        <div className="split div">
+          <div className="art div">
+            <p className="byl">Our Story</p>
+            <p className="autitle">A Journey of Innovation and Growth</p>
+            <p className="story">
               In 2023, a group of BS Information Technology students from EARIST
               came together with a shared vision: to develop innovative
               solutions that could impact the community. Initially, we were just
@@ -118,7 +118,7 @@ const About = () => {
               belief that technology can help improve lives.
             </p>
           </div>
-          <div class="pic">
+          <div className="pic">
             <img src={Au3} alt="placeholder_image1" />
           </div>
         </div>

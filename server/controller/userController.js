@@ -6,6 +6,7 @@ import bcryptjs from "bcryptjs";
 import Clinic from "../models/clinicModel.js";
 import Appointment from "../models/appointmentModel.js";
 import Service from "../models/serviceModel.js";
+import jwt from "jsonwebtoken";
 
 const userUpdate = async (req, res, next) => {
   const { id } = req.params;
@@ -195,6 +196,29 @@ const interestedServices = async (req, res, next) => {
   }
 };
 
+// TODO: Refreshing Cookies
+const refreshCookies = async (req, res, next) => {
+  const { token } = req.cookies;
+
+  if (!token) {
+    return res.status(401).json({ message: "No token provided" });
+  }
+  try {
+    // ! VERIFY THE TOKEN
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+
+    // ! Create a new expiration date
+    const expiryDate = new Date(Date.now() + 24 * 60 * 60 * 1000); // 1 day
+
+    res
+      .cookie("token", token, { httpOnly: true, expires: expiryDate })
+      .status(200)
+      .json({ message: "Successfully refreshed." });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   userUpdate,
   deletePatient,
@@ -203,4 +227,5 @@ export default {
   cancelAppointment,
   interestedServices,
   getDentists,
+  refreshCookies,
 };
