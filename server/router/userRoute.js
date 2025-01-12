@@ -23,4 +23,6 @@ router.get("/service/dentists", verifyUser, controller.getDentists);
 
 router.get("/refresh-cookies", controller.refreshCookies);
 
+router.get("/new-cookies", controller.createNewCookies);
+
 export default router;

@@ -84,9 +84,10 @@ const App = () => {
   const refreshCookies = async () => {
     try {
       if (currentUser) {
-        await axios.get(`http://localhost:5000/user/refresh/cookies`, {
+        await axios.get(`http://localhost:5000/user/refresh-cookies`, {
           withCredentials: true,
         });
+        console.log("refreshed.");
       }
     } catch (error) {
       console.log(error);
@@ -96,6 +97,28 @@ const App = () => {
   setInterval(() => {
     refreshCookies();
   }, 50 * 60 * 1000);
+
+  // !! Recreate cookies if accidentally close windows or forgot to logout
+  useEffect(() => {
+    if (currentUser) {
+      createNewCookies();
+    }
+  }, [currentUser]);
+
+  const createNewCookies = async () => {
+    const email = currentUser.email;
+    try {
+      if (currentUser) {
+        await axios.get(`http://localhost:5000/user/new-cookies`, {
+          params: {
+            email,
+          },
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>

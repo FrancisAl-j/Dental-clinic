@@ -219,6 +219,35 @@ const refreshCookies = async (req, res, next) => {
   }
 };
 
+// ! When the user accidentally close the window or forget to sign out
+
+const createNewCookies = async (req, res, next) => {
+  const { email } = req.query;
+  try {
+    const user = await Patient.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "Email not found." });
+    }
+    const payload = {
+      user: {
+        id: user._id,
+        userType: user.role,
+      },
+    };
+
+    const token = jwt.sign(payload, process.env.JWT_SECRET_KEY);
+
+    const expiryDate = new Date(Date.now() + 24 * 60 * 60 * 1000); // 1 day
+
+    res
+      .cookie("token", token, { httpOnly: true, expires: expiryDate })
+      .status(200)
+      .json({ message: "Created a new Cookies" });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   userUpdate,
   deletePatient,
@@ -228,4 +257,5 @@ export default {
   interestedServices,
   getDentists,
   refreshCookies,
+  createNewCookies,
 };
